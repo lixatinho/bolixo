@@ -17,7 +17,6 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-
   int _selectedIndex = 0;
   final pages = {
     Menu.palpites: Palpites(),
@@ -29,15 +28,11 @@ class HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(title: const Text('Title')),
       body: pages[_selectedIndex],
-      drawer: Cagar( child:
-        Menu(
-          onTapCallback: (int index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          }
-        )
-      ),
+      drawer: Cagar(child: Menu(onTapCallback: (int index) {
+        setState(() {
+          _selectedIndex = index;
+        });
+      })),
     );
   }
 }
