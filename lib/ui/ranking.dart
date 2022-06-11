@@ -21,7 +21,6 @@ class Ranking extends StatelessWidget {
         appBar: AppBar(
           title: Text(title),
         ),
-
         body: ListView.builder(
             itemCount: rankeds.length,
             itemBuilder: (context, index) {
@@ -31,42 +30,9 @@ class Ranking extends StatelessWidget {
                 trailing: Text('${rankeds[index].score}'),
               );
             }),
-        // body: ListView(
-        //   children: <Widget>[
-        //     ListTile(
-        //       leading: Icon(Icons.one_k),
-        //       title: Text('Pato'),
-        //     ),
-        //     ListTile(
-        //       leading: Icon(Icons.two_k),
-        //       title: Text('Peru'),
-        //     ),
-        //     ListTile(
-        //       leading: Icon(Icons.three_k),
-        //       title: Text('Pavão'),
-        //     ),
-        //   ],
-        // ),
       ),
     );
   }
-  // return ListView.builder(
-  //   itemCount: rankeds.length,
-  //   itemBuilder: (context, index){
-  //     return ListTile(
-  //       leading: Icon(Icons.arrow_right),
-  //       title: Text('${rankeds[index]}'),
-  //     );
-  //   },
-  // );
-
-  // buildListView(){
-  //   final itens = List<String>
-  //   return ListView.builder(
-
-  //   )
-  // }
-
 }
 
 class LixoRank {
