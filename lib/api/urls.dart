@@ -1,4 +1,5 @@
 class ApiConstants {
   static String baseUrl = 'https://jsonplaceholder.typicode.com';
-  static String usersEndpoint = '/users/1';
+  static String usersEndpoint = '/users';
+  static String rankingEndpoint = '/ranking';
 }
