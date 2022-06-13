@@ -48,7 +48,7 @@ class _LoginState extends State<Login> {
                     const SizedBox(height: 15),
                     ElevatedButton(
                         onPressed: () {
-                          if (email == "teste" && password == '123') {
+                          if (CompareUser().compare(User(email, password))) {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) =>
@@ -67,19 +67,19 @@ class _LoginState extends State<Login> {
 
 class CompareUser {
   // conexão com banco
-  late List<User> users;
+  List<User> users = [
+    User('pato', 'pameupato'),
+    User('caldas', '123'),
+    User('email', 'login'),
+    User('pombo', '123')
+  ];
   bool compare(User user) {
-    return true;
-  }
-
-  List<User> listUser() {
-    List<User> users = [
-      User('pato', '123'),
-      User('caldas', '123'),
-      User('email', 'login'),
-      User('pombo', '123')
-    ];
-    return users;
+    for (var obj in users) {
+      if (obj.email == user.email && obj.password == user.password) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
