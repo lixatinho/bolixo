@@ -6,19 +6,9 @@ import '../api/model/rankingModel.dart';
 
 class Ranking extends StatelessWidget {
   @override
-  // Widget build(BuildContext context) {
-  //   return const Center(child: Text("Ranking"));
-  // }
   Widget build(BuildContext context) {
     final title = 'Score list';
 
-
-    // Future<List<RankingModel>> rankeds = ApiService().getRanking();
-    // List<LixoRank> rankeds = [
-    //   LixoRank('Pato', 33.21),
-    //   LixoRank('Peru', 20),
-    //   LixoRank('Pavão', 19)
-    // ];
     return MaterialApp(
       title: title,
       theme: ThemeData(
@@ -29,9 +19,9 @@ class Ranking extends StatelessWidget {
           title: Text(title),
         ),
         // body: ListView.builder(
-          body: FutureBuilder(
+        body: FutureBuilder(
             future: ApiService().getRanking(),
-            builder:(context, AsyncSnapshot snapshot) {
+            builder: (context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               } else {
@@ -46,16 +36,8 @@ class Ranking extends StatelessWidget {
                       );
                     });
               }
-            }
-          ),
+            }),
       ),
     );
   }
 }
-
-class LixoRank {
-  String name = '';
-  double score;
-  LixoRank(this.name, this.score);
-}
-
