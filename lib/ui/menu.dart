@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
-
   static const int palpites = 1;
   static const ranking = 2;
   Function onTapCallback;
@@ -14,7 +13,8 @@ class Menu extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const UserAccountsDrawerHeader( // <-- SEE HERE
+          const UserAccountsDrawerHeader(
+            // <-- SEE HERE
             decoration: BoxDecoration(color: Colors.blue),
             accountName: Text(
               "Filipe Cardoso",
@@ -31,9 +31,7 @@ class Menu extends StatelessWidget {
             currentAccountPicture: FlutterLogo(),
           ),
           ListTile(
-            leading: const Icon(
-                Icons.edit
-            ),
+            leading: const Icon(Icons.edit),
             title: const Text('Palpites'),
             onTap: () {
               onTapCallback(palpites);
@@ -41,9 +39,7 @@ class Menu extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(
-                Icons.leaderboard
-            ),
+            leading: const Icon(Icons.leaderboard),
             title: const Text('Ranking'),
             onTap: () {
               onTapCallback(ranking);
@@ -56,6 +52,6 @@ class Menu extends StatelessWidget {
   }
 }
 
-class Login extends StatelessWidget{
-  Login({Key! key, required this.onTapCallback}) : super(key: key);
-}
+// class Login extends StatelessWidget{
+//   Login({Key! key, required this.onTapCallback}) : super(key: key);
+// }
