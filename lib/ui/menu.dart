@@ -55,3 +55,7 @@ class Menu extends StatelessWidget {
     );
   }
 }
+
+class Login extends StatelessWidget{
+  Login({Key! key, required this.onTapCallback}) : super(key: key);
+}
