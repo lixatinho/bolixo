@@ -1,3 +1,4 @@
+import 'package:bolixo/api/model/user.dart';
 import 'package:bolixo/ui/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -62,4 +63,30 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+}
+
+class CompareUser {
+  // conexão com banco
+  late List<User> users;
+  bool compare(User user) {
+    return true;
+  }
+
+  List<User> listUser() {
+    List<User> users = [
+      User('pato', '123'),
+      User('caldas', '123'),
+      User('email', 'login'),
+      User('pombo', '123')
+    ];
+    return users;
+  }
+}
+
+class User {
+  String email = '';
+  String password = '';
+  User(this.email, this.password);
+
+  // List<User> user = [User(id: id, username: username, email: email, website: website)]
 }
