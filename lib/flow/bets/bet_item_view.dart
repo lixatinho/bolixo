@@ -2,9 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Palpite extends StatelessWidget {
+import 'bet_view_content.dart';
 
-  Palpite(match);
+class BetItemView extends StatelessWidget {
+
+  BetViewContent bet;
+
+  BetItemView({Key? key, required this.bet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +16,10 @@ class Palpite extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const SizedBox(
+          SizedBox(
             width: 50,
             child: Image(
-              image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+              image: NetworkImage(bet.team1.flagUrl),
               fit: BoxFit.fitWidth,
             ),
           ),
@@ -39,10 +43,10 @@ class Palpite extends StatelessWidget {
                 textAlign: TextAlign.center,
               )
           ),
-          const SizedBox(
+          SizedBox(
             width: 50,
             child: Image(
-              image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+              image: NetworkImage(bet.team2.flagUrl),
               fit: BoxFit.fitWidth,
             ),
           ),

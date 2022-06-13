@@ -9,6 +9,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   static const appTitle = 'Bolão dos lixos';
+  static const flavor = Flavor.Mock;
 
   @override
   Widget build(BuildContext context) {
@@ -20,4 +21,10 @@ class MyApp extends StatelessWidget {
       home: const Home(title: appTitle)
     );
   }
+}
+
+enum Flavor {
+  Mock,
+  Staging,
+  Production
 }

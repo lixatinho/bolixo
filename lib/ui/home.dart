@@ -1,5 +1,5 @@
 import 'package:bolixo/ui/menu.dart';
-import 'package:bolixo/ui/palpites.dart';
+import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:bolixo/ui/ranking.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   int _selectedIndex = 0;
   final pages = {
-    Menu.palpites: Palpites(),
+    Menu.palpites: BetsWidget(),
     Menu.ranking: Ranking(),
   };
 

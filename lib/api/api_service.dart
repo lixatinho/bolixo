@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:bolixo/ui/palpites.dart';
+import 'package:bolixo/api/bet/bet_model.dart';
+import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:dio/dio.dart';
 
 import 'model/rankingModel.dart';
@@ -59,7 +60,7 @@ class ApiService {
     return ranking;
   }
 
-  Future<List<PalpiteModel>> getPalpitesFromUser(int idUser) async {
+  Future<List<BetModel>> getPalpitesFromUser(int idUser) async {
     response.data = [
       {
         "id": 1,
@@ -81,7 +82,7 @@ class ApiService {
       }
     ];
 
-    List<PalpiteModel> palpites = [];
+    List<BetModel> palpites = [];
     try {
       response =
           await dio.get(ApiConstants.baseUrl + ApiConstants.usersEndpoint);
