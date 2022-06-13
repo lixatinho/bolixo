@@ -6,18 +6,9 @@ import '../api/model/rankingModel.dart';
 
 class Ranking extends StatelessWidget {
   @override
-  // Widget build(BuildContext context) {
-  //   return const Center(child: Text("Ranking"));
-  // }
   Widget build(BuildContext context) {
     final title = 'Score list';
 
-    // Future<List<RankingModel>> rankeds = ApiService().getRanking();
-    // List<LixoRank> rankeds = [
-    //   LixoRank('Pato', 33.21),
-    //   LixoRank('Peru', 20),
-    //   LixoRank('Pavão', 19)
-    // ];
     return MaterialApp(
       title: title,
       theme: ThemeData(
