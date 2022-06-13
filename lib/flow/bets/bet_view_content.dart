@@ -1,4 +1,4 @@
-import 'package:bolixo/api/bet/bet_model.dart';
+import 'package:bolixo/api/model/bet_model.dart';
 
 class BetViewContent {
   TeamViewContent team1;

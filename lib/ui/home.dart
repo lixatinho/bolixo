@@ -1,10 +1,8 @@
-import 'package:bolixo/ui/menu.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
-import 'package:bolixo/ui/ranking.dart';
+import 'package:bolixo/flow/ranking/ranking.dart';
+import 'package:bolixo/ui/menu.dart';
+import 'package:bolixo/ui/shared/cagar.dart';
 import 'package:flutter/material.dart';
-
-import '../shared/cagar.dart';
-import 'login.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, required this.title});

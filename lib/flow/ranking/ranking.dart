@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:bolixo/api/api_service.dart';
 
-import '../api/model/rankingModel.dart';
+import '../../api/model/ranking_model.dart';
 
 class Ranking extends StatelessWidget {
   @override

@@ -9,5 +9,4 @@ class ApiConstants {
   static String saveMatches = '/matches';
   static String calcScore = '/calcScore';
 
-
 }

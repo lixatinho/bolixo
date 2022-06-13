@@ -1,6 +1,6 @@
 import 'package:bolixo/flow/bets/bet_item_view.dart';
 import 'package:bolixo/flow/bets/bet_view_content.dart';
-import 'package:bolixo/flow/bets/bet_viewcontroller.dart';
+import 'package:bolixo/flow/bets/bets_viewcontroller.dart';
 import 'package:flutter/material.dart';
 
 class BetsWidget extends StatefulWidget {
@@ -8,15 +8,13 @@ class BetsWidget extends StatefulWidget {
   const BetsWidget({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return BetsWidgetState();
-  }
+  State<StatefulWidget> createState() => BetsWidgetState();
 }
 
 class BetsWidgetState extends State<BetsWidget> {
 
   List<BetViewContent> bets = [];
-  BetViewController viewController = BetViewController();
+  BetsViewController viewController = BetsViewController();
 
   @override
   initState() {

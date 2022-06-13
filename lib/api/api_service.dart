@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:bolixo/api/bet/bet_model.dart';
+import 'package:bolixo/api/model/bet_model.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:dio/dio.dart';
 
-import 'model/rankingModel.dart';
-import 'model/user.dart';
+import 'model/ranking_model.dart';
+import 'model/user_model.dart';
 import 'urls.dart';
 
 class ApiService {

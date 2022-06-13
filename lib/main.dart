@@ -1,5 +1,5 @@
 import 'package:bolixo/ui/home.dart';
-import 'package:bolixo/ui/login.dart';
+import 'package:bolixo/flow/login/login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
