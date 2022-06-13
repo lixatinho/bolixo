@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
@@ -51,7 +53,3 @@ class Menu extends StatelessWidget {
     );
   }
 }
-
-// class Login extends StatelessWidget{
-//   Login({Key! key, required this.onTapCallback}) : super(key: key);
-// }

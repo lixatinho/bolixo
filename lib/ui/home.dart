@@ -4,6 +4,7 @@ import 'package:bolixo/ui/ranking.dart';
 import 'package:flutter/material.dart';
 
 import '../shared/cagar.dart';
+import 'login.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, required this.title});
@@ -25,14 +26,18 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Title')),
-      body: pages[_selectedIndex],
-      drawer: Cagar(child: Menu(onTapCallback: (int index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-      })),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Title'),
+        ),
+        body: pages[_selectedIndex],
+        drawer: Cagar(child: Menu(onTapCallback: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        })),
+      ),
     );
   }
 }
