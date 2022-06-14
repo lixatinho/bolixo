@@ -5,16 +5,16 @@ import 'package:bolixo/api/model/bet_model.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:dio/dio.dart';
 
-import 'model/ranking_model.dart';
-import 'model/user_model.dart';
-import 'urls.dart';
+import '../model/ranking_model.dart';
+import '../model/user_model.dart';
+import '../urls.dart';
 
 class ApiService {
   Dio dio = Dio();
   late Response response;
 
-  Future<List<User>?> getUsers() async {
-    List<User> users = [];
+  Future<List<UserModel>?> getUsers() async {
+    List<UserModel> users = [];
     try {
       response =
           await dio.get(ApiConstants.baseUrl + ApiConstants.usersEndpoint);
@@ -22,9 +22,9 @@ class ApiService {
         print(response.data);
         //lista
         var lista = (response.data as List).map((item) {
-          return userFromJson(item);
+          return UserModel.fromJson(item);
         });
-        User user = userFromJson(response.data);
+        UserModel user = UserModel.fromJson(response.data);
         users.add(user);
         users.add(user);
         users.add(user);
@@ -60,42 +60,4 @@ class ApiService {
     return ranking;
   }
 
-  Future<List<BetModel>> getPalpitesFromUser(int idUser) async {
-    response.data = [
-      {
-        "id": 1,
-        "idMatch": 10,
-        "idUser": 1,
-        "golsTeam1": 0,
-        "golsTeam2": 0,
-        "score": 5,
-        "datetime": "2022-06-01"
-      },
-      {
-        "id": 23,
-        "idMatch": 10,
-        "idUser": 1,
-        "golsTeam1": 0,
-        "golsTeam2": 0,
-        "score": 5,
-        "datetime": "2022-06-01"
-      }
-    ];
-
-    List<BetModel> palpites = [];
-    try {
-      response =
-          await dio.get(ApiConstants.baseUrl + ApiConstants.usersEndpoint);
-      if (response.statusCode == 200) {
-        print(response.data);
-        //lista
-        var lista = (response.data as List).map((item) {
-          return userFromJson(item);
-        });
-      }
-    } catch (e) {
-      log(e.toString());
-    }
-    return palpites;
-  }
 }

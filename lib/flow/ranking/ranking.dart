@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:bolixo/api/api_service.dart';
+import 'package:bolixo/api/service/api_service.dart';
 
 import '../../api/model/ranking_model.dart';
 

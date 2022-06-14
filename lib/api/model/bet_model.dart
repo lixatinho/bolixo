@@ -1,40 +1,47 @@
+import 'package:bolixo/api/model/match_model.dart';
+import 'package:bolixo/api/model/user_model.dart';
+
 class BetModel {
   int? id;
-  int? matchId;
-  int? userId;
-  int? teamOneGoals;
-  int? teamTwoGoals;
+  MatchModel? match;
+  UserModel? user;
+  int? goalsAway;
+  int? goalsHome;
   int? score;
-  String? matchDate;
+  String? betDate;
 
   BetModel(
       this.id,
-      this.matchId,
-      this.userId,
-      this.teamOneGoals,
-      this.teamTwoGoals,
+      this.match,
+      this.user,
+      this.goalsAway,
+      this.goalsHome,
       this.score,
-      this.matchDate);
+      this.betDate);
 
   BetModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    matchId = json['idMatch'];
-    userId = json['idUser'];
-    teamOneGoals = json['golsTeam1'];
-    teamTwoGoals = json['golsTeam2'];
+    match = json['match'] != null ? MatchModel.fromJson(json['match']) : null;
+    user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
     score = json['score'];
-    matchDate = json['datetime'];
+    score = json['goalsAway'];
+    score = json['goalsHome'];
+    betDate = json['datetime'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['idMatch'] = this.matchId;
-    data['idUser'] = this.userId;
-    data['golsTeam1'] = this.teamOneGoals;
-    data['golsTeam2'] = this.teamTwoGoals;
-    data['score'] = this.score;
-    data['datetime'] = this.matchDate;
+    data['id'] = id;
+    if (match != null) {
+      data['match'] = match!.toJson();
+    }
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+    data['score'] = score;
+    data['goalsAway'] = goalsAway;
+    data['goalsHome'] = goalsHome;
+    data['datetime'] = betDate;
     return data;
   }
 }

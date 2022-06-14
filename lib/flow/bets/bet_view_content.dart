@@ -11,12 +11,12 @@ class BetViewContent {
         team1: TeamViewContent(
           name: '',
           flagUrl: 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-          goals: apiModel.teamOneGoals.toString()
+          goals: apiModel.goalsHome.toString()
         ),
         team2: TeamViewContent(
             name: '',
             flagUrl: 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
-            goals: apiModel.teamTwoGoals.toString()
+            goals: apiModel.goalsAway.toString()
         )
     );
   }
