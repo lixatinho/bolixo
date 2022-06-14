@@ -1,6 +1,7 @@
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:bolixo/flow/ranking/ranking.dart';
 import 'package:bolixo/ui/menu.dart';
+import 'package:bolixo/ui/shared/Shit.dart';
 import 'package:bolixo/ui/shared/cagar.dart';
 import 'package:flutter/material.dart';
 
@@ -30,11 +31,13 @@ class HomeState extends State<Home> {
           title: const Text('Title'),
         ),
         body: pages[_selectedIndex],
-        drawer: Cagar(child: Menu(onTapCallback: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        })),
+        drawer: Shit(
+          child: Menu(onTapCallback: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          })
+        ),
       ),
     );
   }

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: const Home(title: appTitle)
-      home: const Login(),
+      home: const Home(title: appTitle),
     );
   }
 }
