@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
-class Cagar extends StatelessWidget {
-  const Cagar({
-    super.key,
-    required this.child
-  });
+class AnimatedShit extends AnimatedWidget {
 
-  final double angle = -3.14 / 12.0;
+  const AnimatedShit({
+    super.key,
+    required Animation<double> animation,
+    required this.child
+  }): super(listenable: animation);
+
+  static final _angleTween = Tween<double>(begin: 0, end: 3.14);
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    final animation = listenable as Animation<double>;
     return Transform.rotate(
-      angle: angle,
+      angle: _angleTween.evaluate(animation),
       child:
         Transform.translate(
           offset: const Offset(80, 0),

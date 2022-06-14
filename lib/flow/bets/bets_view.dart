@@ -30,7 +30,11 @@ class BetsWidgetState extends State<BetsWidget> {
         child: ListView.separated(
           itemCount: bets.length,
           itemBuilder: (context, index) {
-            return BetItemView(bet: bets[index]);
+            return BetItemView(
+              bet: bets[index],
+              goals1Changed: (goals) => viewController.onGoalsTeam1Changed(index, goals),
+              goals2Changed: (goals) => viewController.onGoalsTeam2Changed(index, goals),
+            );
           },
           separatorBuilder: (context, index) => const SizedBox(
             height: 16
@@ -38,7 +42,9 @@ class BetsWidgetState extends State<BetsWidget> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          viewController.saveBets();
+        },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.save)
       ),
