@@ -5,8 +5,11 @@ class ApiConstants {
   static String betsFromUserEndpoint = '/palpites';
   static String matchesFromPhase = '/matches';
 
-  static String savePalpites = '/palpites';
-  static String saveMatches = '/matches';
+  static String postBet = '/palpites';
+  static String postMatches = '/matches';
   static String calcScore = '/calcScore';
+
+  static String postBolao = '/bolao';
+  static String getBolao = '/bolao';
 
 }
