@@ -1,8 +1,6 @@
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:bolixo/flow/ranking/ranking.dart';
 import 'package:bolixo/ui/menu.dart';
-import 'package:bolixo/ui/shared/Shit.dart';
-import 'package:bolixo/ui/shared/cagar.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -17,9 +15,9 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  int _selectedIndex = Menu.bets;
   final pages = {
-    Menu.palpites: BetsWidget(),
+    Menu.bets: const BetsWidget(),
     Menu.ranking: Ranking(),
   };
 
@@ -28,16 +26,16 @@ class HomeState extends State<Home> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.indigo,
+          elevation: 0,
           title: const Text('Title'),
         ),
         body: pages[_selectedIndex],
-        drawer: Shit(
-          child: Menu(onTapCallback: (int index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          })
-        ),
+        drawer: Menu(onTapCallback: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        })
       ),
     );
   }

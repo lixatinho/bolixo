@@ -1,5 +1,4 @@
 import 'package:bolixo/ui/home.dart';
-import 'package:bolixo/flow/login/login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: appTitle,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       // home: const Home(title: appTitle)
       home: const Home(title: appTitle),

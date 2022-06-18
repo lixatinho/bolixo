@@ -3,6 +3,8 @@ import 'package:bolixo/flow/bets/bet_view_content.dart';
 import 'package:bolixo/flow/bets/bets_viewcontroller.dart';
 import 'package:flutter/material.dart';
 
+import 'SelectDateWidget.dart';
+
 class BetsWidget extends StatefulWidget {
 
   const BetsWidget({super.key});
@@ -24,30 +26,42 @@ class BetsWidgetState extends State<BetsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(24),
-        child: ListView.separated(
-          itemCount: bets.length,
-          itemBuilder: (context, index) {
-            return BetItemView(
-              bet: bets[index],
-              goals1Changed: (goals) => viewController.onGoalsTeam1Changed(index, goals),
-              goals2Changed: (goals) => viewController.onGoalsTeam2Changed(index, goals),
-            );
-          },
-          separatorBuilder: (context, index) => const SizedBox(
-            height: 16
-          ),
+    return Column(
+      children: [
+        const SizedBox(
+          height: 170,
+          child: SelectDateWidget(),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          viewController.saveBets();
-        },
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.save)
-      ),
+        Expanded(
+          child: Scaffold(
+            body: Container(
+              padding: const EdgeInsets.all(24),
+              color: Colors.white,
+              child: ListView.separated(
+                itemCount: bets.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return BetItemView(
+                    bet: bets[index],
+                    goals1Changed: (goals) => viewController.onGoalsTeam1Changed(index, goals),
+                    goals2Changed: (goals) => viewController.onGoalsTeam2Changed(index, goals),
+                  );
+                },
+                separatorBuilder: (context, index) => const SizedBox(
+                    height: 16
+                ),
+              ),
+            ),
+            floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  viewController.saveBets();
+                },
+                backgroundColor: Colors.blue,
+                child: const Icon(Icons.save)
+            ),
+          ),
+        )
+      ]
     );
   }
 

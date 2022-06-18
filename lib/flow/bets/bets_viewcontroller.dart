@@ -14,11 +14,11 @@ class BetsViewController {
   }
 
   void onGoalsTeam1Changed(int index, String goals) {
-    viewState.bets[index].team1.goals = goals;
+    viewState.bets[index].homeTeam.scoreBet = goals;
   }
 
   void onGoalsTeam2Changed(int index, String goals) {
-    viewState.bets[index].team2.goals = goals;
+    viewState.bets[index].awayTeam.scoreBet = goals;
   }
 
   void _fillBets() {
@@ -37,9 +37,9 @@ class BetsViewController {
   }
 
   void saveBets() {
-    viewState.bets.forEach((bet) {
-      print('goals team 1: ${bet.team1.goals}');
-      print('goals team 2: ${bet.team2.goals}');
-    });
+    for (var bet in viewState.bets) {
+      print('goals team 1: ${bet.homeTeam.scoreBet}');
+      print('goals team 2: ${bet.awayTeam.scoreBet}');
+    }
   }
 }

@@ -10,60 +10,108 @@ class BetItemView extends StatelessWidget {
   Function goals1Changed;
   Function goals2Changed;
 
-  TextEditingController goals1TextFieldController = TextEditingController();
-  TextEditingController goals2TextFieldController = TextEditingController();
+  TextEditingController homeScoreTextFieldController = TextEditingController();
+  TextEditingController awayScoreTextFieldController = TextEditingController();
 
   BetItemView({
     Key? key,
     required this.bet,
     required this.goals1Changed,
     required this.goals2Changed,
-  }) : super(key: key);
+  }) : super(key: key) {
+    homeScoreTextFieldController = TextEditingController(
+      text: bet.homeTeam.score()
+    );
+    awayScoreTextFieldController = TextEditingController(
+        text: bet.awayTeam.score()
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    const double margin = 16;
+    const double spaceBetweenTeams = 24;
+
+    return Center(
+      child: Column(
         children: [
-          SizedBox(
-            width: 50,
-            child: Image(
-              image: NetworkImage(bet.team1.flagUrl),
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-          SizedBox(
-              width: 50,
-              child: TextField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                textAlign: TextAlign.center,
-                controller: goals1TextFieldController,
-                onChanged: (goals) => goals1Changed(goals1TextFieldController.text),
+          Card(
+            elevation: 4,
+            color: const Color(0xFFF9F9F9),
+            child: Container(
+              padding: const EdgeInsets.only(left: 8, right: 8, top: 24, bottom: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                // Home team flag
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: margin, right: margin),
+                    child: SizedBox(
+                      width: 50,
+                      child: Image(
+                        image: NetworkImage(bet.homeTeam.flagUrl),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    )
+                  ),
+                  // Home team score
+                  Padding(
+                    padding: const EdgeInsets.only(left: margin, right: spaceBetweenTeams),
+                    child: SizedBox(
+                      width: 50,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        textAlign: TextAlign.center,
+                        controller: homeScoreTextFieldController,
+                        onChanged: (goals) => goals1Changed(homeScoreTextFieldController.text),
+                      )
+                    )
+                  ),
+                  // Away team score
+                  Padding(
+                    padding: const EdgeInsets.only(left: spaceBetweenTeams, right: margin),
+                    child: SizedBox(
+                      width: 50,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        textAlign: TextAlign.center,
+                        controller: awayScoreTextFieldController,
+                        onChanged: (goals) => goals2Changed(awayScoreTextFieldController.text),
+                      )
+                    )
+                  ),
+                  // Away team flag
+                  Padding(
+                    padding: const EdgeInsets.only(left: margin, right: margin),
+                    child: SizedBox(
+                      width: 50,
+                      child: Image(
+                        image: NetworkImage(bet.awayTeam.flagUrl),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    )
+                  )
+                ]
               )
+            )
           ),
-          SizedBox(
-              width: 50,
-              child: TextField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                textAlign: TextAlign.center,
-                controller: goals2TextFieldController,
-                onChanged: (goals) => goals2Changed(goals2TextFieldController.text),
-              )
-          ),
-          SizedBox(
-            width: 50,
-            child: Image(
-              image: NetworkImage(bet.team2.flagUrl),
-              fit: BoxFit.fitWidth,
+          // Score
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: Text(
+              bet.score.value,
+              style: TextStyle(
+                  color: bet.score.color
+              ),
             ),
-          ),
+          )
         ]
       )
     );
