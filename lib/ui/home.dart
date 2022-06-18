@@ -28,7 +28,7 @@ class HomeState extends State<Home> {
         appBar: AppBar(
           backgroundColor: Colors.indigo,
           elevation: 0,
-          title: const Text('Title'),
+          title: const Text('Bolixo'),
         ),
         body: pages[_selectedIndex],
         drawer: Menu(onTapCallback: (int index) {
