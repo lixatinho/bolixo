@@ -58,45 +58,45 @@ class BetItemView extends StatelessWidget {
                   // Home team score
                   Padding(
                     padding: const EdgeInsets.only(left: margin, right: spaceBetweenTeams),
-                    child: SizedBox(
-                      width: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        textAlign: TextAlign.center,
-                        controller: homeScoreTextFieldController,
-                        onChanged: (goals) => goals1Changed(homeScoreTextFieldController.text),
+                      child: SizedBox(
+                        width: 50,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          textAlign: TextAlign.center,
+                          controller: homeScoreTextFieldController,
+                          onChanged: (goals) => goals1Changed(homeScoreTextFieldController.text),
+                        )
                       )
-                    )
                   ),
                   // Away team score
                   Padding(
                     padding: const EdgeInsets.only(left: spaceBetweenTeams, right: margin),
-                    child: SizedBox(
-                      width: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        textAlign: TextAlign.center,
-                        controller: awayScoreTextFieldController,
-                        onChanged: (goals) => goals2Changed(awayScoreTextFieldController.text),
-                      )
+                      child: SizedBox(
+                        width: 50,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          textAlign: TextAlign.center,
+                          controller: awayScoreTextFieldController,
+                          onChanged: (goals) => goals2Changed(awayScoreTextFieldController.text),
+                        )
                     )
                   ),
                   // Away team flag
                   Padding(
                     padding: const EdgeInsets.only(left: margin, right: margin),
-                    child: SizedBox(
-                      width: 50,
-                      child: Image(
-                        image: NetworkImage(bet.awayTeam.flagUrl),
-                        fit: BoxFit.fitWidth,
-                      ),
-                    )
+                      child: SizedBox(
+                        width: 50,
+                        child: Image(
+                          image: NetworkImage(bet.awayTeam.flagUrl),
+                          fit: BoxFit.fitWidth,
+                        ),
+                      )
                   )
                 ]
               )

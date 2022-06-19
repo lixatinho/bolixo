@@ -1,12 +1,12 @@
 import 'package:bolixo/main.dart';
 
-import '../model/bet_model.dart';
+import '../model/BetsInDay.dart';
 import 'bet_api_mock.dart';
 
 abstract class BetApi {
 
   /// Exposed methods
-  Future<List<BetModel>> getUserBets();
+  Future<List<BetsInDay>> getUserBets();
 
 
   /// Injection turnaround

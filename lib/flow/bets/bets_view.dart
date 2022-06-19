@@ -3,7 +3,7 @@ import 'package:bolixo/flow/bets/bet_view_content.dart';
 import 'package:bolixo/flow/bets/bets_viewcontroller.dart';
 import 'package:flutter/material.dart';
 
-import 'SelectDateWidget.dart';
+import '../../ui/select_date_widget.dart';
 
 class BetsWidget extends StatefulWidget {
 
@@ -15,7 +15,8 @@ class BetsWidget extends StatefulWidget {
 
 class BetsWidgetState extends State<BetsWidget> {
 
-  List<BetViewContent> bets = [];
+  List<BetsInDayViewContent> betsByDay = [];
+  int dateIndex = 0;
   BetsViewController viewController = BetsViewController();
 
   @override
@@ -28,9 +29,12 @@ class BetsWidgetState extends State<BetsWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(
+        SizedBox(
           height: 170,
-          child: SelectDateWidget(),
+          child: SelectDateWidget(
+              dates: betsByDay.map((betGroup) => DateViewContent(date: betGroup.date)).toList(),
+              onTapCallback: (int index) => viewController.onDateChanged(index),
+          ),
         ),
         Expanded(
           child: Scaffold(
@@ -38,11 +42,11 @@ class BetsWidgetState extends State<BetsWidget> {
               padding: const EdgeInsets.all(24),
               color: Colors.white,
               child: ListView.separated(
-                itemCount: bets.length,
+                itemCount: betsByDay.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return BetItemView(
-                    bet: bets[index],
+                    bet: betsByDay[dateIndex].betList[index],
                     goals1Changed: (goals) => viewController.onGoalsTeam1Changed(index, goals),
                     goals2Changed: (goals) => viewController.onGoalsTeam2Changed(index, goals),
                   );
@@ -65,10 +69,17 @@ class BetsWidgetState extends State<BetsWidget> {
     );
   }
 
-  void update(List<BetViewContent> newBets) {
+  void update(List<BetsInDayViewContent> newBets) {
     setState(()
     {
-      bets = newBets;
+      betsByDay = newBets;
+    });
+  }
+
+  void updateDate(int newDateIndex) {
+    setState(()
+    {
+      dateIndex = newDateIndex;
     });
   }
 }
