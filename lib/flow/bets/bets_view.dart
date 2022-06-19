@@ -32,8 +32,8 @@ class BetsWidgetState extends State<BetsWidget> {
         SizedBox(
           height: 170,
           child: SelectDateWidget(
-              dates: betsByDay.map((betGroup) => DateViewContent(date: betGroup.date)).toList(),
-              onTapCallback: (int index) => viewController.onDateChanged(index),
+            viewContent: DateSelectionViewContent.from(betsByDay.map((e) => e.date).toList(), dateIndex),
+            onTapCallback: (int index) => viewController.onDateChanged(index),
           ),
         ),
         Expanded(
@@ -47,8 +47,8 @@ class BetsWidgetState extends State<BetsWidget> {
                 itemBuilder: (context, index) {
                   return BetItemView(
                     bet: betsByDay[dateIndex].betList[index],
-                    goals1Changed: (goals) => viewController.onGoalsTeam1Changed(index, goals),
-                    goals2Changed: (goals) => viewController.onGoalsTeam2Changed(index, goals),
+                    homeGoalsChanged: (goals) => viewController.onGoalsTeam1Changed(index, goals),
+                    awayGoalsChanged: (goals) => viewController.onGoalsTeam2Changed(index, goals),
                   );
                 },
                 separatorBuilder: (context, index) => const SizedBox(

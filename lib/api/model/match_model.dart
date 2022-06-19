@@ -4,7 +4,7 @@ class MatchModel {
   int? id;
   TeamModel? home;
   TeamModel? away;
-  String? matchDate;
+  late DateTime matchDate;
   int? homeScore;
   int? awayScore;
   int? type;
@@ -13,7 +13,7 @@ class MatchModel {
     this.id,
     this.away,
     this.home,
-    this.matchDate,
+    required this.matchDate,
     this.awayScore,
     this.homeScore,
     this.type
@@ -23,7 +23,7 @@ class MatchModel {
     id = json['id'];
     home = json['home'] != null ? TeamModel.fromJson(json['home']) : null;
     away = json['away'] != null ? TeamModel.fromJson(json['away']) : null;
-    matchDate = json['matchDate'];
+    matchDate = DateTime.parse(json['matchDate']);
     homeScore = json['homeScore'];
     awayScore = json['awayScore'];
     type = json['type'];

@@ -12,10 +12,11 @@ class MockBetApi implements BetApi {
   @override
   Future<List<BetsInDay>> getUserBets() {
     var random = Random();
+    var today = DateTime.now().toUtc();
     return Future.value(
       List.generate(10, (index) =>
         BetsInDay(
-            date: DateTime(2022, 7, index + 1),
+            date: today.add(Duration(days: index - 5)),
             betList: List.generate(10, (index) =>
               BetModel(
                 id: index,
@@ -31,7 +32,7 @@ class MockBetApi implements BetApi {
                     name: "Team ${index * 2 + 1}",
                     flagUrl: "https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg"
                   ),
-                  matchDate: "",
+                  matchDate: today.add(Duration(days: index - 5)),
                   homeScore: random.nextInt(5),
                   awayScore: random.nextInt(5)
                 ),

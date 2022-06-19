@@ -4,12 +4,12 @@ import 'package:intl/intl.dart';
 
 class SelectDateWidget extends StatelessWidget {
 
-  List<DateViewContent> dates;
-  Function onTapCallback;
+  final DateSelectionViewContent viewContent;
+  final Function onTapCallback;
 
-  SelectDateWidget({
+  const SelectDateWidget({
     super.key,
-    required this.dates,
+    required this.viewContent,
     required this.onTapCallback,
   });
 
@@ -20,12 +20,12 @@ class SelectDateWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.only(left: 16, top: 24, bottom: 24),
-              child: Text('6 July, 2022',
-                style: TextStyle(
+              padding: const EdgeInsets.only(left: 16, top: 24, bottom: 24),
+              child: Text(viewContent.selectedDate().fullDate,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 22,
                 ),
@@ -37,11 +37,12 @@ class SelectDateWidget extends StatelessWidget {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder:  (context, index) {
+                final date = viewContent.dates[index];
                 return Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)
                   ),
-                  color: const Color(0xFF5670C7),
+                  color: date.backgroundColor,
                   child:
                     InkWell(
                       onTap: () {
@@ -55,19 +56,19 @@ class SelectDateWidget extends StatelessWidget {
                           children: [
                             Padding(
                                 padding: const EdgeInsets.only(bottom: 4),
-                                child: Text(dates[index].monthDay(),
-                                  style: const TextStyle(
+                                child: Text(date.monthDay,
+                                  style: TextStyle(
                                       fontSize: 22,
-                                      color: Colors.white
+                                      color: date.fontColor
                                   ),
                                 )
                             ),
                             Padding(
                                 padding: const EdgeInsets.only(bottom: 0),
-                                child: Text(dates[index].weekDay(),
-                                  style: const TextStyle(
+                                child: Text(date.weekDay,
+                                  style: TextStyle(
                                       fontSize: 10,
-                                      color: Colors.white
+                                      color: date.fontColor
                                   ),
                                 )
                             )
@@ -80,7 +81,7 @@ class SelectDateWidget extends StatelessWidget {
               separatorBuilder:(context, index) => const SizedBox(
                   width: 6
               ),
-              itemCount: dates.length
+              itemCount: viewContent.dates.length
             ),
           )
         ]
@@ -89,18 +90,52 @@ class SelectDateWidget extends StatelessWidget {
   }
 }
 
-class DateViewContent {
-  DateTime date;
+class DateSelectionViewContent {
+  List<DateViewContent> dates;
+  int selectedIndex;
 
-  DateViewContent({
-    required this.date
+  DateSelectionViewContent({
+    required this.dates,
+    required this.selectedIndex,
   });
 
-  String weekDay() {
-    return  DateFormat('E').format(date);
+  static DateSelectionViewContent from(List<DateTime> dates, int selectedIndex) {
+    final weekDayFormat = DateFormat('E');
+    final monthDayFormat = DateFormat('d');
+    final fullDateFormat = DateFormat('d MMMM, y');
+
+    return DateSelectionViewContent(
+        dates: dates.asMap().map((i, date) => MapEntry(i, DateViewContent(
+          date: date,
+          backgroundColor: i == selectedIndex ? Colors.white : const Color(0xFF5670C7),
+          fontColor: i == selectedIndex ? Colors.black87 : Colors.white,
+          weekDay: weekDayFormat.format(date),
+          monthDay: monthDayFormat.format(date),
+          fullDate: fullDateFormat.format(date)
+        ))).values.toList().cast<DateViewContent>(),
+        selectedIndex: selectedIndex
+    );
   }
 
-  String monthDay() {
-    return date.day.toString();
+  DateViewContent selectedDate() {
+    return dates[selectedIndex];
   }
+}
+
+class DateViewContent {
+  DateTime date;
+  Color backgroundColor;
+  Color fontColor;
+  String weekDay;
+  String monthDay;
+  String fullDate;
+
+  DateViewContent({
+    required this.date,
+    required this.backgroundColor,
+    required this.fontColor,
+    required this.weekDay,
+    required this.monthDay,
+    required this.fullDate,
+  });
 }

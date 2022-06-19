@@ -30,26 +30,29 @@ class BetViewContent {
   TeamViewContent homeTeam;
   TeamViewContent awayTeam;
   ScoreViewContent score;
+  bool isEnabled;
 
   BetViewContent({
     required this.homeTeam,
     required this.awayTeam,
-    required this.score
+    required this.score,
+    required this.isEnabled,
   });
 
   static fromApiModel(BetModel betApiModel) {
     return BetViewContent(
         homeTeam: TeamViewContent.fromApiModel(
-            betApiModel.match?.home,
+            betApiModel.match.home,
             betApiModel.homeScoreBet,
-            betApiModel.match?.homeScore,
+            betApiModel.match.homeScore,
         ),
         awayTeam: TeamViewContent.fromApiModel(
-            betApiModel.match?.away,
+            betApiModel.match.away,
             betApiModel.awayScoreBet,
-            betApiModel.match?.awayScore
+            betApiModel.match.awayScore
         ),
-        score: ScoreViewContent.fromApiModel(betApiModel.score)
+        score: ScoreViewContent.fromApiModel(betApiModel.score),
+        isEnabled: betApiModel.match.matchDate.isBefore(DateTime.now().toUtc())
     );
   }
 }
