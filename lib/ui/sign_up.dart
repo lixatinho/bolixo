@@ -1,15 +1,15 @@
-import 'package:bolixo/api/services/auth.dart';
+import 'package:bolixo/api/services/validateLogin.dart';
 import 'package:bolixo/ui/home.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-
-import '../api/services/provider_widget.dart';
 
 final primaryCollor = const Color(0xFF75A2EA);
 
 // type login
 enum AuthFormType { signIn, sinUp }
+
+int? uidC;
+User? userC;
 
 class SignUp extends StatefulWidget {
   final AuthFormType authFormType;
@@ -26,7 +26,7 @@ class _SignUpState extends State<SignUp> {
   _SignUpState({required this.authFormType});
 
   final formKey = GlobalKey<FormState>();
-  String _email = '', _password = '', _name = '', _error = '';
+  String? _email, _password, _name, _error;
 
   InputDecoration buildSignUpDecoration(String hint) {
     return InputDecoration(
@@ -56,47 +56,40 @@ class _SignUpState extends State<SignUp> {
   void submit() async {
     print("submt on");
     print('form------>$_email, $_name, $_password');
-    if (validate()) {
+    if (validate() && (authFormType == AuthFormType.sinUp)) {
       print('validação ok');
-      try {
-        print('tryt');
-        // print(FirebaseAuth.instance.currentUser.uid);
-        final auth = Provider.of(context).auth;
-        // final auth = Provider.of<Auth>(context, listen: false);
-        print('dpois do auth');
-        if (AuthFormType == AuthFormType.signIn) {
-          print('singin errado');
-          String uid = await auth.signInWithEmailAndPassword(_email, _password);
-          print("Entrou krai ID $uid");
-        } else {
-          String uid = await auth.createUserWithEmailAndPassword(
-              _email, _password, _name);
-          print("criando o filhote $uid");
-          // Todo fazer navegação por url
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => const Home(title: 'bolão lixão')));
-        }
-      } catch (e) {
-        print(e);
-        setState(() {
-          _error = e.toString();
-        });
-      }
+      uidC = AuthService()
+          .createUserWithEmailAndPassword(_name!, _email!, _password!);
+      // teste
+      var user = User(_name, _email, _password);
+      user.uid = uidC;
+      user.login = true;
+      userC = user;
+      print("teste user ${user.uid}");
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const Home(title: 'bolão lixão')));
+    } else if (validate()) {
+      User? user = AuthService().validateLogin(_email!, _password!);
+      userC = user;
+      userC?.login = true;
+      print('usus');
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const Home(title: 'bolão lixão')));
     }
   }
 
   List<Widget> buildButtons() {
     String _switchButtonText, _newFormState, _submitButtonText;
     _submitButtonText = "Logar";
-    if (authFormType == AuthFormType.signIn) {
-      _switchButtonText = "Criar Conta";
-      _newFormState = "signUp";
-      _submitButtonText = "Criar";
+    if (authFormType == AuthFormType.sinUp) {
+      _switchButtonText = "Voltar ao login";
+      _newFormState = "signIn";
+      _submitButtonText = "Entrar";
       print('singin');
     } else {
-      _switchButtonText = "Logar ...";
-      _newFormState = "signIn";
-      _submitButtonText = "Login";
+      _switchButtonText = "Criar uma conta";
+      _newFormState = "signUp";
+      _submitButtonText = "Logar";
     }
     return [
       Container(
@@ -117,14 +110,22 @@ class _SignUpState extends State<SignUp> {
           ),
           onPressed: submit,
         ),
-      )
+      ),
+      TextButton(
+          onPressed: () {
+            changeUpInButton(_newFormState);
+          },
+          child: Text(
+            _switchButtonText,
+            style: TextStyle(color: Colors.redAccent),
+          ))
     ];
   }
 
   List<Widget> buildInputs() {
     List<Widget> textFields = [];
 
-    if (authFormType == AuthFormType.signIn) {
+    if (authFormType == AuthFormType.sinUp) {
       textFields.add(TextFormField(
         keyboardType: TextInputType.name,
         onSaved: (value) => _name = value!,
@@ -137,7 +138,6 @@ class _SignUpState extends State<SignUp> {
     }
 
     textFields.add(TextFormField(
-      // validator: EmailValidator, validar email
       keyboardType: TextInputType.emailAddress,
       onSaved: (value) => _email = value!,
       validator: EmailValidator.validate,
@@ -160,9 +160,9 @@ class _SignUpState extends State<SignUp> {
   AutoSizeText buildHeaderText() {
     String _headerText;
     if (authFormType == AuthFormType.signIn) {
-      _headerText = "Criar Conta ";
+      _headerText = "Entrar ";
     } else {
-      _headerText = "Criar";
+      _headerText = "Criar Conta";
     }
     return AutoSizeText(
       _headerText,
@@ -173,6 +173,18 @@ class _SignUpState extends State<SignUp> {
         color: Colors.white,
       ),
     );
+  }
+
+  void changeUpInButton(String? formSign) {
+    if (formSign == "signUp") {
+      setState(() {
+        authFormType = AuthFormType.sinUp;
+      });
+    } else {
+      setState(() {
+        authFormType = AuthFormType.signIn;
+      });
+    }
   }
 
   @override
@@ -204,18 +216,4 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   final _width = MediaQuery.of(context).size.width;
-  //   final _height = MediaQuery.of(context).size.height;
-  //   return Scaffold(
-  //     key: formKey,
-  //     body: Form(
-  //         child: Column(
-  //       children: [
-  //         buildHeaderText(),
-  //       ],
-  //     )),
-  //   );
-  // }
 }
