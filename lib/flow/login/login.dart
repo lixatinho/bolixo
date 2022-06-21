@@ -1,4 +1,4 @@
-import 'package:bolixo/api/model/user.dart';
+import 'package:bolixo/api/model/user_model.dart';
 import 'package:bolixo/ui/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

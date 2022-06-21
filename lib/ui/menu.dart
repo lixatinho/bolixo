@@ -5,8 +5,10 @@ import 'package:bolixo/ui/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:bolixo/api/services/validateLogin.dart';
 
+import '../flow/bets/bets_view.dart';
+
 class Menu extends StatelessWidget {
-  static const int palpites = 1;
+  static const int bets = 1;
   static const ranking = 2;
   Function onTapCallback;
 
@@ -57,7 +59,7 @@ class Menu extends StatelessWidget {
         leading: const Icon(Icons.edit),
         title: const Text('Palpites'),
         onTap: () {
-          onTapCallback(palpites);
+          onTapCallback(bets);
           Navigator.pop(context);
         },
       ),
