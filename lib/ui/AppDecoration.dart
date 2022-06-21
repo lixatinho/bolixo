@@ -10,6 +10,6 @@ class AppDecoration {
     ),
     filled: true,
     fillColor: Colors.white,
-    counter: Container(),
+    counter: Container()
   );
 }

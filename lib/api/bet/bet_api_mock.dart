@@ -14,25 +14,25 @@ class MockBetApi implements BetApi {
     var random = Random();
     var today = DateTime.now().toUtc();
     return Future.value(
-      List.generate(10, (outerIndex) =>
+      List.generate(10, (index) =>
         BetsInDay(
-            date: today.add(Duration(days: outerIndex - 5)),
-            betList: List.generate(10, (innerIndex) =>
+            date: today.add(Duration(days: index - 5)),
+            betList: List.generate(10, (index) =>
               BetModel(
-                id: innerIndex,
+                id: index,
                 match: MatchModel(
-                  id: innerIndex,
+                  id: index,
                   home: TeamModel(
-                    id: innerIndex * 2,
-                    name: "Team ${innerIndex * 2}",
+                    id: index * 2,
+                    name: "Team ${index * 2}",
                     flagUrl: "https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg"
                   ),
                   away: TeamModel(
-                    id: innerIndex * 2 + 1,
-                    name: "Team ${innerIndex * 2 + 1}",
+                    id: index * 2 + 1,
+                    name: "Team ${index * 2 + 1}",
                     flagUrl: "https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg"
                   ),
-                  matchDate: today.add(Duration(days: outerIndex - 5)),
+                  matchDate: today.add(Duration(days: index - 5)),
                   homeScore: random.nextInt(5),
                   awayScore: random.nextInt(5)
                 ),

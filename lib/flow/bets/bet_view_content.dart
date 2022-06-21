@@ -52,7 +52,7 @@ class BetViewContent {
             betApiModel.match.awayScore
         ),
         score: ScoreViewContent.fromApiModel(betApiModel.score),
-        isEnabled: betApiModel.match.matchDate.isAfter(DateTime.now().toUtc())
+        isEnabled: betApiModel.match.matchDate.isBefore(DateTime.now().toUtc())
     );
   }
 }
