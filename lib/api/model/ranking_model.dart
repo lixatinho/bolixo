@@ -1,5 +1,3 @@
-
-
 import 'package:bolixo/api/model/user_model.dart';
 
 class RankingModel {

@@ -38,6 +38,8 @@ dependencies:
   intl: ^0.16.0
 
   dio: ^3.0.3
+  firebase_auth: ^0.20.1
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
