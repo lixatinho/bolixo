@@ -42,7 +42,7 @@ class ApiService {
 
   Future<List<RankingModel>> getRanking() async {
     List<RankingModel> ranking = [];
-    String data = '[ {"idUser": 1, "name": "Andre", "score": 10, "flies": 1},      {"idUser": 2, "name": "Caldas", "score": 6, "flies": 0},      {"idUser": 3, "name": "User", "score": 5, "flies": 0},      {"idUser": 4, "name": "Silas", "score": 1, "flies": 0},      {"idUser": 5, "name": "PA", "score": 0, "flies": 0}    ]';
+    String data = '[    {        "user": {            "id": 1,            "name": "Andre"        },        "score": 10,        "flies": 1,        "rightResults": 0    },    {        "user": {            "id": 2,            "name": "Caldas"        },        "score": 6,        "flies": 0    },    {        "user": {            "id": 3,            "name": "User"        },        "score": 5,        "flies": 0    },    {        "user": {            "id": 4,            "name": "Silas"        },        "score": 1,        "flies": 0    },    {        "user": {            "id": 5,            "name": "PA"        },        "score": 0,        "flies": 0    }]';
 
     try {
       // response = await dio.get(ApiConstants.baseUrl + ApiConstants.rankingEndpoint);

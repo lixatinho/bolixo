@@ -31,7 +31,7 @@ class Ranking extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: Text('${index + 1}'),
-                        title: Text('${rankeds[index].user}'),
+                        title: Text('${rankeds[index].user.name}'),
                         trailing: Text('${rankeds[index].score}'),
                       );
                     });

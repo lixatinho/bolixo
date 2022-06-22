@@ -157,7 +157,6 @@ class BetItemView extends StatelessWidget {
     Function callback,
     BetViewContent bet
   ) {
-    print(bet.isEnabled);
     return TextField(
       keyboardType: TextInputType.number,
       decoration: AppDecoration.inputDecoration,
