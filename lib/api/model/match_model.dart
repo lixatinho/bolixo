@@ -22,8 +22,12 @@ class MatchModel {
 
   MatchModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    home = json['home'] != null ? TeamModel.fromJson(json['home']) : null;
-    away = json['away'] != null ? TeamModel.fromJson(json['away']) : null;
+    if(json['home'] != null) {
+      home = json['home'] != null ? TeamModel.fromJson(json['home']) : null;
+    }
+    if(json['away'] != null) {
+      away = json['away'] != null ? TeamModel.fromJson(json['away']) : null;
+    }
     matchDate = DateTime.parse(json['matchDate']);
     homeScore = json['homeScore'];
     awayScore = json['awayScore'];

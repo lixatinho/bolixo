@@ -42,7 +42,7 @@ class BetsWidgetState extends State<BetsWidget> {
               padding: const EdgeInsets.all(24),
               color: Colors.white,
               child: ListView.separated(
-                itemCount: betsByDay.length,
+                itemCount: betsByDay[dateIndex].betList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return BetItemView(

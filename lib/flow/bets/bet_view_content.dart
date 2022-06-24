@@ -42,17 +42,17 @@ class BetViewContent {
   static fromApiModel(BetModel betApiModel) {
     return BetViewContent(
         homeTeam: TeamViewContent.fromApiModel(
-            betApiModel.match.home,
+            betApiModel.match?.home,
             betApiModel.homeScoreBet,
-            betApiModel.match.homeScore,
+            betApiModel.match?.homeScore,
         ),
         awayTeam: TeamViewContent.fromApiModel(
-            betApiModel.match.away,
+            betApiModel.match?.away,
             betApiModel.awayScoreBet,
-            betApiModel.match.awayScore
+            betApiModel.match?.awayScore
         ),
         score: ScoreViewContent.fromApiModel(betApiModel.score),
-        isEnabled: betApiModel.match.matchDate.isBefore(DateTime.now().toUtc())
+        isEnabled: betApiModel.match?.matchDate.isAfter(DateTime.now().toUtc()) == true
     );
   }
 }
