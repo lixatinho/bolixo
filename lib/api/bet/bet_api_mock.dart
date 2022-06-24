@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:bolixo/api/model/BetsInDay.dart';
+import 'package:bolixo/api/model/bets_in_day_model.dart';
 import 'package:bolixo/api/model/match_model.dart';
 import 'package:bolixo/api/model/team_model.dart';
 
@@ -10,12 +10,12 @@ import 'bet_api_interface.dart';
 class MockBetApi implements BetApi {
 
   @override
-  Future<List<BetsInDay>> getUserBets() {
+  Future<List<BetsInDayModel>> getUserBets() {
     var random = Random();
     var today = DateTime.now().toUtc();
     return Future.value(
       List.generate(10, (index) =>
-        BetsInDay(
+        BetsInDayModel(
             date: today.add(Duration(days: index - 5)),
             betList: List.generate(10, (index) =>
               BetModel(

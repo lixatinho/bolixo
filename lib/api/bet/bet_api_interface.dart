@@ -1,12 +1,13 @@
+import 'package:bolixo/api/bet/bet_api.dart';
 import 'package:bolixo/main.dart';
 
-import '../model/BetsInDay.dart';
+import '../model/bets_in_day_model.dart';
 import 'bet_api_mock.dart';
 
 abstract class BetApi {
 
   /// Exposed methods
-  Future<List<BetsInDay>> getUserBets();
+  Future<List<BetsInDayModel>> getUserBets();
 
 
   /// Injection turnaround
@@ -14,8 +15,12 @@ abstract class BetApi {
   static BetApi getInstance() {
     if(betApi == null) {
       switch (MyApp.flavor) {
-        default:
-          betApi = MockBetApi();
+        case Flavor.mock:
+          return MockBetApi();
+        case Flavor.staging:
+          return BetClient(baseUrl: 'https://lixolao.herokuapp.com');
+        case Flavor.production:
+          return MockBetApi();
       }
     }
     return betApi!;

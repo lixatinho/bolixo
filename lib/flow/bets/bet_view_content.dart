@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:bolixo/api/model/BetsInDay.dart';
+import 'package:bolixo/api/model/bets_in_day_model.dart';
 import 'package:bolixo/api/model/bet_model.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +15,7 @@ class BetsInDayViewContent {
     required this.betList
   });
 
-  static fromApiModel(BetsInDay betsInDayApiModel) {
+  static fromApiModel(BetsInDayModel betsInDayApiModel) {
     return BetsInDayViewContent(
         date: betsInDayApiModel.date,
         betList: betsInDayApiModel.betList
@@ -73,7 +73,7 @@ class TeamViewContent {
   static fromApiModel(TeamModel? teamApiModel, int? bet, int? actualScore) {
     return TeamViewContent(
         name: teamApiModel?.name ?? "",
-        flagUrl: teamApiModel?.flagUrl ?? "",
+        flagUrl: "assets/${teamApiModel?.flagUrl ?? ""}",
         scoreBet: bet?.toString() ?? "",
         actualScore: actualScore?.toString() ?? ""
     );

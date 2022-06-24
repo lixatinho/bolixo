@@ -1,4 +1,5 @@
 import 'package:bolixo/api/model/team_model.dart';
+import 'package:intl/intl.dart';
 
 class MatchModel {
   int? id;
@@ -38,7 +39,7 @@ class MatchModel {
     if (away != null) {
       data['away'] = away!.toJson();
     }
-    data['matchDate'] = matchDate;
+    data['matchDate'] = DateFormat().format(matchDate);
     data['homeScore'] = homeScore;
     data['awayScore'] = awayScore;
     data['type'] = type;
