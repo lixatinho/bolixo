@@ -25,12 +25,12 @@ class MockBetApi implements BetApi {
                   home: TeamModel(
                     id: index * 2,
                     name: "Team ${index * 2}",
-                    flagUrl: "https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg"
+                    flagUrl: "https://lixolao-flags.s3.amazonaws.com/BRA.webp"
                   ),
                   away: TeamModel(
                     id: index * 2 + 1,
                     name: "Team ${index * 2 + 1}",
-                    flagUrl: "https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg"
+                    flagUrl: "https://lixolao-flags.s3.amazonaws.com/ARG.webp"
                   ),
                   matchDate: today.add(Duration(days: index - 5)),
                   homeScore: random.nextInt(5),

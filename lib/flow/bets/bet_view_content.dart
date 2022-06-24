@@ -73,7 +73,7 @@ class TeamViewContent {
   static fromApiModel(TeamModel? teamApiModel, int? bet, int? actualScore) {
     return TeamViewContent(
         name: teamApiModel?.name ?? "",
-        flagUrl: "assets/${teamApiModel?.flagUrl ?? ""}",
+        flagUrl: teamApiModel?.flagUrl ?? "",
         scoreBet: bet?.toString() ?? "",
         actualScore: actualScore?.toString() ?? ""
     );

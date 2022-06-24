@@ -51,7 +51,7 @@ class BetItemView extends StatelessWidget {
                       child: SizedBox(
                         width: 50,
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(bet.awayTeam.flagUrl),
+                          backgroundImage: NetworkImage(bet.homeTeam.flagUrl),
                         ),
                       )
                   ),
