@@ -18,8 +18,8 @@ class BetModel {
   BetModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     match = MatchModel.fromJson(json['match']);
-    score = json['homeScoreBet'];
-    score = json['awayScoreBet'];
+    homeScoreBet = json['homeScoreBet'];
+    awayScoreBet = json['awayScoreBet'];
     score = json['score'];
   }
 
