@@ -17,6 +17,7 @@ class BetsWidgetState extends State<BetsWidget> {
 
   List<BetsInDayViewContent> betsByDay = [];
   int dateIndex = 0;
+  bool isLoading = true;
   BetsViewController viewController = BetsViewController();
 
   @override
@@ -27,52 +28,68 @@ class BetsWidgetState extends State<BetsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 170,
-          child: SelectDateWidget(
-            viewContent: DateSelectionViewContent.from(betsByDay.map((e) => e.date).toList(), dateIndex),
-            onTapCallback: (int index) => viewController.onDateChanged(index),
+    if(isLoading) {
+      return Container(
+        child: const Center(
+          child: CircularProgressIndicator(
+
           ),
         ),
-        Expanded(
-          child: Scaffold(
-            body: Container(
-              padding: const EdgeInsets.all(24),
-              color: Colors.white,
-              child: ListView.separated(
-                itemCount: betsByDay[dateIndex].betList.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return BetItemView(
-                    bet: betsByDay[dateIndex].betList[index],
-                    homeGoalsChanged: (goals) => viewController.onGoalsTeam1Changed(index, goals),
-                    awayGoalsChanged: (goals) => viewController.onGoalsTeam2Changed(index, goals),
-                  );
-                },
-                separatorBuilder: (context, index) => const SizedBox(
-                    height: 16
-                ),
+      );
+    } else {
+      return Column(
+          children: [
+            SizedBox(
+              height: 170,
+              child: SelectDateWidget(
+                viewContent: DateSelectionViewContent.from(
+                    betsByDay.map((e) => e.date).toList(), dateIndex),
+                onTapCallback: (int index) =>
+                    viewController.onDateChanged(index),
               ),
             ),
-            floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  viewController.saveBets();
-                },
-                backgroundColor: Colors.blue,
-                child: const Icon(Icons.save)
-            ),
-          ),
-        )
-      ]
-    );
+            Expanded(
+              child: Scaffold(
+                body: Container(
+                  padding: const EdgeInsets.all(24),
+                  color: Colors.white,
+                  child: ListView.separated(
+                    itemCount: betsByDay[dateIndex].betList.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return BetItemView(
+                        bet: betsByDay[dateIndex].betList[index],
+                        homeGoalsChanged: (goals) =>
+                            viewController.onGoalsTeam1Changed(index, goals),
+                        awayGoalsChanged: (goals) =>
+                            viewController.onGoalsTeam2Changed(index, goals),
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                    const SizedBox(
+                        height: 16
+                    ),
+                  ),
+                ),
+                floatingActionButton: FloatingActionButton(
+                    onPressed: () {
+                      viewController.saveBets();
+                    },
+                    backgroundColor: Colors.blue,
+                    child: const Icon(Icons.save)
+                ),
+              ),
+            )
+          ]
+      );
+    }
   }
 
   void update(List<BetsInDayViewContent> newBets) {
     setState(()
     {
       betsByDay = newBets;
+      isLoading = false;
     });
   }
 
@@ -80,6 +97,13 @@ class BetsWidgetState extends State<BetsWidget> {
     setState(()
     {
       dateIndex = newDateIndex;
+    });
+  }
+
+  void updateIsLoading(bool newIsLoadingValue) {
+    setState(()
+    {
+      isLoading = newIsLoadingValue;
     });
   }
 }
