@@ -27,12 +27,14 @@ class BetsInDayViewContent {
 }
 
 class BetViewContent {
+  BetModel model;
   TeamViewContent homeTeam;
   TeamViewContent awayTeam;
   ScoreViewContent score;
   bool isEnabled;
 
   BetViewContent({
+    required this.model,
     required this.homeTeam,
     required this.awayTeam,
     required this.score,
@@ -41,6 +43,7 @@ class BetViewContent {
 
   static fromApiModel(BetModel betApiModel) {
     return BetViewContent(
+        model: betApiModel,
         homeTeam: TeamViewContent.fromApiModel(
             betApiModel.match?.home,
             betApiModel.homeScoreBet,
@@ -53,6 +56,16 @@ class BetViewContent {
         ),
         score: ScoreViewContent.fromApiModel(betApiModel.score),
         isEnabled: betApiModel.match?.matchDate.isAfter(DateTime.now().toUtc()) == true
+    );
+  }
+
+  toApiModel() {
+    return BetModel(
+      id: model.id,
+      match: model.match,
+      homeScoreBet: int.tryParse(homeTeam.scoreBet),
+      awayScoreBet: int.tryParse(awayTeam.scoreBet),
+      score: model.score
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:bolixo/api/bet/bet_api_interface.dart';
+import 'package:bolixo/api/model/bet_model.dart';
 import 'package:bolixo/flow/bets/bet_view_content.dart';
 
 import 'bets_view.dart';
@@ -41,9 +42,19 @@ class BetsViewController {
   }
 
   void saveBets() {
-    for (var bet in viewState.betsByDay[viewState.dateIndex].betList) {
-      print('goals team 1: ${bet.homeTeam.scoreBet}');
-      print('goals team 2: ${bet.awayTeam.scoreBet}');
-    }
+    List<BetModel> betList = viewState.betsByDay
+        .expand((betsByDay) => betsByDay.betList.map((bet) => bet.toApiModel()))
+        .toList()
+        .cast();
+    viewState.updateIsLoading(true);
+    api.saveUserBets(betList)
+      .then((empty)
+        {
+          viewState.updateIsLoading(false);
+        },
+        onError: (error) {
+          print(error);
+        }
+      );
   }
 }

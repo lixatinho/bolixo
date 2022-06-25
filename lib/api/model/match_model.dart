@@ -10,6 +10,8 @@ class MatchModel {
   int? awayScore;
   int? type;
 
+  var dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+
   MatchModel({
     this.id,
     this.away,
@@ -28,7 +30,7 @@ class MatchModel {
     if(json['away'] != null) {
       away = json['away'] != null ? TeamModel.fromJson(json['away']) : null;
     }
-    matchDate = DateTime.parse(json['matchDate']);
+    matchDate = dateFormat.parse(json['matchDate']);
     homeScore = json['homeScore'];
     awayScore = json['awayScore'];
     type = json['type'];
@@ -43,7 +45,7 @@ class MatchModel {
     if (away != null) {
       data['away'] = away!.toJson();
     }
-    data['matchDate'] = DateFormat().format(matchDate);
+    data['matchDate'] = dateFormat.format(matchDate);
     data['homeScore'] = homeScore;
     data['awayScore'] = awayScore;
     data['type'] = type;

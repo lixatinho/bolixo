@@ -1,6 +1,7 @@
 import 'package:bolixo/api/bet/bet_api.dart';
 import 'package:bolixo/main.dart';
 
+import '../model/bet_model.dart';
 import '../model/bets_in_day_model.dart';
 import 'bet_api_mock.dart';
 
@@ -8,6 +9,7 @@ abstract class BetApi {
 
   /// Exposed methods
   Future<List<BetsInDayModel>> getUserBets();
+  Future saveUserBets(List<BetModel> betList);
 
 
   /// Injection turnaround
