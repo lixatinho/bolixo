@@ -1,5 +1,6 @@
 import 'package:bolixo/ui/home.dart';
 import 'package:flutter/material.dart';
+import 'package:bolixo/ui/sign_up.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
       ),
       // home: const Home(title: appTitle)
-      home: const Home(title: appTitle),
+      home: SignUp(authFormType: AuthFormType.signIn),
     );
   }
 }
