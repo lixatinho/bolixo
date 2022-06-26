@@ -10,6 +10,11 @@ import 'bet_api_interface.dart';
 class MockBetApi implements BetApi {
 
   @override
+  Future initialize() {
+    return Future.value();
+  }
+
+  @override
   Future<List<BetsInDayModel>> getUserBets() {
     var random = Random();
     var today = DateTime.now().toUtc();

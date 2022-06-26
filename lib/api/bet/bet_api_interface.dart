@@ -8,6 +8,7 @@ import 'bet_api_mock.dart';
 abstract class BetApi {
 
   /// Exposed methods
+  Future initialize();
   Future<List<BetsInDayModel>> getUserBets();
   Future saveUserBets(List<BetModel> betList);
 
