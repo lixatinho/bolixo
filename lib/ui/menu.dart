@@ -1,7 +1,7 @@
 import 'dart:html';
 import 'dart:js';
 
-import 'package:bolixo/ui/sign_up.dart';
+import 'package:bolixo/flow/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:bolixo/api/services/validateLogin.dart';
 
