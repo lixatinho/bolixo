@@ -1,28 +1,37 @@
+import 'package:bolixo/api/model/auth_response.dart';
 import 'package:bolixo/api/model/user_model.dart';
+import 'package:bolixo/service/AuthRepository.dart';
 
 import '../api/auth/auth_api.dart';
 
 class AuthService {
 
-  AuthApi api = AuthApi.getInstance();
+  late AuthApi api;
+  late AuthRepository repository;
 
-  bool isLoggedIn() {
-    return false;
+  AuthService._create() {
+    api = AuthApi.getInstance();
   }
 
-  Future<bool> login() {
+  Future initialize() async {
+    await repository.initialize();
+    return this;
+  }
+
+  bool isLoggedIn() {
+    return repository.getToken() != null;
+  }
+
+  Future<bool> login(UserModel user) async {
+    AuthResponse response = await api.login(user);
+    if(response.auth == true) {
+      await repository.saveToken(response.token!);
+      return Future.value(true);
+    }
     return Future.value(false);
   }
 
   Future<UserModel> createUser(UserModel user) {
     return api.signUp(user);
-  }
-
-  String? _getToken() {
-
-  }
-
-  void _saveToken(String token) {
-
   }
 }
