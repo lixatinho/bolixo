@@ -6,6 +6,13 @@ import 'sign_view_content.dart';
 class SingUpController {
   late SignUpState signUpState;
   late AuthFormType _authFormType;
+  AuthService authService = AuthService();
+
+  void onInit(SignUpState state, AuthFormType authFormType) {
+    signUpState = state;
+    _authFormType = authFormType;
+    updateViewWithAuthType();
+  }
 
   void onSubmitClicked(String name, String email, String password) {
     switch (_authFormType) {
@@ -16,18 +23,20 @@ class SingUpController {
     }
   }
 
-  void signUp(String name, String email, String password) {
+  void signUp(String name, String email, String password) async {
     UserModel user = {name, email, password} as UserModel;
-    AuthService().createUser(user).then((response) {
-      if (response != null) {
+    await authService.initialize();
+    authService.createUser(user).then((response) {
         signUpState.showSuccessMessage('usuário criado com sucesoo!');
         signUpState.navigateToLogin();
-      }
+    }, onError: (error) {
+
     });
   }
 
-  void signIn(String email, String password) {
-
+  void signIn(String email, String password) async {
+    await authService.initialize();
+    // do stuff
   }
 
   void switchAuthType() {
@@ -36,12 +45,6 @@ class SingUpController {
     } else {
       _authFormType = AuthFormType.signIn;
     }
-    updateViewWithAuthType();
-  }
-
-  void onInit(SignUpState state, AuthFormType authFormType) {
-    signUpState = state;
-    _authFormType = authFormType;
     updateViewWithAuthType();
   }
 

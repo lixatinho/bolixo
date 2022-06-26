@@ -9,7 +9,7 @@ class AuthService {
   late AuthApi api;
   late AuthRepository repository;
 
-  AuthService._create() {
+  AuthService() {
     api = AuthApi.getInstance();
   }
 
