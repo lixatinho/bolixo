@@ -1,6 +1,6 @@
 import 'package:bolixo/ui/home.dart';
 import 'package:flutter/material.dart';
-import 'package:bolixo/ui/sign_up.dart';
+import 'flow/sign_up/sign_up.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,4 +1,5 @@
 import 'package:bolixo/api/services/validateLogin.dart';
+import 'package:bolixo/flow/sign_up/sing_controller.dart';
 import 'package:bolixo/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -65,9 +66,13 @@ class _SignUpState extends State<SignUp> {
       user.uid = uidC;
       user.login = true;
       userC = user;
-      print("teste user ${user.uid}");
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const Home(title: 'bolão lixão')));
+      if (SingUpController().criarUsuario(_name!, _email, _password)) {
+        setState(() {
+          authFormType = AuthFormType.signIn;
+        });
+      }
+      // Navigator.of(context).pushReplacement(MaterialPageRoute(
+      //     builder: (context) => const Home(title: 'bolão lixão')));
     } else if (validate()) {
       User? user = AuthService().validateLogin(_email!, _password!);
       userC = user;
