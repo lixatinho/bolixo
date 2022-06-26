@@ -1,5 +1,6 @@
-import 'package:bolixo/ui/home.dart';
 import 'package:flutter/material.dart';
+
+import 'flow/sign_up/sign_view_content.dart';
 import 'flow/sign_up/sign_up.dart';
 
 void main() {
