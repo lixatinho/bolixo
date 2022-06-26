@@ -66,11 +66,7 @@ class _SignUpState extends State<SignUp> {
       user.uid = uidC;
       user.login = true;
       userC = user;
-      if (SingUpController().criarUsuario(_name!, _email, _password)) {
-        setState(() {
-          authFormType = AuthFormType.signIn;
-        });
-      }
+      SingUpController().onButtonCreatClick(_name!, _email, _password);
       // Navigator.of(context).pushReplacement(MaterialPageRoute(
       //     builder: (context) => const Home(title: 'bolão lixão')));
     } else if (validate()) {
@@ -190,6 +186,12 @@ class _SignUpState extends State<SignUp> {
         authFormType = AuthFormType.signIn;
       });
     }
+  }
+
+  void updateSetState(AuthFormType signType) {
+    setState(() {
+      authFormType = signType;
+    });
   }
 
   @override
