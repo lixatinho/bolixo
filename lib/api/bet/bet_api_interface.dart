@@ -1,4 +1,4 @@
-import 'package:bolixo/api/bet/bet_api.dart';
+import 'package:bolixo/api/bet/bet_client.dart';
 import 'package:bolixo/main.dart';
 
 import '../model/bet_model.dart';

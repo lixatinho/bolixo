@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   intl: ^0.16.0
-
+  shared_preferences: ^2.0.15
   dio: ^3.0.3
   firebase_auth: ^0.20.1
   auto_size_text: ^3.0.0
