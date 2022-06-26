@@ -5,18 +5,20 @@ import '../../api/model/user_model.dart';
 import '../../service/AuthService.dart';
 
 class SingUpController {
-  late SignUp upState;
+  late SignUpState signUpState;
   void onButtonCreatClick(String name, email, password) {
     UserModel user = {name, email, password} as UserModel;
     AuthService().createUser(user).then((response) {
-      if (response.email != null) {
+      if (response != null) {
         // se existe chama login
-        onInit(AuthFormType.signIn);
+        signUpState.sucessCreat('usuário criado com sucesoo!');
+        signUpState.navigateToLogin();
       }
     });
   }
 
   void onInit(state) {
-    // upState = state;
+    signUpState = state;
+    // signUpState.updateSetState(state);
   }
 }

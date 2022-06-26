@@ -18,16 +18,21 @@ class SignUp extends StatefulWidget {
   SignUp({Key? key, required this.authFormType}) : super(key: key);
 
   @override
-  _SignUpState createState() => _SignUpState(authFormType: this.authFormType);
+  SignUpState createState() => SignUpState(authFormType: this.authFormType);
 }
 
-class _SignUpState extends State<SignUp> {
+class SignUpState extends State<SignUp> {
   AuthFormType authFormType;
-
-  _SignUpState({required this.authFormType});
-
+  SignUpState({required this.authFormType});
+  SingUpController singUpController = SingUpController();
   final formKey = GlobalKey<FormState>();
   String? _email, _password, _name, _error;
+
+  @override
+  initState() {
+    super.initState();
+    singUpController.onInit(this);
+  }
 
   InputDecoration buildSignUpDecoration(String hint) {
     return InputDecoration(
@@ -53,6 +58,10 @@ class _SignUpState extends State<SignUp> {
       return false;
     }
   }
+
+  void sucessCreat(String message) {}
+
+  void navigateToLogin() {}
 
   void submit() async {
     print("submt on");
