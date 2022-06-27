@@ -31,14 +31,14 @@ class BetViewContent {
   TeamViewContent homeTeam;
   TeamViewContent awayTeam;
   ScoreViewContent score;
-  bool isEnabled;
+  bool isBetEnabled;
 
   BetViewContent({
     required this.model,
     required this.homeTeam,
     required this.awayTeam,
     required this.score,
-    required this.isEnabled,
+    required this.isBetEnabled,
   });
 
   static fromApiModel(BetModel betApiModel) {
@@ -55,7 +55,7 @@ class BetViewContent {
             betApiModel.match?.awayScore
         ),
         score: ScoreViewContent.fromApiModel(betApiModel.score),
-        isEnabled: betApiModel.match?.matchDate.isAfter(DateTime.now().toUtc()) == true
+        isBetEnabled: betApiModel.match?.matchDate.isAfter(DateTime.now().toUtc()) == true
     );
   }
 
@@ -99,17 +99,27 @@ class TeamViewContent {
 
 class ScoreViewContent {
   String value;
+  Color background;
   Color color;
 
   ScoreViewContent({
     required this.value,
+    required this.background,
     required this.color,
   });
 
   static fromApiModel(int? score) {
+    if(score == null) {
+      return ScoreViewContent(
+          value: "",
+          background: Colors.transparent,
+          color: Colors.transparent
+      );
+    }
     return ScoreViewContent(
-        value: score?.toString() ?? "",
-        color: score != null && score > 0 ? Colors.green : Colors.red
+        value: score > 0 ? "+ $score" : " $score ",
+        color: Colors.black87,
+        background: score > 0 ? Colors.green : Colors.red
     );
   }
 }

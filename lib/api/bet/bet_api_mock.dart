@@ -18,37 +18,58 @@ class MockBetApi implements BetApi {
   Future<List<BetsInDayModel>> getUserBets() {
     var random = Random();
     var today = DateTime.now().toUtc();
+    int numberOfDays = 20;
+    int betsInDay = 10;
+    int middle = (numberOfDays / 2) as int;
+    
     return Future.value(
-      List.generate(20, (outerIndex) =>
+      List.generate(numberOfDays, (daysIndex) =>
         BetsInDayModel(
-            date: today.add(Duration(days: outerIndex - 10)),
-            betList: List.generate(10, (innerIndex) =>
-              BetModel(
-                id: innerIndex,
-                match: MatchModel(
-                  id: innerIndex,
-                  home: TeamModel(
-                    id: innerIndex * 2,
-                    name: "Team ${innerIndex * 2}",
-                    flagUrl: "https://lixolao-flags.s3.amazonaws.com/BRA.webp"
+            date: today.add(Duration(days: daysIndex - middle)),
+            betList: List.generate(betsInDay, (betsInDayIndex) {
+              int homeScore = random.nextInt(5);
+              int awayScore = random.nextInt(5);
+              int homeBet = random.nextInt(5);
+              int awayBet = random.nextInt(5);
+              return BetModel(
+                  id: betsInDayIndex,
+                  match: MatchModel(
+                      id: betsInDayIndex,
+                      home: TeamModel(
+                          id: betsInDayIndex * 2,
+                          name: "Team ${betsInDayIndex * 2}",
+                          flagUrl: "https://lixolao-flags.s3.amazonaws.com/BRA.webp"
+                      ),
+                      away: TeamModel(
+                          id: betsInDayIndex * 2 + 1,
+                          name: "Team ${betsInDayIndex * 2 + 1}",
+                          flagUrl: "https://lixolao-flags.s3.amazonaws.com/ARG.webp"
+                      ),
+                      matchDate: today.add(Duration(days: daysIndex - middle)),
+                      homeScore: homeScore,
+                      awayScore: awayScore
                   ),
-                  away: TeamModel(
-                    id: innerIndex * 2 + 1,
-                    name: "Team ${innerIndex * 2 + 1}",
-                    flagUrl: "https://lixolao-flags.s3.amazonaws.com/ARG.webp"
-                  ),
-                  matchDate: today.add(Duration(days: outerIndex - 10)),
-                  homeScore: random.nextInt(5),
-                  awayScore: random.nextInt(5)
-                ),
-                homeScoreBet: random.nextInt(5),
-                awayScoreBet: random.nextInt(5),
-                score: random.nextInt(5)
-              )
+                  homeScoreBet: homeBet,
+                  awayScoreBet: awayBet,
+                  score: daysIndex > middle ? null : mockScore(homeScore, awayScore, homeBet, awayBet)
+              );
+            }
+              
             )
           )
         )
       );
+  }
+  
+  int mockScore(int homeScore, int awayScore, int homeBet, int awayBet) {
+    int score = 0;
+    if(homeScore == homeBet) {
+      score += 2;
+    }
+    if(awayScore == awayBet) {
+      score += 2;
+    }
+    return score;
   }
 
   @override
