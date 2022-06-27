@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   static const appTitle = 'Bolão dos lixos';
-  static const flavor = Flavor.staging;
+  static const flavor = Flavor.mock;
 
   @override
   Widget build(BuildContext context) {

@@ -19,19 +19,14 @@ class SignUp extends StatefulWidget {
 }
 
 class SignUpState extends State<SignUp> {
-
   late SignViewContent viewContent;
   SingUpController singUpController = SingUpController();
   AuthFormType authFormType;
-  String? _name;
-  String? _email;
-  String? _password;
+  String? _name, _email, _password;
   final formKey = GlobalKey<FormState>();
   final primaryCollor = const Color(0xFF75A2EA);
 
-  SignUpState({
-    required this.authFormType
-  });
+  SignUpState({required this.authFormType});
 
   @override
   initState() {
@@ -50,21 +45,21 @@ class SignUpState extends State<SignUp> {
         width: width,
         child: SafeArea(
             child: Column(
-              children: <Widget>[
-                SizedBox(height: height * 0.025),
-                // showAlert(),
-                SizedBox(height: height * 0.025),
-                buildHeaderText(),
-                SizedBox(height: height * 0.05),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Form(
-                    key: formKey,
-                    child: Column(children: buildInputs() + buildButtons()),
-                  ),
-                )
-              ],
-            )),
+          children: <Widget>[
+            SizedBox(height: height * 0.025),
+            // showAlert(),
+            SizedBox(height: height * 0.025),
+            buildHeaderText(),
+            SizedBox(height: height * 0.05),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Form(
+                key: formKey,
+                child: Column(children: buildInputs() + buildButtons()),
+              ),
+            )
+          ],
+        )),
       ),
     );
   }
@@ -103,12 +98,16 @@ class SignUpState extends State<SignUp> {
             primary: Colors.white,
             onPrimary: const Color(0xFF75A2EA),
           ),
-          onPressed: () => singUpController.onSubmitClicked("", "", ""),
+          onPressed: () {
+            print('onPressed$_email');
+            singUpController.onSubmitClicked(_name!, _email!, _password!);
+          },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               viewContent.buttonText,
-              style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
+              style:
+                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
             ),
           ),
         ),
@@ -120,8 +119,7 @@ class SignUpState extends State<SignUp> {
           child: Text(
             viewContent.switchText,
             style: const TextStyle(color: Colors.redAccent),
-          )
-      )
+          ))
     ];
   }
 
@@ -133,6 +131,7 @@ class SignUpState extends State<SignUp> {
       textFields.add(TextFormField(
         keyboardType: TextInputType.name,
         onSaved: (value) => _name = value!,
+        onChanged: (value) => print('value$value'),
         validator: NameValidator.validate,
         style: const TextStyle(fontSize: 22.0),
         decoration: buildSignUpDecoration("Nome"),
@@ -163,7 +162,7 @@ class SignUpState extends State<SignUp> {
     ));
 
     textFields.add(const SizedBox(height: 20));
-
+    print("inputs ---:>$_name, $_email, $_password");
     return textFields;
   }
 
@@ -178,5 +177,4 @@ class SignUpState extends State<SignUp> {
       ),
     );
   }
-
 }

@@ -14,24 +14,24 @@ class SingUpController {
     updateViewWithAuthType();
   }
 
-  void onSubmitClicked(String name, String email, String password) {
+  void onSubmitClicked(String? name, String? email, String? password) {
     switch (_authFormType) {
       case AuthFormType.signIn:
-        return signIn(email, password);
+        return signIn(email!, password!);
       case AuthFormType.signUp:
-        return signUp(name, email, password);
+        return signUp(name!, email!, password!);
     }
   }
 
   void signUp(String name, String email, String password) async {
     UserModel user = {name, email, password} as UserModel;
+    print("signUp$name");
+    print("signUp${user.email}");
     await authService.initialize();
     authService.createUser(user).then((response) {
-        signUpState.showSuccessMessage('usuário criado com sucesoo!');
-        signUpState.navigateToLogin();
-    }, onError: (error) {
-
-    });
+      signUpState.showSuccessMessage('usuário criado com sucesoo!');
+      signUpState.navigateToLogin();
+    }, onError: (error) {});
   }
 
   void signIn(String email, String password) async {
@@ -40,7 +40,7 @@ class SingUpController {
   }
 
   void switchAuthType() {
-    if(_authFormType == AuthFormType.signIn) {
+    if (_authFormType == AuthFormType.signIn) {
       _authFormType = AuthFormType.signUp;
     } else {
       _authFormType = AuthFormType.signIn;
@@ -49,8 +49,6 @@ class SingUpController {
   }
 
   void updateViewWithAuthType() {
-    signUpState.updateViewContent(
-        SignViewContent.fromAuthType(_authFormType)
-    );
+    signUpState.updateViewContent(SignViewContent.fromAuthType(_authFormType));
   }
 }
