@@ -9,8 +9,9 @@ class BetsViewController {
   BetApi api = BetApi.getInstance();
   late BetsWidgetState viewState;
 
-  void onInit(state) {
+  void onInit(state) async {
     viewState = state;
+    await _prepareApi();
     _fillBets();
   }
 
@@ -24,6 +25,10 @@ class BetsViewController {
 
   void onGoalsTeam2Changed(int index, String goals) {
     viewState.betsByDay[viewState.dateIndex].betList[index].awayTeam.scoreBet = goals;
+  }
+
+  Future _prepareApi() async {
+    await api.initialize();
   }
 
   void _fillBets() {

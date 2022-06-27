@@ -1,4 +1,4 @@
-import 'package:bolixo/api/bet/bet_api.dart';
+import 'package:bolixo/api/bet/bet_client.dart';
 import 'package:bolixo/main.dart';
 
 import '../model/bet_model.dart';
@@ -8,6 +8,7 @@ import 'bet_api_mock.dart';
 abstract class BetApi {
 
   /// Exposed methods
+  Future initialize();
   Future<List<BetsInDayModel>> getUserBets();
   Future saveUserBets(List<BetModel> betList);
 
