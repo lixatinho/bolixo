@@ -23,19 +23,18 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.indigo,
-            elevation: 0,
-            title: const Text('Bolixo'),
-          ),
-          body: pages[_selectedIndex],
-          drawer: Menu(onTapCallback: (int index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          })),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.indigo,
+        elevation: 0,
+        title: const Text('Bolixo'),
+      ),
+      body: pages[_selectedIndex],
+      drawer: Menu(onTapCallback: (int index) {
+        setState(() {
+          _selectedIndex = index;
+        });
+      }),
     );
   }
 }

@@ -14,9 +14,9 @@ class MockBetApi implements BetApi {
     var random = Random();
     var today = DateTime.now().toUtc();
     return Future.value(
-      List.generate(10, (index) =>
+      List.generate(20, (index) =>
         BetsInDayModel(
-            date: today.add(Duration(days: index - 5)),
+            date: today.add(Duration(days: index - 10)),
             betList: List.generate(10, (index) =>
               BetModel(
                 id: index,

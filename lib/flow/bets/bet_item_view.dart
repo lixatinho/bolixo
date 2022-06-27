@@ -1,5 +1,5 @@
 
-import 'package:bolixo/ui/AppDecoration.dart';
+import 'package:bolixo/ui/shared/app_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -30,7 +30,7 @@ class BetItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double margin = 16;
+    const double margin = 4;
     const double spaceBetweenTeams = 12;
 
     return Center(
