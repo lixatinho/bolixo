@@ -19,25 +19,25 @@ class MockBetApi implements BetApi {
     var random = Random();
     var today = DateTime.now().toUtc();
     return Future.value(
-      List.generate(20, (index) =>
+      List.generate(20, (outerIndex) =>
         BetsInDayModel(
-            date: today.add(Duration(days: index - 10)),
-            betList: List.generate(10, (index) =>
+            date: today.add(Duration(days: outerIndex - 10)),
+            betList: List.generate(10, (innerIndex) =>
               BetModel(
-                id: index,
+                id: innerIndex,
                 match: MatchModel(
-                  id: index,
+                  id: innerIndex,
                   home: TeamModel(
-                    id: index * 2,
-                    name: "Team ${index * 2}",
+                    id: innerIndex * 2,
+                    name: "Team ${innerIndex * 2}",
                     flagUrl: "https://lixolao-flags.s3.amazonaws.com/BRA.webp"
                   ),
                   away: TeamModel(
-                    id: index * 2 + 1,
-                    name: "Team ${index * 2 + 1}",
+                    id: innerIndex * 2 + 1,
+                    name: "Team ${innerIndex * 2 + 1}",
                     flagUrl: "https://lixolao-flags.s3.amazonaws.com/ARG.webp"
                   ),
-                  matchDate: today.add(Duration(days: index - 5)),
+                  matchDate: today.add(Duration(days: outerIndex - 10)),
                   homeScore: random.nextInt(5),
                   awayScore: random.nextInt(5)
                 ),
