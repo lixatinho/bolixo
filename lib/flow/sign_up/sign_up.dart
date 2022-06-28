@@ -82,9 +82,7 @@ class SignUpState extends State<SignUp> {
   }
 
   InputDecoration buildSignUpDecoration(String hint) {
-    return AppDecoration.inputDecoration.copyWith(
-      hintText: hint
-    );
+    return AppDecoration.inputDecoration.copyWith(hintText: hint);
   }
 
   List<Widget> buildButtons() {
@@ -93,12 +91,11 @@ class SignUpState extends State<SignUp> {
         width: MediaQuery.of(context).size.width * 0.7,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0)),
-            primary: Colors.indigo
-          ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+              primary: Colors.indigo),
           onPressed: () {
-            singUpController.onSubmitClicked(_name, _email!, _password!);
+            singUpController.onSubmitClicked(_name!, _email, _password!);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -117,10 +114,9 @@ class SignUpState extends State<SignUp> {
           child: Text(
             viewContent.switchText,
             style: const TextStyle(
-              color: Colors.indigo,
-              fontSize: 16,
-              fontWeight: FontWeight.w500
-            ),
+                color: Colors.indigo,
+                fontSize: 16,
+                fontWeight: FontWeight.w500),
           ))
     ];
   }
@@ -128,27 +124,26 @@ class SignUpState extends State<SignUp> {
   List<Widget> buildInputs() {
     List<Widget> textFields = [];
 
-    // Name
-    if (viewContent.isNameVisible) {
+    if (viewContent.isEmailVisible) {
+      // Email
       textFields.add(TextFormField(
-        keyboardType: TextInputType.name,
-        onChanged: (value) => _name = value,
-        validator: NameValidator.validate,
+        keyboardType: TextInputType.emailAddress,
+        onChanged: (value) => _email = value,
+        validator: EmailValidator.validate,
         style: const TextStyle(fontSize: 22.0),
-        decoration: buildSignUpDecoration("Nome"),
+        decoration: buildSignUpDecoration("Email"),
       ));
-      // space beetwin box
-      textFields.add(const SizedBox(height: 20));
     }
-
-    // Email
+    // Name
     textFields.add(TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      onChanged: (value) => _email = value,
-      validator: EmailValidator.validate,
+      keyboardType: TextInputType.name,
+      onChanged: (value) => _name = value,
+      validator: NameValidator.validate,
       style: const TextStyle(fontSize: 22.0),
-      decoration: buildSignUpDecoration("Email"),
+      decoration: buildSignUpDecoration("Nome"),
     ));
+    // space beetwin box
+    textFields.add(const SizedBox(height: 20));
 
     textFields.add(const SizedBox(height: 20));
 

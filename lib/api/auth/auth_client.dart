@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bolixo/api/model/auth_response.dart';
@@ -17,7 +18,8 @@ class AuthClient implements AuthApi {
   @override
   Future<AuthResponse> login(UserModel user) async {
     try {
-      var response = await dio.post("$baseUrl/$loginPath", data: user.toJson());
+      var response =
+          await dio.post("$baseUrl/$loginPath", data: jsonEncode(user));
       if (response.statusCode == 200) {
         print(response.data);
         var authResponse = AuthResponse.fromJson(response.data);
@@ -32,14 +34,13 @@ class AuthClient implements AuthApi {
   }
 
   @override
-  Future<UserModel> signUp(UserModel user) async {
+  Future signUp(UserModel user) async {
     try {
       var response =
-          await dio.post("$baseUrl/$signUpPath", data: user.toJson());
+          await dio.post("$baseUrl/$signUpPath", data: jsonEncode(user));
       if (response.statusCode == 200) {
         print(response.data);
-        var createdUser = UserModel.fromJson(response.data);
-        return Future.value(createdUser);
+        return Future.value();
       } else {
         return Future.error(response.statusCode);
       }

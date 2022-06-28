@@ -2,29 +2,29 @@ class SignViewContent {
   AuthFormType type = AuthFormType.signIn;
   String headerText = "";
   String buttonText = "";
-  bool isNameVisible = false;
+  bool isEmailVisible = false;
   String switchText = "";
 
   SignViewContent({
     required this.type,
     required this.headerText,
     required this.buttonText,
-    required this.isNameVisible,
+    required this.isEmailVisible,
     required this.switchText,
   });
 
   SignViewContent.fromAuthType(this.type) {
-    switch(type) {
+    switch (type) {
       case AuthFormType.signIn:
         headerText = "Entrar";
         buttonText = "Logar";
-        isNameVisible = false;
+        isEmailVisible = false;
         switchText = "Criar conta";
         break;
       case AuthFormType.signUp:
         headerText = "Criar conta";
         buttonText = "Criar";
-        isNameVisible = true;
+        isEmailVisible = true;
         switchText = "Ir para Login";
         break;
     }

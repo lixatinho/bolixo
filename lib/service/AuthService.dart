@@ -31,7 +31,7 @@ class AuthService {
     return Future.value(false);
   }
 
-  Future<UserModel> createUser(UserModel user) {
+  Future createUser(UserModel user) {
     return api.signUp(user);
   }
 }

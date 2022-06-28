@@ -18,7 +18,7 @@ class SingUpController {
   void onSubmitClicked(String? name, String? email, String? password) {
     switch (_authFormType) {
       case AuthFormType.signIn:
-        return signIn(email!, password!);
+        return signIn(name!, password!);
       case AuthFormType.signUp:
         return signUp(name!, email!, password!);
     }
@@ -43,9 +43,9 @@ class SingUpController {
     return _error;
   }
 
-  void signIn(String email, String password) async {
+  void signIn(String username, String password) async {
     UserModel user =
-        UserModel(username: null, email: email, password: password);
+        UserModel(username: username, email: null, password: password);
     await authService.initialize();
     authService.login(user).then((response) {
       print('logouuuuuuuuu');
