@@ -66,7 +66,14 @@ class SignUpState extends State<SignUp> {
 
   void showSuccessMessage(String message) {}
 
-  void navigateToLogin() {}
+  void navigateToLogin(AuthFormType authFormType) {
+    if (authFormType == AuthFormType.signUp) {
+      singUpController.onInit(this, AuthFormType.signIn);
+    } else {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const Home(title: 'bolão lixão')));
+    }
+  }
 
   void updateViewContent(SignViewContent viewContent) {
     setState(() {
@@ -99,8 +106,7 @@ class SignUpState extends State<SignUp> {
             onPrimary: const Color(0xFF75A2EA),
           ),
           onPressed: () {
-            print('onPressed$_email');
-            singUpController.onSubmitClicked(_name!, _email!, _password!);
+            singUpController.onSubmitClicked(_name, _email!, _password!);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -130,8 +136,7 @@ class SignUpState extends State<SignUp> {
     if (viewContent.isNameVisible) {
       textFields.add(TextFormField(
         keyboardType: TextInputType.name,
-        onSaved: (value) => _name = value!,
-        onChanged: (value) => print('value$value'),
+        onChanged: (value) => _name = value,
         validator: NameValidator.validate,
         style: const TextStyle(fontSize: 22.0),
         decoration: buildSignUpDecoration("Nome"),
@@ -143,7 +148,7 @@ class SignUpState extends State<SignUp> {
     // Email
     textFields.add(TextFormField(
       keyboardType: TextInputType.emailAddress,
-      onSaved: (value) => _email = value!,
+      onChanged: (value) => _email = value,
       validator: EmailValidator.validate,
       style: const TextStyle(fontSize: 22.0),
       decoration: buildSignUpDecoration("Email"),
@@ -155,7 +160,7 @@ class SignUpState extends State<SignUp> {
     textFields.add(TextFormField(
       validator: PasswordValidator.validate,
       keyboardType: TextInputType.visiblePassword,
-      onSaved: (value) => _password = value!,
+      onChanged: (value) => _password = value,
       style: TextStyle(fontSize: 22.0),
       decoration: buildSignUpDecoration("Senha"),
       obscureText: true,

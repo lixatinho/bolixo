@@ -5,11 +5,11 @@ import 'package:bolixo/service/AuthRepository.dart';
 import '../api/auth/auth_api.dart';
 
 class AuthService {
-
   late AuthApi api;
   late AuthRepository repository;
 
   AuthService() {
+    repository = AuthRepository();
     api = AuthApi.getInstance();
   }
 
@@ -24,7 +24,7 @@ class AuthService {
 
   Future<bool> login(UserModel user) async {
     AuthResponse response = await api.login(user);
-    if(response.auth == true) {
+    if (response.auth == true) {
       await repository.saveToken(response.token!);
       return Future.value(true);
     }

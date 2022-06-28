@@ -24,18 +24,29 @@ class SingUpController {
   }
 
   void signUp(String name, String email, String password) async {
-    UserModel user = {name, email, password} as UserModel;
-    print("signUp$name");
-    print("signUp${user.email}");
+    UserModel user =
+        UserModel(username: name, email: email, password: password);
+
     await authService.initialize();
     authService.createUser(user).then((response) {
+      print('response$response');
       signUpState.showSuccessMessage('usuário criado com sucesoo!');
-      signUpState.navigateToLogin();
-    }, onError: (error) {});
+      signUpState.navigateToLogin(AuthFormType.signUp);
+    }, onError: (error) {
+      print('singUp $error');
+    });
   }
 
   void signIn(String email, String password) async {
+    UserModel user =
+        UserModel(username: null, email: email, password: password);
     await authService.initialize();
+    authService.login(user).then((response) {
+      print('logouuuuuuuuu');
+      signUpState.navigateToLogin(AuthFormType.signIn);
+    }, onError: (error) {
+      print('singin $error');
+    });
     // do stuff
   }
 
