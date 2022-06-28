@@ -47,7 +47,7 @@ class SignUpState extends State<SignUp> {
             child: Column(
           children: <Widget>[
             SizedBox(height: height * 0.025),
-            // showAlert(),
+            showMessage(),
             SizedBox(height: height * 0.025),
             buildHeaderText(),
             SizedBox(height: height * 0.05),
@@ -167,7 +167,7 @@ class SignUpState extends State<SignUp> {
     ));
 
     textFields.add(const SizedBox(height: 20));
-    print("inputs ---:>$_name, $_email, $_password");
+    // print("inputs ---:>$_name, $_email, $_password");
     return textFields;
   }
 
@@ -181,5 +181,31 @@ class SignUpState extends State<SignUp> {
         color: Colors.white,
       ),
     );
+  }
+
+  Widget showMessage() {
+    // if (message != "") {
+    return Container(
+      color: Colors.amberAccent,
+      width: double.infinity,
+      padding: EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Icon(Icons.abc),
+          ),
+          Expanded(
+              child: AutoSizeText(
+            SingUpController().teste(),
+            maxLines: 3,
+          )),
+        ],
+      ),
+    );
+    // }
+    //   return SizedBox(
+    //     height: 0,
+    //   );
   }
 }

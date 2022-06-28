@@ -6,6 +6,7 @@ import 'sign_view_content.dart';
 class SingUpController {
   late SignUpState signUpState;
   late AuthFormType _authFormType;
+  late String _error = 'dsfds';
   AuthService authService = AuthService();
 
   void onInit(SignUpState state, AuthFormType authFormType) {
@@ -30,11 +31,17 @@ class SingUpController {
     await authService.initialize();
     authService.createUser(user).then((response) {
       print('response$response');
-      signUpState.showSuccessMessage('usuário criado com sucesoo!');
+      // signUpState.showMessage();
+      _error = "usuário criado com sucesoo!";
+      signUpState.showMessage();
       signUpState.navigateToLogin(AuthFormType.signUp);
     }, onError: (error) {
       print('singUp $error');
     });
+  }
+
+  teste() {
+    return _error;
   }
 
   void signIn(String email, String password) async {

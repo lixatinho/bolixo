@@ -6,22 +6,18 @@ import 'package:dio/dio.dart';
 
 import 'auth_api.dart';
 
-
 class AuthClient implements AuthApi {
-
   String baseUrl;
   String loginPath = "login";
   String signUpPath = "user";
   Dio dio = Dio();
 
-  AuthClient({
-    required this.baseUrl
-  });
+  AuthClient({required this.baseUrl});
 
   @override
   Future<AuthResponse> login(UserModel user) async {
     try {
-      var response = await dio.post("$baseUrl/$loginPath");
+      var response = await dio.post("$baseUrl/$loginPath", data: user.toJson());
       if (response.statusCode == 200) {
         print(response.data);
         var authResponse = AuthResponse.fromJson(response.data);
@@ -38,7 +34,8 @@ class AuthClient implements AuthApi {
   @override
   Future<UserModel> signUp(UserModel user) async {
     try {
-      var response = await dio.post("$baseUrl/$signUpPath");
+      var response =
+          await dio.post("$baseUrl/$signUpPath", data: user.toJson());
       if (response.statusCode == 200) {
         print(response.data);
         var createdUser = UserModel.fromJson(response.data);
