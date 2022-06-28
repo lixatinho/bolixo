@@ -1,11 +1,5 @@
-import 'dart:html';
-import 'dart:js';
-
 import 'package:bolixo/flow/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
-import 'package:bolixo/api/services/validateLogin.dart';
-
-import '../flow/bets/bets_view.dart';
 
 class Menu extends StatelessWidget {
   static const int bets = 1;
@@ -24,14 +18,14 @@ class Menu extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountEmail: Text(''),
+            accountEmail: const Text(''),
             accountName: Row(
               children: <Widget>[
                 Container(
                   width: 50,
                   height: 50,
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: CircleAvatar(
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
+                  child: const CircleAvatar(
                     backgroundColor: Colors.greenAccent,
                     child: Icon(Icons.check),
                   ),

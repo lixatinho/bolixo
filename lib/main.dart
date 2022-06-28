@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
+
+import 'package:bolixo/ui/home.dart';
+import 'package:bolixo/ui/shared/app_behavior.dart';
 
 import 'flow/sign_up/sign_view_content.dart';
 import 'flow/sign_up/sign_up.dart';
@@ -17,6 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: appTitle,
+      scrollBehavior: AppBehaviors.scrollBehavior,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
