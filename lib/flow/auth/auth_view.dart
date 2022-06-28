@@ -101,6 +101,7 @@ class AuthViewState extends State<AuthView> {
           text: viewContent.buttonText,
         )
       ),
+      const SizedBox(height: 10),
       AppTextButton(
         onPressedCallback: () {
           authViewController.switchAuthType();
