@@ -33,7 +33,6 @@ class SingUpController {
       print('response$response');
       // signUpState.showMessage();
       _error = "usuário criado com sucesoo!";
-      signUpState.showMessage();
       signUpState.navigateToLogin(AuthFormType.signUp);
     }, onError: (error) {
       print('singUp $error');

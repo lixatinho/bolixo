@@ -1,5 +1,6 @@
 import 'package:bolixo/api/services/validateLogin.dart';
 import 'package:bolixo/flow/sign_up/sign_controller.dart';
+import 'package:bolixo/ui/AppDecoration.dart';
 import 'package:bolixo/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -24,7 +25,6 @@ class SignUpState extends State<SignUp> {
   AuthFormType authFormType;
   String? _name, _email, _password;
   final formKey = GlobalKey<FormState>();
-  final primaryCollor = const Color(0xFF75A2EA);
 
   SignUpState({required this.authFormType});
 
@@ -40,14 +40,14 @@ class SignUpState extends State<SignUp> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
-        color: primaryCollor,
+        color: Colors.white,
         height: height,
         width: width,
         child: SafeArea(
             child: Column(
           children: <Widget>[
             SizedBox(height: height * 0.025),
-            showMessage(),
+            // showMessage(),
             SizedBox(height: height * 0.025),
             buildHeaderText(),
             SizedBox(height: height * 0.05),
@@ -82,15 +82,8 @@ class SignUpState extends State<SignUp> {
   }
 
   InputDecoration buildSignUpDecoration(String hint) {
-    return InputDecoration(
-      hintText: hint,
-      filled: true,
-      fillColor: Colors.white,
-      focusColor: Colors.white,
-      enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white, width: 0.0)),
-      contentPadding:
-          const EdgeInsets.only(left: 14.0, bottom: 10.0, top: 10.0),
+    return AppDecoration.inputDecoration.copyWith(
+      hintText: hint
     );
   }
 
@@ -102,8 +95,7 @@ class SignUpState extends State<SignUp> {
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0)),
-            primary: Colors.white,
-            onPrimary: const Color(0xFF75A2EA),
+            primary: Colors.indigo
           ),
           onPressed: () {
             singUpController.onSubmitClicked(_name, _email!, _password!);
@@ -124,7 +116,11 @@ class SignUpState extends State<SignUp> {
           },
           child: Text(
             viewContent.switchText,
-            style: const TextStyle(color: Colors.redAccent),
+            style: const TextStyle(
+              color: Colors.indigo,
+              fontSize: 16,
+              fontWeight: FontWeight.w500
+            ),
           ))
     ];
   }
@@ -178,7 +174,7 @@ class SignUpState extends State<SignUp> {
       textAlign: TextAlign.center,
       style: const TextStyle(
         fontSize: 35,
-        color: Colors.white,
+        color: Color(0xFF191C50),
       ),
     );
   }
