@@ -1,5 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bolixo/ui/home.dart';
+import 'package:bolixo/ui/shared/app_elevated_button.dart';
+import 'package:bolixo/ui/shared/app_text_button.dart';
+import 'package:bolixo/ui/shared/loading_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../ui/shared/app_decoration.dart';
@@ -17,9 +20,11 @@ class AuthView extends StatefulWidget {
 
 class AuthViewState extends State<AuthView> {
   AuthViewContent viewContent = AuthViewContent();
-  AuthViewController singUpController = AuthViewController();
+  AuthViewController authViewController = AuthViewController();
   AuthFormType authFormType;
-  String? _name, _email, _password;
+  String _name = "";
+  String _email = "";
+  String _password = "";
   final formKey = GlobalKey<FormState>();
 
   AuthViewState({required this.authFormType});
@@ -27,7 +32,7 @@ class AuthViewState extends State<AuthView> {
   @override
   initState() {
     super.initState();
-    singUpController.onInit(this, authFormType);
+    authViewController.onInit(this, authFormType);
   }
 
   @override
@@ -35,11 +40,7 @@ class AuthViewState extends State<AuthView> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     if(viewContent.isLoading) {
-      return Container(
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return LoadingWidget();
     } else {
       return Scaffold(
         body: Container(
@@ -68,10 +69,10 @@ class AuthViewState extends State<AuthView> {
     }
   }
 
-  void showSuccessMessage(String message) {}
-
-  void navigateToLogin() {
-    singUpController.onInit(this, AuthFormType.signIn);
+  void showSuccessMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+    ));
   }
 
   void navigateToHome() {
@@ -91,37 +92,21 @@ class AuthViewState extends State<AuthView> {
 
   List<Widget> buildButtons() {
     return [
-      Container(
+      SizedBox(
         width: MediaQuery.of(context).size.width * 0.7,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0)),
-              primary: Colors.indigo),
-          onPressed: () {
-            singUpController.onSubmitClicked(_name!, _email, _password!);
+        child: AppElevatedButton(
+          onPressedCallback: () {
+            authViewController.onSubmitClicked(_name, _email, _password);
           },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              viewContent.buttonText,
-              style:
-                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
-            ),
-          ),
-        ),
+          text: viewContent.buttonText,
+        )
       ),
-      TextButton(
-          onPressed: () {
-            singUpController.switchAuthType();
-          },
-          child: Text(
-            viewContent.switchText,
-            style: const TextStyle(
-                color: Colors.indigo,
-                fontSize: 16,
-                fontWeight: FontWeight.w500),
-          ))
+      AppTextButton(
+        onPressedCallback: () {
+          authViewController.switchAuthType();
+        },
+        text: viewContent.switchText
+      )
     ];
   }
 
