@@ -22,7 +22,7 @@ class AuthClient implements AuthApi {
           await dio.post("$baseUrl/$loginPath", data: jsonEncode(user));
       if (response.statusCode == 200) {
         print(response.data);
-        var authResponse = AuthResponse.fromJson(response.data);
+        AuthResponse authResponse = json.decode(response.data);
         return Future.value(authResponse);
       } else {
         return Future.error(response.statusCode);

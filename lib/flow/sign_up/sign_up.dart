@@ -1,10 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bolixo/api/services/validateLogin.dart';
 import 'package:bolixo/flow/sign_up/sign_controller.dart';
-import 'package:bolixo/ui/AppDecoration.dart';
 import 'package:bolixo/ui/home.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
+import '../../ui/shared/app_decoration.dart';
 import 'sign_view_content.dart';
 
 int? uidC;
@@ -66,13 +66,13 @@ class SignUpState extends State<SignUp> {
 
   void showSuccessMessage(String message) {}
 
-  void navigateToLogin(AuthFormType authFormType) {
-    if (authFormType == AuthFormType.signUp) {
-      singUpController.onInit(this, AuthFormType.signIn);
-    } else {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const Home(title: 'bolão lixão')));
-    }
+  void navigateToLogin() {
+    singUpController.onInit(this, AuthFormType.signIn);
+  }
+
+  void navigateToHome() {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const Home(title: 'bolão lixão')));
   }
 
   void updateViewContent(SignViewContent viewContent) {
@@ -123,6 +123,16 @@ class SignUpState extends State<SignUp> {
 
   List<Widget> buildInputs() {
     List<Widget> textFields = [];
+    // Name
+    textFields.add(TextFormField(
+      keyboardType: TextInputType.name,
+      onChanged: (value) => _name = value,
+      validator: NameValidator.validate,
+      style: const TextStyle(fontSize: 22.0),
+      decoration: buildSignUpDecoration("Username"),
+    ));
+
+    textFields.add(const SizedBox(height: 20));
 
     if (viewContent.isEmailVisible) {
       // Email
@@ -133,26 +143,15 @@ class SignUpState extends State<SignUp> {
         style: const TextStyle(fontSize: 22.0),
         decoration: buildSignUpDecoration("Email"),
       ));
+      textFields.add(const SizedBox(height: 20));
     }
-    // Name
-    textFields.add(TextFormField(
-      keyboardType: TextInputType.name,
-      onChanged: (value) => _name = value,
-      validator: NameValidator.validate,
-      style: const TextStyle(fontSize: 22.0),
-      decoration: buildSignUpDecoration("Nome"),
-    ));
-    // space beetwin box
-    textFields.add(const SizedBox(height: 20));
-
-    textFields.add(const SizedBox(height: 20));
 
     // Password
     textFields.add(TextFormField(
       validator: PasswordValidator.validate,
       keyboardType: TextInputType.visiblePassword,
       onChanged: (value) => _password = value,
-      style: TextStyle(fontSize: 22.0),
+      style: const TextStyle(fontSize: 22.0),
       decoration: buildSignUpDecoration("Senha"),
       obscureText: true,
     ));
@@ -172,31 +171,5 @@ class SignUpState extends State<SignUp> {
         color: Color(0xFF191C50),
       ),
     );
-  }
-
-  Widget showMessage() {
-    // if (message != "") {
-    return Container(
-      color: Colors.amberAccent,
-      width: double.infinity,
-      padding: EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Icon(Icons.abc),
-          ),
-          Expanded(
-              child: AutoSizeText(
-            SingUpController().teste(),
-            maxLines: 3,
-          )),
-        ],
-      ),
-    );
-    // }
-    //   return SizedBox(
-    //     height: 0,
-    //   );
   }
 }

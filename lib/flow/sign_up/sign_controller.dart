@@ -6,13 +6,19 @@ import 'sign_view_content.dart';
 class SingUpController {
   late SignUpState signUpState;
   late AuthFormType _authFormType;
-  late String _error = 'dsfds';
   AuthService authService = AuthService();
 
   void onInit(SignUpState state, AuthFormType authFormType) {
     signUpState = state;
-    _authFormType = authFormType;
-    updateViewWithAuthType();
+
+    authService.initialize().then((value) {
+      if(authService.isLoggedIn()) {
+        signUpState.navigateToHome();
+      } else {
+        _authFormType = authFormType;
+        updateViewWithAuthType();
+      }
+    });
   }
 
   void onSubmitClicked(String? name, String? email, String? password) {
@@ -30,17 +36,11 @@ class SingUpController {
 
     await authService.initialize();
     authService.createUser(user).then((response) {
-      print('response$response');
-      // signUpState.showMessage();
-      _error = "usuário criado com sucesoo!";
-      signUpState.navigateToLogin(AuthFormType.signUp);
+      print('response $response');
+      signUpState.navigateToLogin();
     }, onError: (error) {
-      print('singUp $error');
+      print('error signup $error');
     });
-  }
-
-  teste() {
-    return _error;
   }
 
   void signIn(String username, String password) async {
@@ -48,10 +48,9 @@ class SingUpController {
         UserModel(username: username, email: null, password: password);
     await authService.initialize();
     authService.login(user).then((response) {
-      print('logouuuuuuuuu');
-      signUpState.navigateToLogin(AuthFormType.signIn);
+      signUpState.navigateToHome();
     }, onError: (error) {
-      print('singin $error');
+      print('error signin $error');
     });
     // do stuff
   }

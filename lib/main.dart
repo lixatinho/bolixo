@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
-import 'dart:ui';
-
-import 'package:bolixo/ui/home.dart';
 import 'package:bolixo/ui/shared/app_behavior.dart';
+import 'package:flutter/material.dart';
 
-import 'flow/sign_up/sign_view_content.dart';
 import 'flow/sign_up/sign_up.dart';
+import 'flow/sign_up/sign_view_content.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,6 +26,7 @@ class MyApp extends StatelessWidget {
       home: SignUp(authFormType: AuthFormType.signIn),
     );
   }
+
 }
 
 enum Flavor { mock, staging, production }
