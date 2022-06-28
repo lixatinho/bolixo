@@ -69,6 +69,12 @@ class AuthViewState extends State<AuthView> {
     }
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    authViewController.onDispose();
+  }
+
   void showSuccessMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),

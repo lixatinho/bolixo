@@ -4,16 +4,16 @@ import 'auth_view.dart';
 import 'auth_view_content.dart';
 
 class AuthViewController {
-  late AuthViewState AuthView;
+  late AuthViewState? view;
   late AuthFormType _authFormType;
   AuthService authService = AuthService();
 
   void onInit(AuthViewState state, AuthFormType authFormType) {
-    AuthView = state;
+    view = state;
 
     authService.initialize().then((value) {
       if(authService.isLoggedIn()) {
-        AuthView.navigateToHome();
+        view!.navigateToHome();
       } else {
         _authFormType = authFormType;
         updateViewWithAuthType();
@@ -36,7 +36,7 @@ class AuthViewController {
 
     await authService.initialize();
     authService.createUser(user).then((response) {
-      AuthView.showSuccessMessage("Usuário criado com sucesso");
+      view!.showSuccessMessage("Usuário criado com sucesso");
       switchAuthType();
     }, onError: (error) {
       print('error signup $error');
@@ -48,7 +48,7 @@ class AuthViewController {
         UserModel(username: username, email: null, password: password);
     await authService.initialize();
     authService.login(user).then((response) {
-      AuthView.navigateToHome();
+      view!.navigateToHome();
     }, onError: (error) {
       print('error signin $error');
     });
@@ -65,6 +65,10 @@ class AuthViewController {
   }
 
   void updateViewWithAuthType() {
-    AuthView.updateViewContent(AuthViewContent.fromAuthType(_authFormType));
+    view!.updateViewContent(AuthViewContent.fromAuthType(_authFormType));
+  }
+
+  void onDispose() {
+    view = null;
   }
 }

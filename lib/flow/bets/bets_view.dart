@@ -83,6 +83,12 @@ class BetsWidgetState extends State<BetsWidget> {
     }
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    viewController.onDispose();
+  }
+
   void update(List<BetsInDayViewContent> newBets) {
     setState(()
     {

@@ -1,14 +1,19 @@
 import 'package:bolixo/api/model/user_model.dart';
 
-class RankingModel {
+class RankingItemModel {
   UserModel? user;
   int? score;
   int? flies;
   int? results;
 
-  RankingModel(this.user, this.score, this.flies, this.results);
+  RankingItemModel({
+    this.user,
+    this.score,
+    this.flies,
+    this.results
+  });
 
-  RankingModel.fromJson(Map<String, dynamic> json) {
+  RankingItemModel.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
     score = json['score'];
     flies = json['flies'];

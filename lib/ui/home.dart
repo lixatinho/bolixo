@@ -1,5 +1,5 @@
 import 'package:bolixo/flow/bets/bets_view.dart';
-import 'package:bolixo/flow/ranking/ranking.dart';
+import 'package:bolixo/flow/ranking/ranking_view.dart';
 import 'package:bolixo/ui/menu.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +18,7 @@ class HomeState extends State<Home> {
   int _selectedIndex = Menu.bets;
   final pages = {
     Menu.bets: const BetsWidget(),
-    Menu.ranking: Ranking(),
+    Menu.ranking: const RankingWidget(),
   };
 
   @override

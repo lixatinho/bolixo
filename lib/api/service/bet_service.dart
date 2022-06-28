@@ -5,7 +5,7 @@ import 'package:bolixo/api/model/bet_model.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:dio/dio.dart';
 
-import '../model/ranking_model.dart';
+import '../model/ranking_item_model.dart';
 import '../model/user_model.dart';
 import '../urls.dart';
 

@@ -33,7 +33,6 @@ class BetClient implements BetApi {
     try {
       var response = await dio.get("$baseUrl/$getBets/$idBolao");
       if (response.statusCode == 200) {
-        print(response.data);
         var betInDaysList = List<BetsInDayModel>.from(
             response.data.map(
                     (model) => BetsInDayModel.fromJson(model)
@@ -57,7 +56,6 @@ class BetClient implements BetApi {
           data: jsonEncode(betList)
       );
       if (response.statusCode == 200) {
-        print(response.data);
         return Future.value();
       } else {
         return Future.error(response.statusCode);

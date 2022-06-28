@@ -7,24 +7,24 @@ import 'bets_view.dart';
 class BetsViewController {
 
   BetApi api = BetApi.getInstance();
-  late BetsWidgetState viewState;
+  late BetsWidgetState? view;
 
   void onInit(state) async {
-    viewState = state;
+    view = state;
     await _prepareApi();
     _fillBets();
   }
 
   void onDateChanged(int index) {
-    viewState.updateDate(index);
+    view!.updateDate(index);
   }
 
   void onGoalsTeam1Changed(int index, String goals) {
-    viewState.betsByDay[viewState.dateIndex].betList[index].homeTeam.scoreBet = goals;
+    view!.betsByDay[view!.dateIndex].betList[index].homeTeam.scoreBet = goals;
   }
 
   void onGoalsTeam2Changed(int index, String goals) {
-    viewState.betsByDay[viewState.dateIndex].betList[index].awayTeam.scoreBet = goals;
+    view!.betsByDay[view!.dateIndex].betList[index].awayTeam.scoreBet = goals;
   }
 
   Future _prepareApi() async {
@@ -39,7 +39,7 @@ class BetsViewController {
             .map((betsInDayApiModel) => BetsInDayViewContent.fromApiModel(betsInDayApiModel))
             .toList()
             .cast<BetsInDayViewContent>();
-        viewState.update(betsInDayViewContentList);
+        view!.update(betsInDayViewContentList);
       }, onError: (error) {
         print(error);
       }
@@ -47,19 +47,23 @@ class BetsViewController {
   }
 
   void saveBets() {
-    List<BetModel> betList = viewState.betsByDay
+    List<BetModel> betList = view!.betsByDay
         .expand((betsByDay) => betsByDay.betList.map((bet) => bet.toApiModel()))
         .toList()
         .cast();
-    viewState.updateIsLoading(true);
+    view!.updateIsLoading(true);
     api.saveUserBets(betList)
       .then((empty)
         {
-          viewState.updateIsLoading(false);
+          view!.updateIsLoading(false);
         },
         onError: (error) {
           print(error);
         }
       );
+  }
+
+  void onDispose() {
+    view = null;
   }
 }
