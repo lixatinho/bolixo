@@ -3,9 +3,8 @@ import 'dart:developer';
 
 import 'package:bolixo/api/model/bet_model.dart';
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../service/AuthRepository.dart';
+import '../../flow/auth/auth_repository.dart';
 import '../model/bets_in_day_model.dart';
 import 'bet_api_interface.dart';
 
@@ -14,7 +13,7 @@ class BetClient implements BetApi {
   String baseUrl;
   String getBets = "bet";
   String saveBet = "bet";
-  String idBolao = "2";
+  String idBolao = "1";
   Dio dio = Dio();
   late AuthRepository repository;
 
@@ -33,7 +32,6 @@ class BetClient implements BetApi {
   Future<List<BetsInDayModel>> getUserBets() async {
     try {
       var response = await dio.get("$baseUrl/$getBets/$idBolao");
-      var prefsInstance = await SharedPreferences.getInstance();
       if (response.statusCode == 200) {
         print(response.data);
         var betInDaysList = List<BetsInDayModel>.from(

@@ -18,11 +18,10 @@ class AuthClient implements AuthApi {
   @override
   Future<AuthResponse> login(UserModel user) async {
     try {
-      var response =
-          await dio.post("$baseUrl/$loginPath", data: jsonEncode(user));
+      var response = await dio.post("$baseUrl/$loginPath", data: jsonEncode(user));
       if (response.statusCode == 200) {
         print(response.data);
-        AuthResponse authResponse = json.decode(response.data);
+        AuthResponse authResponse = AuthResponse.fromJson(response.data);
         return Future.value(authResponse);
       } else {
         return Future.error(response.statusCode);
@@ -39,7 +38,6 @@ class AuthClient implements AuthApi {
       var response =
           await dio.post("$baseUrl/$signUpPath", data: jsonEncode(user));
       if (response.statusCode == 200) {
-        print(response.data);
         return Future.value();
       } else {
         return Future.error(response.statusCode);

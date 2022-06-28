@@ -31,9 +31,7 @@ class BetsWidgetState extends State<BetsWidget> {
     if(isLoading) {
       return Container(
         child: const Center(
-          child: CircularProgressIndicator(
-
-          ),
+          child: CircularProgressIndicator(),
         ),
       );
     } else {

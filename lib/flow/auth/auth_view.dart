@@ -1,32 +1,28 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bolixo/api/services/validateLogin.dart';
-import 'package:bolixo/flow/sign_up/sign_controller.dart';
 import 'package:bolixo/ui/home.dart';
 import 'package:flutter/material.dart';
 
 import '../../ui/shared/app_decoration.dart';
-import 'sign_view_content.dart';
+import 'auth_view_content.dart';
+import 'auth_viewcontroller.dart';
 
-int? uidC;
-User? userC;
-
-class SignUp extends StatefulWidget {
+class AuthView extends StatefulWidget {
   final AuthFormType authFormType;
   // ignore: prefer_const_constructors_in_immutables
-  SignUp({Key? key, required this.authFormType}) : super(key: key);
+  AuthView({Key? key, required this.authFormType}) : super(key: key);
 
   @override
-  SignUpState createState() => SignUpState(authFormType: this.authFormType);
+  AuthViewState createState() => AuthViewState(authFormType: this.authFormType);
 }
 
-class SignUpState extends State<SignUp> {
-  late SignViewContent viewContent;
-  SingUpController singUpController = SingUpController();
+class AuthViewState extends State<AuthView> {
+  AuthViewContent viewContent = AuthViewContent();
+  AuthViewController singUpController = AuthViewController();
   AuthFormType authFormType;
   String? _name, _email, _password;
   final formKey = GlobalKey<FormState>();
 
-  SignUpState({required this.authFormType});
+  AuthViewState({required this.authFormType});
 
   @override
   initState() {
@@ -38,30 +34,38 @@ class SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: Container(
-        color: Colors.white,
-        height: height,
-        width: width,
-        child: SafeArea(
-            child: Column(
-          children: <Widget>[
-            SizedBox(height: height * 0.025),
-            // showMessage(),
-            SizedBox(height: height * 0.025),
-            buildHeaderText(),
-            SizedBox(height: height * 0.05),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Form(
-                key: formKey,
-                child: Column(children: buildInputs() + buildButtons()),
-              ),
-            )
-          ],
-        )),
-      ),
-    );
+    if(viewContent.isLoading) {
+      return Container(
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return Scaffold(
+        body: Container(
+          color: Colors.white,
+          height: height,
+          width: width,
+          child: SafeArea(
+              child: Column(
+            children: <Widget>[
+              SizedBox(height: height * 0.025),
+              // showMessage(),
+              SizedBox(height: height * 0.025),
+              buildHeaderText(),
+              SizedBox(height: height * 0.05),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Form(
+                  key: formKey,
+                  child: Column(children: buildInputs() + buildButtons()),
+                ),
+              )
+            ],
+          )),
+        ),
+      );
+    }
   }
 
   void showSuccessMessage(String message) {}
@@ -75,7 +79,7 @@ class SignUpState extends State<SignUp> {
         builder: (context) => const Home(title: 'bolão lixão')));
   }
 
-  void updateViewContent(SignViewContent viewContent) {
+  void updateViewContent(AuthViewContent viewContent) {
     setState(() {
       this.viewContent = viewContent;
     });
@@ -127,7 +131,6 @@ class SignUpState extends State<SignUp> {
     textFields.add(TextFormField(
       keyboardType: TextInputType.name,
       onChanged: (value) => _name = value,
-      validator: NameValidator.validate,
       style: const TextStyle(fontSize: 22.0),
       decoration: buildSignUpDecoration("Username"),
     ));
@@ -139,7 +142,6 @@ class SignUpState extends State<SignUp> {
       textFields.add(TextFormField(
         keyboardType: TextInputType.emailAddress,
         onChanged: (value) => _email = value,
-        validator: EmailValidator.validate,
         style: const TextStyle(fontSize: 22.0),
         decoration: buildSignUpDecoration("Email"),
       ));
@@ -148,7 +150,6 @@ class SignUpState extends State<SignUp> {
 
     // Password
     textFields.add(TextFormField(
-      validator: PasswordValidator.validate,
       keyboardType: TextInputType.visiblePassword,
       onChanged: (value) => _password = value,
       style: const TextStyle(fontSize: 22.0),

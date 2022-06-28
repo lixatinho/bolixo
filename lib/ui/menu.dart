@@ -1,4 +1,3 @@
-import 'package:bolixo/flow/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
@@ -32,9 +31,9 @@ class Menu extends StatelessWidget {
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text('${userC?.name}'),
-                    Text('${userC?.email}'),
+                  children: const <Widget>[
+                    Text(""),
+                    Text(""),
                   ],
                 )
               ],

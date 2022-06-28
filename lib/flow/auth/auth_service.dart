@@ -1,8 +1,9 @@
 import 'package:bolixo/api/model/auth_response.dart';
 import 'package:bolixo/api/model/user_model.dart';
-import 'package:bolixo/service/AuthRepository.dart';
+import 'package:bolixo/flow/auth/auth_repository.dart';
 
-import '../api/auth/auth_api.dart';
+import '../../api/auth/auth_api.dart';
+
 
 class AuthService {
   late AuthApi api;

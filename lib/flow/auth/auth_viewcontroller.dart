@@ -1,14 +1,14 @@
-import 'package:bolixo/flow/sign_up/sign_up.dart';
 import '../../api/model/user_model.dart';
-import '../../service/AuthService.dart';
-import 'sign_view_content.dart';
+import 'auth_service.dart';
+import 'auth_view.dart';
+import 'auth_view_content.dart';
 
-class SingUpController {
-  late SignUpState signUpState;
+class AuthViewController {
+  late AuthViewState signUpState;
   late AuthFormType _authFormType;
   AuthService authService = AuthService();
 
-  void onInit(SignUpState state, AuthFormType authFormType) {
+  void onInit(AuthViewState state, AuthFormType authFormType) {
     signUpState = state;
 
     authService.initialize().then((value) {
@@ -65,6 +65,6 @@ class SingUpController {
   }
 
   void updateViewWithAuthType() {
-    signUpState.updateViewContent(SignViewContent.fromAuthType(_authFormType));
+    signUpState.updateViewContent(AuthViewContent.fromAuthType(_authFormType));
   }
 }
