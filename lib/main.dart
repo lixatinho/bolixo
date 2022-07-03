@@ -28,4 +28,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
-enum Flavor { mock, staging, production }
+enum Flavor { mock, staging, production, local }

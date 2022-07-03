@@ -24,6 +24,8 @@ abstract class BetApi {
           return BetClient(baseUrl: 'https://lixolao.herokuapp.com');
         case Flavor.production:
           return MockBetApi();
+        case Flavor.local:
+          return BetClient(baseUrl: 'localhost:8080');
       }
     }
     return betApi!;
