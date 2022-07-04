@@ -101,7 +101,7 @@ class BetItemView extends StatelessWidget {
             maxLength: 2,
             textAlign: TextAlign.center,
             controller: controller,
-            onChanged: (goals) => callback(awayScoreTextFieldController.text),
+            onChanged: (goals) => callback(controller.text),
             enabled: bet.isBetEnabled,
           )
         )
