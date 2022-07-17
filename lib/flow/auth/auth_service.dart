@@ -4,7 +4,6 @@ import 'package:bolixo/flow/auth/auth_repository.dart';
 
 import '../../api/auth/auth_api.dart';
 
-
 class AuthService {
   late AuthApi api;
   late AuthRepository repository;
@@ -21,6 +20,10 @@ class AuthService {
 
   bool isLoggedIn() {
     return repository.getToken() != null;
+  }
+
+  void logOff() {
+    repository.iniToke();
   }
 
   Future<bool> login(UserModel user) async {

@@ -3,6 +3,9 @@ import 'package:bolixo/flow/ranking/ranking_view.dart';
 import 'package:bolixo/ui/menu.dart';
 import 'package:flutter/material.dart';
 
+import '../flow/auth/auth_view.dart';
+import '../flow/auth/auth_view_content.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key, required this.title});
 
@@ -19,6 +22,7 @@ class HomeState extends State<Home> {
   final pages = {
     Menu.bets: const BetsWidget(),
     Menu.ranking: const RankingWidget(),
+    Menu.logoff: AuthView(authFormType: AuthFormType.signIn),
   };
 
   @override

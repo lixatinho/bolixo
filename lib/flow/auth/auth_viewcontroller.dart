@@ -12,7 +12,7 @@ class AuthViewController {
     view = state;
 
     authService.initialize().then((value) {
-      if(authService.isLoggedIn()) {
+      if (authService.isLoggedIn()) {
         view!.navigateToHome();
       } else {
         _authFormType = authFormType;

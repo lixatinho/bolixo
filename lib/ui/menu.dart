@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../flow/auth/auth_service.dart';
+
 class Menu extends StatelessWidget {
   static const int bets = 1;
   static const ranking = 2;
+  static const logoff = 3;
   Function onTapCallback;
 
   Menu({Key? key, required this.onTapCallback}) : super(key: key);
@@ -63,6 +66,17 @@ class Menu extends StatelessWidget {
         title: const Text('Ranking'),
         onTap: () {
           onTapCallback(ranking);
+          Navigator.pop(context);
+        },
+      ),
+    );
+    listTile.add(
+      ListTile(
+        leading: const Icon(Icons.logout),
+        title: const Text('Logoff'),
+        onTap: () {
+          AuthService().logOff();
+          onTapCallback(logoff);
           Navigator.pop(context);
         },
       ),
