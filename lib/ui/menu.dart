@@ -6,6 +6,7 @@ class Menu extends StatelessWidget {
   static const int bets = 1;
   static const ranking = 2;
   static const logoff = 3;
+  static const sweeps = 4;
   Function onTapCallback;
 
   Menu({Key? key, required this.onTapCallback}) : super(key: key);
@@ -72,6 +73,16 @@ class Menu extends StatelessWidget {
     );
     listTile.add(
       ListTile(
+        leading: const Icon(Icons.select_all),
+        title: const Text('Bolões'),
+        onTap: () {
+          onTapCallback(sweeps);
+          Navigator.pop(context);
+        },
+      ),
+    );
+    listTile.add(
+      ListTile(
         leading: const Icon(Icons.logout),
         title: const Text('Logoff'),
         onTap: () {
@@ -81,6 +92,7 @@ class Menu extends StatelessWidget {
         },
       ),
     );
+
     return listTile;
   }
 }
