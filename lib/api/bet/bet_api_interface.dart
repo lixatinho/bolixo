@@ -25,7 +25,7 @@ abstract class BetApi {
         case Flavor.production:
           return MockBetApi();
         case Flavor.local:
-          return BetClient(baseUrl: 'localhost:8080');
+          return BetClient(baseUrl: 'http://localhost:8080');
       }
     }
     return betApi!;

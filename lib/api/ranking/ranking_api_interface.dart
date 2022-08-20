@@ -20,6 +20,8 @@ abstract class RankingApi {
           return RankingClient(baseUrl: 'https://lixolao.herokuapp.com');
         case Flavor.production:
           return RankingMockApi();
+        case Flavor.local:
+          return RankingClient(baseUrl: 'http://localhost:8080');
       }
     }
     return betApi!;
