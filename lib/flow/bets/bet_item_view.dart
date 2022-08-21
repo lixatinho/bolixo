@@ -56,7 +56,12 @@ class BetItemView extends StatelessWidget {
               matchScoreAndBet(bet.homeTeam),
 
               // Middle
-              versusText(),
+              Column(
+                children: [
+                  versusText(),
+                  dateText(bet.date),
+                ],
+              ),
 
               betField(awayScoreTextFieldController, awayGoalsChanged, false),
               matchScoreAndBet(bet.awayTeam),
@@ -200,9 +205,20 @@ class BetItemView extends StatelessWidget {
             color: Colors.grey
           )
         ),
-        child: const Text('VS',
+        child: const Text('x',
           style: TextStyle(
             color: Colors.grey,
+            fontSize: 11
+          )
+        )
+    );
+  }
+  Widget dateText(DateViewContent dateViewContent) {
+    return Container(
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+        child: Text(dateViewContent.value,
+          style: TextStyle(
+            color: dateViewContent.color,
             fontSize: 11
           )
         )

@@ -38,12 +38,14 @@ class MockBetApi implements BetApi {
                       home: TeamModel(
                           id: betsInDayIndex * 2,
                           name: "Team ${betsInDayIndex * 2}",
-                          flagUrl: "https://lixolao-flags.s3.amazonaws.com/BRA.webp"
+                          flagUrl: "https://lixolao-flags.s3.amazonaws.com/BRA.webp",
+                          abbreviation: "T${betsInDayIndex * 2}"
                       ),
                       away: TeamModel(
                           id: betsInDayIndex * 2 + 1,
                           name: "Team ${betsInDayIndex * 2 + 1}",
-                          flagUrl: "https://lixolao-flags.s3.amazonaws.com/ARG.webp"
+                          flagUrl: "https://lixolao-flags.s3.amazonaws.com/ARG.webp",
+                          abbreviation: "T${betsInDayIndex * 2 + 1}"
                       ),
                       matchDate: today.add(Duration(days: daysIndex - middle)),
                       homeScore: homeScore,

@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:bolixo/api/model/bets_in_day_model.dart';
 import 'package:bolixo/api/model/bet_model.dart';
+import 'package:bolixo/ui/select_date_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../api/model/team_model.dart';
 
@@ -32,6 +34,7 @@ class BetViewContent {
   TeamViewContent awayTeam;
   ScoreViewContent score;
   bool isBetEnabled;
+  DateViewContent date;
 
   BetViewContent({
     required this.model,
@@ -39,6 +42,7 @@ class BetViewContent {
     required this.awayTeam,
     required this.score,
     required this.isBetEnabled,
+    required this.date,
   });
 
   static fromApiModel(BetModel betApiModel) {
@@ -54,6 +58,7 @@ class BetViewContent {
             betApiModel.awayScoreBet,
             betApiModel.match?.awayScore
         ),
+        date: DateViewContent.fromApiModel(betApiModel.match?.matchDate),
         score: ScoreViewContent.fromApiModel(betApiModel.score),
         isBetEnabled: betApiModel.match?.matchDate.isAfter(DateTime.now().toUtc()) == true
     );
@@ -85,7 +90,7 @@ class TeamViewContent {
 
   static fromApiModel(TeamModel? teamApiModel, int? bet, int? actualScore) {
     return TeamViewContent(
-        name: teamApiModel?.name ?? "",
+        name: teamApiModel?.abbreviation ?? "",
         flagUrl: teamApiModel?.flagUrl ?? "",
         scoreBet: bet?.toString() ?? "",
         actualScore: actualScore?.toString() ?? ""
@@ -120,6 +125,30 @@ class ScoreViewContent {
         value: score > 0 ? "+ $score" : " $score ",
         color: Colors.black87,
         background: score > 0 ? Colors.green : Colors.red
+    );
+  }
+}
+
+class DateViewContent {
+  String value;
+  Color color;
+
+  DateViewContent({
+    required this.value,
+    required this.color,
+  });
+
+  static fromApiModel(DateTime? dateTime) {
+    if(dateTime == null) {
+      return DateViewContent(
+          value: "",
+          color: Colors.transparent
+      );
+    }
+    DateFormat df = DateFormat('HH:mm');
+    return DateViewContent(
+        value: df.format(dateTime),
+        color: Colors.black87,
     );
   }
 }
