@@ -26,6 +26,7 @@ class MockBetApi implements BetApi {
       List.generate(numberOfDays, (daysIndex) =>
         BetsInDayModel(
             date: today.add(Duration(days: daysIndex - middle)),
+            maxPointsInDay: betsInDay * 5,
             betList: List.generate(betsInDay, (betsInDayIndex) {
               int homeScore = random.nextInt(5);
               int awayScore = random.nextInt(5);

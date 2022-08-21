@@ -11,20 +11,39 @@ import '../../api/model/team_model.dart';
 class BetsInDayViewContent {
   DateTime date;
   List<BetViewContent> betList;
+  int totalScore;
+  int maxScore;
+  double accuracy;
 
   BetsInDayViewContent({
     required this.date,
-    required this.betList
+    required this.betList,
+    required this.totalScore,
+    required this.maxScore,
+    required this.accuracy,
   });
 
   static fromApiModel(BetsInDayModel betsInDayApiModel) {
+    int totalScore = _calculateTotalScore(betsInDayApiModel);
+    double accuracy = _calculateAccuracy(betsInDayApiModel, totalScore);
     return BetsInDayViewContent(
         date: betsInDayApiModel.date,
+        totalScore: totalScore,
+        accuracy: accuracy,
+        maxScore: betsInDayApiModel.maxPointsInDay,
         betList: betsInDayApiModel.betList
           .map((betModel) => BetViewContent.fromApiModel(betModel))
           .toList()
           .cast<BetViewContent>()
     );
+  }
+
+  static int _calculateTotalScore(BetsInDayModel betsInDayModel) {
+    return betsInDayModel.betList.fold(0, (previousValue, bet) => bet.score ?? 0);
+  }
+
+  static double _calculateAccuracy(BetsInDayModel betsInDayModel, int total) {
+    return total / betsInDayModel.maxPointsInDay;
   }
 }
 
