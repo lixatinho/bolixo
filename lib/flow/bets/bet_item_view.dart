@@ -48,7 +48,7 @@ class BetItemView extends StatelessWidget {
                   // Flag
                   teamFlag(bet.homeTeam.flagUrl),
                   // Name
-                  teamName(bet.homeTeam.name)
+                  teamName(bet.homeTeam.name, bet.homeTeam.tooltip)
                 ]
               ),
 
@@ -58,6 +58,7 @@ class BetItemView extends StatelessWidget {
               // Middle
               Column(
                 children: [
+                  betScoredPoints(),
                   versusText(),
                   dateText(bet.date),
                 ],
@@ -70,11 +71,9 @@ class BetItemView extends StatelessWidget {
               Column(
                   children: [
                     teamFlag(bet.awayTeam.flagUrl),
-                    teamName(bet.awayTeam.name)
+                    teamName(bet.awayTeam.name, bet.awayTeam.tooltip)
                   ]
               ),
-
-              betScoredPoints(),
             ]
           )
         )
@@ -93,7 +92,8 @@ class BetItemView extends StatelessWidget {
     double marginRight = !isHomeTeam ? space : spaceBetweenTeams;
     return Visibility(
       visible: bet.isBetEnabled,
-      child: Padding(
+      child: Tooltip(
+        message: bet.betFieldTooltip,
         padding: EdgeInsets.only(left: marginLeft, right: marginRight),
         child: SizedBox(
           width: 45,
@@ -129,7 +129,8 @@ class BetItemView extends StatelessWidget {
   Widget betText(String text) {
     return Visibility(
       visible: !bet.isBetEnabled && text.isNotEmpty,
-      child: Padding(
+      child: Tooltip(
+        message: bet.savedBetTooltip,
         padding: const EdgeInsets.only(left: 4, right: 4),
         child: SizedBox(
           width: 50,
@@ -151,7 +152,8 @@ class BetItemView extends StatelessWidget {
   Widget actualScoreText(String text) {
     return Visibility(
         visible: !bet.isBetEnabled && text.isNotEmpty,
-        child: Padding(
+        child: Tooltip(
+            message: bet.scoreTooltip,
             padding: const EdgeInsets.only(left: 4, right: 4),
             child: SizedBox(
                 width: 50,
@@ -182,9 +184,10 @@ class BetItemView extends StatelessWidget {
     );
   }
 
-  Widget teamName(String name) {
-    return Container(
+  Widget teamName(String name, String tooltip) {
+    return Tooltip(
       padding: const EdgeInsets.only(top: 6),
+      message: tooltip,
       child: Text(
         name,
         style: const TextStyle(
@@ -198,27 +201,20 @@ class BetItemView extends StatelessWidget {
   Widget versusText() {
     return Container(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            width: 0.1,
-            color: Colors.grey
-          )
-        ),
-        child: const Text('x',
+        child: const Text('X',
           style: TextStyle(
-            color: Colors.grey,
-            fontSize: 11
+            color: Colors.blueGrey,
+            fontSize: 14,
           )
         )
     );
   }
-  Widget dateText(DateViewContent dateViewContent) {
+  Widget dateText(DateViewContent? dateViewContent) {
     return Container(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
-        child: Text(dateViewContent.value,
+        child: Text(dateViewContent?.value ?? "",
           style: TextStyle(
-            color: dateViewContent.color,
+            color: dateViewContent?.color,
             fontSize: 11
           )
         )
@@ -230,8 +226,9 @@ class BetItemView extends StatelessWidget {
     const double hPadding = 12;
     return Visibility(
       visible: bet.score.value.isNotEmpty,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 32),
+      child: Tooltip(
+        message: bet.earnedPointsTooltip,
+        padding: const EdgeInsets.only(),
         child: Card(
           color: bet.score.background,
           elevation: 0,

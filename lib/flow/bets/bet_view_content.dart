@@ -34,6 +34,10 @@ class BetViewContent {
   TeamViewContent awayTeam;
   ScoreViewContent score;
   bool isBetEnabled;
+  String betFieldTooltip;
+  String scoreTooltip;
+  String earnedPointsTooltip;
+  String savedBetTooltip;
   DateViewContent date;
 
   BetViewContent({
@@ -43,6 +47,10 @@ class BetViewContent {
     required this.score,
     required this.isBetEnabled,
     required this.date,
+    required this.betFieldTooltip,
+    required this.scoreTooltip,
+    required this.savedBetTooltip,
+    required this.earnedPointsTooltip,
   });
 
   static fromApiModel(BetModel betApiModel) {
@@ -60,7 +68,11 @@ class BetViewContent {
         ),
         date: DateViewContent.fromApiModel(betApiModel.match?.matchDate),
         score: ScoreViewContent.fromApiModel(betApiModel.score),
-        isBetEnabled: betApiModel.match?.matchDate.isAfter(DateTime.now().toUtc()) == true
+        isBetEnabled: betApiModel.match?.matchDate.isAfter(DateTime.now().toUtc()) == true,
+      betFieldTooltip: "Aposta",
+      scoreTooltip: "Resultado do jogo",
+      savedBetTooltip: "Aposta",
+      earnedPointsTooltip: " Pontos ganhos ",
     );
   }
 
@@ -77,12 +89,14 @@ class BetViewContent {
 
 class TeamViewContent {
   String name;
+  String tooltip;
   String flagUrl;
   String scoreBet;
   String actualScore;
 
   TeamViewContent({
     required this.name,
+    required this.tooltip,
     required this.flagUrl,
     required this.scoreBet,
     required this.actualScore
@@ -91,6 +105,7 @@ class TeamViewContent {
   static fromApiModel(TeamModel? teamApiModel, int? bet, int? actualScore) {
     return TeamViewContent(
         name: teamApiModel?.abbreviation ?? "",
+        tooltip: teamApiModel?.name ?? "",
         flagUrl: teamApiModel?.flagUrl ?? "",
         scoreBet: bet?.toString() ?? "",
         actualScore: actualScore?.toString() ?? ""
@@ -122,9 +137,9 @@ class ScoreViewContent {
       );
     }
     return ScoreViewContent(
-        value: score > 0 ? "+ $score" : " $score ",
-        color: Colors.black87,
-        background: score > 0 ? Colors.green : Colors.red
+        value: score > 0 ? "+ $score" : (score == 0 ? " $score " :  "- $score "),
+        color: score > 0 ? Colors.green : Colors.red,
+        background: Colors.transparent
     );
   }
 }
