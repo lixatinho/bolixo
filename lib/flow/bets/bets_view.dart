@@ -46,6 +46,7 @@ class BetsWidgetState extends State<BetsWidget> {
                     viewController.onDateChanged(index),
               ),
             ),
+            scoreOverview(),
             Expanded(
               child: Scaffold(
                 body: Container(
@@ -95,6 +96,25 @@ class BetsWidgetState extends State<BetsWidget> {
       betsByDay = newBets;
       isLoading = false;
     });
+  }
+
+  Widget scoreOverview() {
+    return Container(
+      alignment: Alignment.topRight,
+      padding: EdgeInsets.only(top: 15),
+      width: 200,
+      child: Column(
+
+        children: [
+          Text("Pontuação do dia: ${betsByDay[dateIndex].totalScore}/${betsByDay[dateIndex].maxScore}"),
+          const SizedBox(height: 7),
+          LinearProgressIndicator(
+            value: betsByDay[dateIndex].accuracy,
+            color: Colors.indigoAccent,
+          ),
+        ],
+      ),
+    );
   }
 
   void updateDate(int newDateIndex) {

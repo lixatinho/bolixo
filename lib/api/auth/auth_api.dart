@@ -16,6 +16,8 @@ abstract class AuthApi {
       switch (MyApp.flavor) {
         case Flavor.mock:
           return MockAuthApi();
+        case Flavor.local:
+          return AuthClient(baseUrl: "http://localhost:8080");
         case Flavor.staging:
           return AuthClient(baseUrl: 'https://lixolao.herokuapp.com');
         case Flavor.production:

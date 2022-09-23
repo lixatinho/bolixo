@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       scrollBehavior: AppBehaviors.scrollBehavior,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
+        scaffoldBackgroundColor: Colors.white,
       ),
       // home: const Home(title: appTitle)
       home: AuthView(authFormType: AuthFormType.signIn),
