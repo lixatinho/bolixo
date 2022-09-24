@@ -6,17 +6,15 @@ import '../model/bets_in_day_model.dart';
 import 'bet_api_mock.dart';
 
 abstract class BetApi {
-
   /// Exposed methods
   Future initialize();
   Future<List<BetsInDayModel>> getUserBets();
   Future saveUserBets(List<BetModel> betList);
 
-
   /// Injection turnaround
   static BetApi? betApi;
   static BetApi getInstance() {
-    if(betApi == null) {
+    if (betApi == null) {
       switch (MyApp.flavor) {
         case Flavor.mock:
           return MockBetApi();

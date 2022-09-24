@@ -8,7 +8,6 @@ import '../model/bet_model.dart';
 import 'bet_api_interface.dart';
 
 class MockBetApi implements BetApi {
-
   @override
   Future initialize() {
     return Future.value();
@@ -21,10 +20,10 @@ class MockBetApi implements BetApi {
     int numberOfDays = 20;
     int betsInDay = 10;
     int middle = (numberOfDays / 2) as int;
-    
-    return Future.value(
-      List.generate(numberOfDays, (daysIndex) =>
-        BetsInDayModel(
+
+    return Future.value(List.generate(
+        numberOfDays,
+        (daysIndex) => BetsInDayModel(
             date: today.add(Duration(days: daysIndex - middle)),
             maxPointsInDay: betsInDay * 5,
             betList: List.generate(betsInDay, (betsInDayIndex) {
@@ -39,37 +38,32 @@ class MockBetApi implements BetApi {
                       home: TeamModel(
                           id: betsInDayIndex * 2,
                           name: "Team ${betsInDayIndex * 2}",
-                          flagUrl: "https://lixolao-flags.s3.amazonaws.com/BRA.webp",
-                          abbreviation: "T${betsInDayIndex * 2}"
-                      ),
+                          flagUrl:
+                              "https://lixolao-flags.s3.amazonaws.com/BRA.webp",
+                          abbreviation: "T${betsInDayIndex * 2}"),
                       away: TeamModel(
                           id: betsInDayIndex * 2 + 1,
                           name: "Team ${betsInDayIndex * 2 + 1}",
-                          flagUrl: "https://lixolao-flags.s3.amazonaws.com/ARG.webp",
-                          abbreviation: "T${betsInDayIndex * 2 + 1}"
-                      ),
+                          flagUrl:
+                              "https://lixolao-flags.s3.amazonaws.com/ARG.webp",
+                          abbreviation: "T${betsInDayIndex * 2 + 1}"),
                       matchDate: today.add(Duration(days: daysIndex - middle)),
                       homeScore: homeScore,
-                      awayScore: awayScore
-                  ),
+                      awayScore: awayScore),
                   homeScoreBet: homeBet,
                   awayScoreBet: awayBet,
-                  score: daysIndex > middle ? null : mockScore(homeScore, awayScore, homeBet, awayBet)
-              );
-            }
-              
-            )
-          )
-        )
-      );
+                  score: daysIndex > middle
+                      ? null
+                      : mockScore(homeScore, awayScore, homeBet, awayBet));
+            }))));
   }
-  
+
   int mockScore(int homeScore, int awayScore, int homeBet, int awayBet) {
     int score = 0;
-    if(homeScore == homeBet) {
+    if (homeScore == homeBet) {
       score += 2;
     }
-    if(awayScore == awayBet) {
+    if (awayScore == awayBet) {
       score += 2;
     }
     return score;

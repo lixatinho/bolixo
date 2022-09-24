@@ -32,14 +32,14 @@ class BetsInDayViewContent {
         accuracy: accuracy,
         maxScore: betsInDayApiModel.maxPointsInDay,
         betList: betsInDayApiModel.betList
-          .map((betModel) => BetViewContent.fromApiModel(betModel))
-          .toList()
-          .cast<BetViewContent>()
-    );
+            .map((betModel) => BetViewContent.fromApiModel(betModel))
+            .toList()
+            .cast<BetViewContent>());
   }
 
   static int _calculateTotalScore(BetsInDayModel betsInDayModel) {
-    return betsInDayModel.betList.fold(0, (previousValue, bet) => bet.score ?? 0);
+    return betsInDayModel.betList
+        .fold(0, (previousValue, bet) => bet.score ?? 0);
   }
 
   static double _calculateAccuracy(BetsInDayModel betsInDayModel, int total) {
@@ -51,6 +51,7 @@ class BetViewContent {
   BetModel model;
   TeamViewContent homeTeam;
   TeamViewContent awayTeam;
+  String type;
   ScoreViewContent score;
   bool isBetEnabled;
   String betFieldTooltip;
@@ -63,6 +64,7 @@ class BetViewContent {
     required this.model,
     required this.homeTeam,
     required this.awayTeam,
+    required this.type,
     required this.score,
     required this.isBetEnabled,
     required this.date,
@@ -74,20 +76,19 @@ class BetViewContent {
 
   static fromApiModel(BetModel betApiModel) {
     return BetViewContent(
-        model: betApiModel,
-        homeTeam: TeamViewContent.fromApiModel(
-            betApiModel.match?.home,
-            betApiModel.homeScoreBet,
-            betApiModel.match?.homeScore,
-        ),
-        awayTeam: TeamViewContent.fromApiModel(
-            betApiModel.match?.away,
-            betApiModel.awayScoreBet,
-            betApiModel.match?.awayScore
-        ),
-        date: DateViewContent.fromApiModel(betApiModel.match?.matchDate),
-        score: ScoreViewContent.fromApiModel(betApiModel.score),
-        isBetEnabled: betApiModel.match?.matchDate.isAfter(DateTime.now().toUtc()) == true,
+      model: betApiModel,
+      homeTeam: TeamViewContent.fromApiModel(
+        betApiModel.match?.home,
+        betApiModel.homeScoreBet,
+        betApiModel.match?.homeScore,
+      ),
+      awayTeam: TeamViewContent.fromApiModel(betApiModel.match?.away,
+          betApiModel.awayScoreBet, betApiModel.match?.awayScore),
+      date: DateViewContent.fromApiModel(betApiModel.match?.matchDate),
+      type: _defineType(betApiModel.match!.type),
+      score: ScoreViewContent.fromApiModel(betApiModel.score),
+      isBetEnabled:
+          betApiModel.match?.matchDate.isAfter(DateTime.now().toUtc()) == true,
       betFieldTooltip: "Aposta",
       scoreTooltip: "Resultado do jogo",
       savedBetTooltip: "Aposta",
@@ -97,12 +98,11 @@ class BetViewContent {
 
   toApiModel() {
     return BetModel(
-      id: model.id,
-      match: model.match,
-      homeScoreBet: int.tryParse(homeTeam.scoreBet),
-      awayScoreBet: int.tryParse(awayTeam.scoreBet),
-      score: model.score
-    );
+        id: model.id,
+        match: model.match,
+        homeScoreBet: int.tryParse(homeTeam.scoreBet),
+        awayScoreBet: int.tryParse(awayTeam.scoreBet),
+        score: model.score);
   }
 }
 
@@ -113,13 +113,12 @@ class TeamViewContent {
   String scoreBet;
   String actualScore;
 
-  TeamViewContent({
-    required this.name,
-    required this.tooltip,
-    required this.flagUrl,
-    required this.scoreBet,
-    required this.actualScore
-  });
+  TeamViewContent(
+      {required this.name,
+      required this.tooltip,
+      required this.flagUrl,
+      required this.scoreBet,
+      required this.actualScore});
 
   static fromApiModel(TeamModel? teamApiModel, int? bet, int? actualScore) {
     return TeamViewContent(
@@ -127,8 +126,7 @@ class TeamViewContent {
         tooltip: teamApiModel?.name ?? "",
         flagUrl: teamApiModel?.flagUrl ?? "",
         scoreBet: bet?.toString() ?? "",
-        actualScore: actualScore?.toString() ?? ""
-    );
+        actualScore: actualScore?.toString() ?? "");
   }
 
   String score() {
@@ -148,19 +146,34 @@ class ScoreViewContent {
   });
 
   static fromApiModel(int? score) {
-    if(score == null) {
+    if (score == null) {
       return ScoreViewContent(
-          value: "",
-          background: Colors.transparent,
-          color: Colors.transparent
-      );
+          value: "", background: Colors.transparent, color: Colors.transparent);
     }
     return ScoreViewContent(
-        value: score > 0 ? "+ $score" : (score == 0 ? " $score " :  "- $score "),
+        value: score > 0 ? "+ $score" : (score == 0 ? " $score " : "- $score "),
         color: score > 0 ? Colors.green : Colors.red,
-        background: Colors.transparent
-    );
+        background: Colors.transparent);
   }
+}
+
+String _defineType(phase) {
+  switch (phase) {
+    case 0:
+      return 'Grupos';
+    case 1:
+      return 'Oitavas de Final';
+    case 2:
+      return 'Quartas de Final';
+    case 3:
+      return 'Semi-Final';
+    case 4:
+      return 'Disputa 3° Lugar';
+    case 5:
+      return 'Final';
+    default:
+  }
+  return 'Goku Win';
 }
 
 class DateViewContent {
@@ -173,16 +186,13 @@ class DateViewContent {
   });
 
   static fromApiModel(DateTime? dateTime) {
-    if(dateTime == null) {
-      return DateViewContent(
-          value: "",
-          color: Colors.transparent
-      );
+    if (dateTime == null) {
+      return DateViewContent(value: "", color: Colors.transparent);
     }
     DateFormat df = DateFormat('HH:mm');
     return DateViewContent(
-        value: df.format(dateTime),
-        color: Colors.black87,
+      value: df.format(dateTime),
+      color: Colors.black87,
     );
   }
 }

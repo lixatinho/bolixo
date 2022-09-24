@@ -1,11 +1,13 @@
+import 'dart:html';
+
 import 'package:bolixo/api/bet/bet_api_interface.dart';
 import 'package:bolixo/api/model/bet_model.dart';
 import 'package:bolixo/flow/bets/bet_view_content.dart';
+import 'package:dio/dio.dart';
 
 import 'bets_view.dart';
 
 class BetsViewController {
-
   BetApi api = BetApi.getInstance();
   late BetsWidgetState? view;
 
@@ -32,18 +34,17 @@ class BetsViewController {
   }
 
   void _fillBets() {
-    api.getUserBets()
-        .then((betsInDayList)
-      {
-        List<BetsInDayViewContent> betsInDayViewContentList = betsInDayList
-            .map((betsInDayApiModel) => BetsInDayViewContent.fromApiModel(betsInDayApiModel))
-            .toList()
-            .cast<BetsInDayViewContent>();
-        view!.update(betsInDayViewContentList);
-      }, onError: (error) {
-        print(error);
-      }
-    );
+    api.getUserBets().then((betsInDayList) {
+      List<BetsInDayViewContent> betsInDayViewContentList = betsInDayList
+          .map((betsInDayApiModel) =>
+              BetsInDayViewContent.fromApiModel(betsInDayApiModel))
+          .toList()
+          .cast<BetsInDayViewContent>();
+
+      view!.update(betsInDayViewContentList);
+    }, onError: (error) {
+      print(error);
+    });
   }
 
   void saveBets() {
@@ -52,15 +53,11 @@ class BetsViewController {
         .toList()
         .cast();
     view!.updateIsLoading(true);
-    api.saveUserBets(betList)
-      .then((empty)
-        {
-          view!.updateIsLoading(false);
-        },
-        onError: (error) {
-          print(error);
-        }
-      );
+    api.saveUserBets(betList).then((empty) {
+      view!.updateIsLoading(false);
+    }, onError: (error) {
+      print(error);
+    });
   }
 
   void onDispose() {
