@@ -17,14 +17,17 @@ class RankingViewContent {
 class RankingItemViewContent {
   String name = "";
   String points = "";
+  String flies = "";
 
   RankingItemViewContent({
     required this.name,
     required this.points,
+    required this.flies,
   });
 
   RankingItemViewContent.fromApiModel(RankingItemModel rankingItem) {
     name = rankingItem.user?.username ?? "";
     points = rankingItem.score?.toString() ?? "";
+    flies = rankingItem.flies?.toString() ?? "";
   }
 }
