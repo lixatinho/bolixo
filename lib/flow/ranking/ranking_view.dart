@@ -1,11 +1,6 @@
-import 'package:bolixo/flow/bets/bet_item_view.dart';
-import 'package:bolixo/flow/bets/bet_view_content.dart';
-import 'package:bolixo/flow/bets/bets_viewcontroller.dart';
 import 'package:bolixo/flow/ranking/ranking_view_content.dart';
 import 'package:bolixo/flow/ranking/ranking_viewcontroller.dart';
 import 'package:flutter/material.dart';
-
-import '../../ui/select_date_widget.dart';
 
 class RankingWidget extends StatefulWidget {
   const RankingWidget({super.key});
@@ -31,67 +26,73 @@ class RankingWidgetState extends State<RankingWidget> {
         child: CircularProgressIndicator(),
       );
     } else {
-      // return Scaffold(
-      //   body: Container(
-      //     padding: const EdgeInsets.all(24),
-      //     color: Colors.white,
-      //     child: ListView.separated(
-      //       itemCount: viewContent.rankingItems.length,
-      //       shrinkWrap: true,
-      //       itemBuilder: (context, index) {
-      //         return ListTile(
-      //           leading: Text('${index + 1}'),
-      //           title: Text(viewContent.rankingItems[index].name),
-      //           trailing: Text(viewContent.rankingItems[index].points),
-      //         );
-      //       },
-      //       separatorBuilder: (context, index) => const SizedBox(height: 16),
-      //     ),
-      //   ),
-      // );
-
-      return Column(
-        children: [
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      return Padding(
+        padding: const EdgeInsets.all(50),
+        child: Column(
+          children: [
+            Row(
               children: <Widget>[
-                Text('Position'),
-                Text('name'),
-                Text('flies'),
-                Text('points'),
+                tableHeader(2, 'Posição'),
+                tableHeader(4, 'Nome'),
+                tableHeader(2, 'Moscas'),
+                tableHeader(2, 'Pontos'),
               ],
             ),
-          ),
-          Expanded(
-              child: Scaffold(
-            body: Container(
-              padding: const EdgeInsets.all(24),
-              color: Colors.white,
-              child: ListView.separated(
-                itemCount: viewContent.rankingItems.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('${index + 1}'),
-                        Text(viewContent.rankingItems[index].name),
-                        Text(viewContent.rankingItems[index].flies),
-                        Text(viewContent.rankingItems[index].points),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 16),
-              ),
-            ),
-          ))
-        ],
-      );
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.only(top: 20),
+                color: Colors.white,
+                child: ListView.separated(
+                  itemCount: viewContent.rankingItems.length,
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Row(
+                        children: <Widget>[
+                          textCell(2, '${index + 1}'),
+                          textCell(4, viewContent.rankingItems[index].name),
+                          textCell(2, viewContent.rankingItems[index].flies),
+                          textCell(2, viewContent.rankingItems[index].points),
+                        ],
+                      )
+                    );
+                  },
+                  separatorBuilder: (context, index) => const SizedBox(height: 8),
+                ),
+            )
+          )
+        ]
+      ));
     }
+  }
+
+  Widget textCell(int widthWeight, String text) {
+    return Expanded(
+      flex: widthWeight,
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.black54,
+          fontSize: 16
+        ),
+      )
+    );
+  }
+
+  Widget tableHeader(int widthWeight, String text) {
+    return Expanded(
+      flex: widthWeight,
+      child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.indigo,
+            fontSize: 20,
+            fontWeight: FontWeight.bold
+          ),
+      )
+    );
   }
 
   @override
