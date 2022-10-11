@@ -19,7 +19,7 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  int _selectedIndex = Menu.bets;
+  int _selectedIndex = Menu.ranking;
   final pages = {
     Menu.bets: const BetsWidget(),
     Menu.ranking: const RankingWidget(),
