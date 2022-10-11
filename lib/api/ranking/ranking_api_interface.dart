@@ -8,6 +8,7 @@ abstract class RankingApi {
   /// Exposed methods
   Future initialize();
   Future<List<RankingItemModel>> getRanking();
+  Future<List<RankingItemModel>> getBoloes();
 
   /// Injection turnaround
   static RankingApi? betApi;

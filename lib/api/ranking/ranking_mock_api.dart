@@ -31,4 +31,10 @@ class RankingMockApi extends RankingApi {
   Future initialize() {
     return Future.value();
   }
+
+  @override
+  Future<List<RankingItemModel>> getBoloes() {
+    // TODO: implement getBoloes
+    throw UnimplementedError();
+  }
 }

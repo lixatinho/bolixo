@@ -6,7 +6,7 @@ class Menu extends StatelessWidget {
   static const int bets = 1;
   static const ranking = 2;
   static const logoff = 3;
-  static const sweeps = 4;
+  static const boloes = 4;
   Function onTapCallback;
 
   Menu({Key? key, required this.onTapCallback}) : super(key: key);
@@ -76,7 +76,7 @@ class Menu extends StatelessWidget {
         leading: const Icon(Icons.select_all),
         title: const Text('Bolões'),
         onTap: () {
-          onTapCallback(sweeps);
+          onTapCallback(boloes);
           Navigator.pop(context);
         },
       ),

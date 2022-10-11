@@ -44,4 +44,24 @@ class RankingClient implements RankingApi {
       return Future.error(e);
     }
   }
+
+  @override
+  Future<List<RankingItemModel>> getBoloes() async {
+    try {
+      var response = await dio.get("$baseUrl/$getRankingPath");
+      if (response.statusCode == 200) {
+        var ranking = List<RankingItemModel>.from(
+            response.data.map(
+                    (model) => RankingItemModel.fromJson(model)
+            )
+        );
+        return Future.value(ranking);
+      } else {
+        return Future.error(response.statusCode);
+      }
+    } catch (e) {
+      log(e.toString());
+      return Future.error(e);
+    }
+  }
 }

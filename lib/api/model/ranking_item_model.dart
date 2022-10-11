@@ -1,16 +1,20 @@
 import 'package:bolixo/api/model/user_model.dart';
 
+import 'bolao_model.dart';
+
 class RankingItemModel {
   UserModel? user;
   int? score;
   int? flies;
   int? results;
+  BolaoModel? bolao;
 
   RankingItemModel({
     this.user,
     this.score,
     this.flies,
-    this.results
+    this.results,
+    this.bolao
   });
 
   RankingItemModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +22,7 @@ class RankingItemModel {
     score = json['score'];
     flies = json['flies'];
     results = json['results'];
+    bolao = json['bolao'] != null ? BolaoModel.fromJson(json['bolao']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -29,6 +34,10 @@ class RankingItemModel {
     if (user != null) {
       data['user'] = user!.toJson();
     }
+    if (bolao != null) {
+      data['bolao'] = bolao!.toJson();
+    }
     return data;
   }
 }
+
