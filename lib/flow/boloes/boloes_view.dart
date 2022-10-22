@@ -15,6 +15,12 @@ class BoloesWidgetState extends State<BoloesWidget> {
   BoloesViewController viewController = BoloesViewController();
 
   @override
+  initState() {
+    super.initState();
+    viewController.onInit(this);
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (viewContent.isLoading) {
       return const Center(
