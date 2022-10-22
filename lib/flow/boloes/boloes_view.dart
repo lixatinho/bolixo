@@ -1,10 +1,13 @@
+import 'package:bolixo/ui/shared/navigation.dart';
 import 'package:flutter/material.dart';
 
 import 'boloes_view_content.dart';
 import 'boloes_viewcontroller.dart';
 
 class BoloesWidget extends StatefulWidget {
-  const BoloesWidget({Key? key}) : super(key: key);
+  const BoloesWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<BoloesWidget> createState() => BoloesWidgetState();
@@ -29,22 +32,29 @@ class BoloesWidgetState extends State<BoloesWidget> {
     } else {
       return Scaffold(
         body: Container(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(16),
           color: Colors.white,
           child: ListView.separated(
             itemCount: 1,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: Text('${index + 1}'),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text('${index + 1}'),
-                    Text(viewContent.boloes[index].name!),
-                  ],
+              return Container(
+                height: 50,
+                color: viewContent.boloes[index].backgroundColor,
+                child: InkWell(
+                  onTap: () {
+                    viewController.onBolaoSelected(viewContent.boloes[index].id);
+                    navigateToHome(context);
+                  },
+                  child: Center(
+                    child: Text(
+                      viewContent.boloes[index].name,
+                      style: TextStyle(
+                        color: viewContent.boloes[index].textColor
+                      ),
+                    )
+                  )
                 ),
-                trailing: Text('1'),
               );
             },
             separatorBuilder: (context, index) => const SizedBox(height: 16),

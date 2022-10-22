@@ -1,12 +1,15 @@
-import 'package:bolixo/flow/boloes/boloes_view.dart';
-import 'package:bolixo/api/model/bolao_model.dart';
+import 'dart:html';
 
-import '../../api/ranking/ranking_api_interface.dart';
+import 'package:bolixo/api/bolao/bolao_api_interface.dart';
+import 'package:bolixo/cache/BolaoCache.dart';
+import 'package:bolixo/flow/boloes/boloes_view.dart';
+import 'package:flutter/foundation.dart';
+
 import 'boloes_view_content.dart';
 
 class BoloesViewController {
 
-  RankingApi api = RankingApi.getInstance();
+  BolaoApi api = BolaoApi.getInstance();
   late BoloesWidgetState? view;
 
   void onInit(viewInstance) async {
@@ -15,16 +18,22 @@ class BoloesViewController {
     _fillBoloes();
   }
 
+  void onBolaoSelected(int bolaoId) {
+    BolaoCache().bolaoId = bolaoId;
+  }
+
   Future _prepareApi() async {
     await api.initialize();
   }
 
   void _fillBoloes() {
-    api.getBoloes().then((ranking) {
-      BoloesViewContent viewContent = BoloesViewContent.fromApiModel(ranking);
+    api.getBoloes().then((boloes) {
+      BoloesViewContent viewContent = BoloesViewContent.fromApiModel(boloes);
       view!.update(viewContent);
     }, onError: (error) {
-      print(error);
+      if (kDebugMode) {
+        print(error);
+      }
     });
   }
 

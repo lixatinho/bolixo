@@ -27,10 +27,8 @@ class BetsWidgetState extends State<BetsWidget> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Container(
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ),
+      return const Center(
+        child: CircularProgressIndicator(),
       );
     } else {
       return Column(children: [

@@ -23,7 +23,7 @@ class AuthService {
   }
 
   void logOff() {
-    repository.iniToke();
+    repository.removeToken();
   }
 
   Future<bool> login(UserModel user) async {

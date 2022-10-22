@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bolixo/api/model/auth_response.dart';
 import 'package:bolixo/api/model/user_model.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import 'auth_api.dart';
 
@@ -20,7 +21,9 @@ class AuthClient implements AuthApi {
     try {
       var response = await dio.post("$baseUrl/$loginPath", data: jsonEncode(user));
       if (response.statusCode == 200) {
-        print(response.data);
+        if (kDebugMode) {
+          print(response.data);
+        }
         AuthResponse authResponse = AuthResponse.fromJson(response.data);
         return Future.value(authResponse);
       } else {

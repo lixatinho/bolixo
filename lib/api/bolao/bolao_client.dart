@@ -1,21 +1,21 @@
 import 'dart:developer';
 
+import 'package:bolixo/api/bolao/bolao_api_interface.dart';
+import 'package:bolixo/api/model/bolao_model.dart';
 import 'package:bolixo/api/model/ranking_item_model.dart';
 import 'package:bolixo/api/ranking/ranking_api_interface.dart';
-import 'package:bolixo/cache/BolaoCache.dart';
 import 'package:dio/dio.dart';
 
 import '../../flow/auth/auth_repository.dart';
 
-class RankingClient implements RankingApi {
+class BolaoClient implements BolaoApi {
 
   String baseUrl;
-  String getRankingPath = "ranking";
-  int bolaoId = BolaoCache().bolaoId;
+  String getBoloesPath = "ranking";
   Dio dio = Dio();
   late AuthRepository repository;
 
-  RankingClient({
+  BolaoClient({
     required this.baseUrl
   });
 
@@ -27,16 +27,16 @@ class RankingClient implements RankingApi {
   }
 
   @override
-  Future<List<RankingItemModel>> getRanking() async {
+  Future<List<BolaoModel>> getBoloes() async {
     try {
-      var response = await dio.get("$baseUrl/$getRankingPath/$bolaoId");
+      var response = await dio.get("$baseUrl/$getBoloesPath");
       if (response.statusCode == 200) {
         var ranking = List<RankingItemModel>.from(
-          response.data.map(
-            (model) => RankingItemModel.fromJson(model)
-          )
+            response.data.map(
+                    (model) => RankingItemModel.fromJson(model)
+            )
         );
-        return Future.value(ranking);
+        return Future.value(ranking.map((r) => r.bolao!).toList());
       } else {
         return Future.error(response.statusCode);
       }

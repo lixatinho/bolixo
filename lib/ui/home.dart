@@ -1,3 +1,4 @@
+import 'package:bolixo/cache/BolaoCache.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:bolixo/flow/ranking/ranking_view.dart';
 import 'package:bolixo/flow/boloes/boloes_view.dart';
@@ -25,7 +26,6 @@ class HomeState extends State<Home> {
   final pages = {
     Menu.bets: const BetsWidget(),
     Menu.ranking: const RankingWidget(),
-    Menu.boloes: const BoloesWidget(),
     Menu.logoff: AuthView(authFormType: AuthFormType.signIn),
   };
 
@@ -60,7 +60,7 @@ class HomeState extends State<Home> {
   Future<void> _showBolaoDialog() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: BolaoCache().bolaoId != 0,
       builder: (BuildContext context) {
         return boloesDialog;
       },
@@ -68,9 +68,20 @@ class HomeState extends State<Home> {
   }
 
   static AlertDialog _createBoloesDialog() {
-    return const AlertDialog(
-        title: Text('Escolha o Bolão'),
-        content: BoloesWidget()
+    return AlertDialog(
+        title: const Text('Escolha o Bolão'),
+        content: Builder(
+          builder: (context) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.5,
+              width: 200,
+              child: const BoloesWidget(),
+            );
+          },
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0))
+        ),
     );
   }
 }

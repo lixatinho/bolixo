@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bolixo/api/model/bet_model.dart';
+import 'package:bolixo/cache/BolaoCache.dart';
 import 'package:dio/dio.dart';
 
 import '../../flow/auth/auth_repository.dart';
@@ -12,7 +13,7 @@ class BetClient implements BetApi {
   String baseUrl;
   String getBets = "bet";
   String saveBet = "bet";
-  String idBolao = "1";
+  int bolaoId = BolaoCache().bolaoId;
   Dio dio = Dio();
   late AuthRepository repository;
 
@@ -28,7 +29,7 @@ class BetClient implements BetApi {
   @override
   Future<List<BetsInDayModel>> getUserBets() async {
     try {
-      var response = await dio.get("$baseUrl/$getBets/$idBolao");
+      var response = await dio.get("$baseUrl/$getBets/$bolaoId");
       if (response.statusCode == 200) {
         var betInDaysList = List<BetsInDayModel>.from(
             response.data.map((model) => BetsInDayModel.fromJson(model)));
@@ -45,7 +46,7 @@ class BetClient implements BetApi {
   @override
   Future saveUserBets(List<BetModel> betList) async {
     try {
-      var response = await dio.put("$baseUrl/$saveBet/$idBolao",
+      var response = await dio.put("$baseUrl/$saveBet/$bolaoId",
           data: jsonEncode(betList));
       if (response.statusCode == 200) {
         return Future.value();

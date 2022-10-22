@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bolixo/ui/home.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
 import 'package:bolixo/ui/shared/app_text_button.dart';
 import 'package:bolixo/ui/shared/loading_widget.dart';
@@ -40,7 +39,7 @@ class AuthViewState extends State<AuthView> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     if(viewContent.isLoading) {
-      return LoadingWidget();
+      return const LoadingWidget();
     } else {
       return Scaffold(
         body: Container(
@@ -79,11 +78,6 @@ class AuthViewState extends State<AuthView> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
-  }
-
-  void navigateToHome() {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => const Home(title: 'bolão lixão')));
   }
 
   void updateViewContent(AuthViewContent viewContent) {

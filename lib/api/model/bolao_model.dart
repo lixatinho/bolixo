@@ -1,20 +1,20 @@
 class BolaoModel {
   String? name;
-  int? idBolao;
+  int? bolaoId;
 
   BolaoModel({
     this.name,
-    this.idBolao
+    this.bolaoId
   });
 
   BolaoModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    idBolao = json['idBolao'];
+    bolaoId = json['idBolao'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['idBolao'] = idBolao;
+    data['idBolao'] = bolaoId;
     data['name'] = name;
 
     return data;
