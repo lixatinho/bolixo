@@ -20,6 +20,8 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   int _selectedIndex = Menu.ranking;
+  AlertDialog boloesDialog = _createBoloesDialog();
+
   final pages = {
     Menu.bets: const BetsWidget(),
     Menu.ranking: const RankingWidget(),
@@ -34,6 +36,17 @@ class HomeState extends State<Home> {
         backgroundColor: Colors.indigo,
         elevation: 0,
         title: const Text('Bolixo'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                _showBolaoDialog();
+              },
+              icon: const Icon(
+                Icons.change_circle_outlined,
+                color: Colors.white,
+              )
+          )
+        ],
       ),
       body: pages[_selectedIndex],
       drawer: Menu(onTapCallback: (int index) {
@@ -41,6 +54,23 @@ class HomeState extends State<Home> {
           _selectedIndex = index;
         });
       }),
+    );
+  }
+
+  Future<void> _showBolaoDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return boloesDialog;
+      },
+    );
+  }
+
+  static AlertDialog _createBoloesDialog() {
+    return const AlertDialog(
+        title: Text('Escolha o Bolão'),
+        content: BoloesWidget()
     );
   }
 }

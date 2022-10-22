@@ -13,9 +13,6 @@ class Menu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var user = CreateUserUp().getUser(uidC!);
-    // print('teste de usuário logado ${userC?.name}');
-    // print(uidC!);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -33,13 +30,6 @@ class Menu extends StatelessWidget {
                     child: Icon(Icons.check),
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const <Widget>[
-                    Text(""),
-                    Text(""),
-                  ],
-                )
               ],
             ),
           ),
@@ -51,48 +41,27 @@ class Menu extends StatelessWidget {
 
   List<Widget> bodyMenu(context) {
     List<Widget> listTile = [];
-    listTile.add(
-      ListTile(
-        leading: const Icon(Icons.edit),
-        title: const Text('Palpites'),
-        onTap: () {
-          onTapCallback(bets);
-          Navigator.pop(context);
-        },
-      ),
-    );
-    listTile.add(
-      ListTile(
-        leading: const Icon(Icons.leaderboard),
-        title: const Text('Ranking'),
-        onTap: () {
-          onTapCallback(ranking);
-          Navigator.pop(context);
-        },
-      ),
-    );
-    listTile.add(
-      ListTile(
-        leading: const Icon(Icons.select_all),
-        title: const Text('Bolões'),
-        onTap: () {
-          onTapCallback(boloes);
-          Navigator.pop(context);
-        },
-      ),
-    );
-    listTile.add(
-      ListTile(
-        leading: const Icon(Icons.logout),
-        title: const Text('Logoff'),
-        onTap: () {
-          AuthService().logOff();
-          onTapCallback(logoff);
-          Navigator.pop(context);
-        },
-      ),
-    );
+    listTile.add(menuListItem(bets, 'Palpites', Icons.edit, context));
+    listTile.add(menuListItem(ranking, 'Ranking', Icons.leaderboard, context));
+    listTile.add(menuListItem(logoff, 'Logoff', Icons.logout, context));
 
     return listTile;
+  }
+
+  ListTile menuListItem(
+      int index,
+      String title,
+      IconData icon,
+      BuildContext context
+  ) {
+    return ListTile(
+        leading: Icon(icon),
+        title: Text(title),
+        onTap: () {
+          AuthService().logOff();
+          onTapCallback(index);
+          Navigator.pop(context);
+        },
+      );
   }
 }
