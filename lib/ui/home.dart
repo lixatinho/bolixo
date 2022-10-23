@@ -1,4 +1,4 @@
-import 'package:bolixo/cache/BolaoCache.dart';
+import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:bolixo/flow/ranking/ranking_view.dart';
 import 'package:bolixo/flow/boloes/boloes_view.dart';
@@ -20,7 +20,7 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  int _selectedIndex = Menu.bets;
+  int _selectedIndex = Menu.ranking;
   AlertDialog boloesDialog = _createBoloesDialog();
 
   final pages = {

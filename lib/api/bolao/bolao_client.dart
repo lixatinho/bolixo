@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/api/model/bolao_model.dart';
 import 'package:bolixo/api/model/ranking_item_model.dart';
-import 'package:bolixo/api/ranking/ranking_api_interface.dart';
 import 'package:dio/dio.dart';
 
 import '../../flow/auth/auth_repository.dart';

@@ -1,9 +1,6 @@
-import 'dart:html';
-
 import 'package:bolixo/api/bet/bet_api_interface.dart';
 import 'package:bolixo/api/model/bet_model.dart';
 import 'package:bolixo/flow/bets/bet_view_content.dart';
-import 'package:dio/dio.dart';
 
 import 'bets_view.dart';
 

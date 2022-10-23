@@ -90,7 +90,7 @@ class BetsWidgetState extends State<BetsWidget> {
   Widget scoreOverview() {
     return Container(
       alignment: Alignment.topRight,
-      padding: EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(top: 15),
       width: 200,
       child: Column(
         children: [

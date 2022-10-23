@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bolixo/api/model/bet_model.dart';
-import 'package:bolixo/cache/BolaoCache.dart';
+import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:dio/dio.dart';
 
 import '../../flow/auth/auth_repository.dart';

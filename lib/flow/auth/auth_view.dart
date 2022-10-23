@@ -14,7 +14,7 @@ class AuthView extends StatefulWidget {
   AuthView({Key? key, required this.authFormType}) : super(key: key);
 
   @override
-  AuthViewState createState() => AuthViewState(authFormType: this.authFormType);
+  AuthViewState createState() => AuthViewState(authFormType: authFormType);
 }
 
 class AuthViewState extends State<AuthView> {

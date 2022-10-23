@@ -27,7 +27,7 @@ class RankingWidgetState extends State<RankingWidget> {
       );
     } else {
       return Padding(
-        padding: const EdgeInsets.all(50),
+        padding: const EdgeInsets.only(top: 32),
         child: Column(
           children: [
             Row(
@@ -47,19 +47,19 @@ class RankingWidgetState extends State<RankingWidget> {
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      title: Row(
-                        children: <Widget>[
-                          textCell(2, '${index + 1}'),
-                          textCell(4, viewContent.rankingItems[index].name),
-                          textCell(2, viewContent.rankingItems[index].flies),
-                          textCell(2, viewContent.rankingItems[index].points),
-                        ],
-                      )
-                    );
-                  },
-                  separatorBuilder: (context, index) => const SizedBox(height: 8),
+                    return Container(
+                        color: viewContent.rankingItems[index].backgroundColor,
+                        height: 60,
+                        child: Row(
+                          children: <Widget>[
+                            textCell(2, '${index + 1}'),
+                            textCell(4, viewContent.rankingItems[index].name),
+                            textCell(2, viewContent.rankingItems[index].flies),
+                            textCell(2, viewContent.rankingItems[index].points),
+                          ],
+                        )
+                      );
+                  }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 0, height: 0,),
                 ),
             )
           )
@@ -71,12 +71,16 @@ class RankingWidgetState extends State<RankingWidget> {
   Widget textCell(int widthWeight, String text) {
     return Expanded(
       flex: widthWeight,
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.black54,
-          fontSize: 16
-        ),
+      child: Container(
+        height: 50,
+        alignment: Alignment.centerLeft,
+        child:Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14
+          ),
+        )
       )
     );
   }
@@ -88,7 +92,7 @@ class RankingWidgetState extends State<RankingWidget> {
           text,
           style: const TextStyle(
             color: Colors.indigo,
-            fontSize: 20,
+            fontSize: 16,
             fontWeight: FontWeight.bold
           ),
       )

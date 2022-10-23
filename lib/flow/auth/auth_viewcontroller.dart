@@ -1,5 +1,5 @@
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
-import 'package:bolixo/cache/BolaoCache.dart';
+import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../api/model/user_model.dart';

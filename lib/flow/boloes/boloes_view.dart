@@ -35,7 +35,7 @@ class BoloesWidgetState extends State<BoloesWidget> {
           padding: const EdgeInsets.all(16),
           color: Colors.white,
           child: ListView.separated(
-            itemCount: 1,
+            itemCount: viewContent.boloes.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return Container(
