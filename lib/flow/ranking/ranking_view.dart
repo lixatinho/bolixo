@@ -27,7 +27,7 @@ class RankingWidgetState extends State<RankingWidget> {
       );
     } else {
       return Padding(
-        padding: const EdgeInsets.only(top: 32),
+        padding: const EdgeInsets.only(top: 16),
         child: Column(
           children: [
             Row(
