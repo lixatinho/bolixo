@@ -6,6 +6,7 @@ class RankingViewController {
 
   RankingApi api = RankingApi.getInstance();
   late RankingWidgetState? view;
+  RankingViewContent viewContent = RankingViewContent();
 
   void onInit(viewInstance) async {
     view = viewInstance;
@@ -19,7 +20,7 @@ class RankingViewController {
 
   void _fillRanking() {
     api.getRanking().then((ranking) {
-      RankingViewContent viewContent = RankingViewContent.fromApiModel(ranking);
+      viewContent = RankingViewContent.fromApiModel(ranking);
       view!.update(viewContent);
     }, onError: (error) {
       print(error);
@@ -28,5 +29,10 @@ class RankingViewController {
 
   void onDispose() {
     view = null;
+  }
+
+  onSortSelected(int id) {
+    viewContent.selectSort(id);
+    view!.update(viewContent);
   }
 }

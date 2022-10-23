@@ -31,16 +31,13 @@ class RankingWidgetState extends State<RankingWidget> {
         child: Column(
           children: [
             Row(
-              children: <Widget>[
-                tableHeader(2, 'Posição'),
-                tableHeader(4, 'Nome'),
-                tableHeader(2, 'Moscas'),
-                tableHeader(2, 'Pontos'),
-              ],
+              children: viewContent.infoHeaders.values.map((header) {
+                return tableHeader(header.id, header.widthWeight, header.name, header.textColor);
+              }).toList(),
             ),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(top: 20),
+                padding: EdgeInsets.zero,
                 color: Colors.white,
                 child: ListView.separated(
                   itemCount: viewContent.rankingItems.length,
@@ -52,7 +49,7 @@ class RankingWidgetState extends State<RankingWidget> {
                         height: 60,
                         child: Row(
                           children: <Widget>[
-                            textCell(2, '${index + 1}'),
+                            textCell(2, viewContent.rankingItems[index].position),
                             textCell(4, viewContent.rankingItems[index].name),
                             textCell(2, viewContent.rankingItems[index].flies),
                             textCell(2, viewContent.rankingItems[index].points),
@@ -85,16 +82,23 @@ class RankingWidgetState extends State<RankingWidget> {
     );
   }
 
-  Widget tableHeader(int widthWeight, String text) {
+  Widget tableHeader(int id, int widthWeight, String text, Color textColor) {
     return Expanded(
       flex: widthWeight,
-      child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.indigo,
-            fontSize: 16,
-            fontWeight: FontWeight.bold
-          ),
+      child: InkWell(
+        onTap: () { viewController.onSortSelected(id); },
+        child: Container(
+          height: 50,
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: TextStyle(
+              color: textColor,
+              fontSize: 16,
+              fontWeight: FontWeight.bold
+            ),
+          )
+        )
       )
     );
   }
