@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:bolixo/flow/boloes/boloes_view.dart';
