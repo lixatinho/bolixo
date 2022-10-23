@@ -1,3 +1,4 @@
+import 'package:bolixo/ui/shared/SharedColor.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
@@ -92,13 +93,12 @@ class RankingItemViewContent {
       name: rankingItem.user?.username ?? "",
       points: rankingItem.score?.toString() ?? "0",
       flies: rankingItem.flies?.toString() ?? "0",
-      backgroundColor: index.isEven ? Colors.indigo : Colors.indigoAccent
+      backgroundColor: shadeByIndex(Colors.indigo, index)
     );
   }
 
   void updateSortedItem(int newPosition) {
-    // position = "$newPosition";
-    backgroundColor = newPosition.isEven ? Colors.indigo : Colors.indigoAccent;
+    backgroundColor = shadeByIndex(Colors.indigo, newPosition);
   }
 }
 

@@ -30,35 +30,32 @@ class BoloesWidgetState extends State<BoloesWidget> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return Scaffold(
-        body: Container(
-          padding: const EdgeInsets.all(16),
-          color: Colors.white,
-          child: ListView.separated(
-            itemCount: viewContent.boloes.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return Container(
-                height: 50,
-                color: viewContent.boloes[index].backgroundColor,
-                child: InkWell(
-                  onTap: () {
-                    viewController.onBolaoSelected(viewContent.boloes[index].id);
-                    navigateToHome(context);
-                  },
-                  child: Center(
-                    child: Text(
-                      viewContent.boloes[index].name,
-                      style: TextStyle(
-                        color: viewContent.boloes[index].textColor
-                      ),
-                    )
+      return Container(
+        padding: EdgeInsets.zero,
+        color: Colors.white,
+        child: ListView.builder(
+          itemCount: viewContent.boloes.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Container(
+              height: 50,
+              color: viewContent.boloes[index].backgroundColor,
+              child: InkWell(
+                onTap: () {
+                  viewController.onBolaoSelected(viewContent.boloes[index].id);
+                  navigateToHome(context);
+                },
+                child: Center(
+                  child: Text(
+                    viewContent.boloes[index].name,
+                    style: TextStyle(
+                      color: viewContent.boloes[index].textColor
+                    ),
                   )
-                ),
-              );
-            },
-            separatorBuilder: (context, index) => const SizedBox(height: 16),
-          ),
+                )
+              ),
+            );
+          },
         ),
       );
     }

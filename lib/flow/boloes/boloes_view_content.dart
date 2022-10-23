@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../api/model/bolao_model.dart';
+import '../../ui/shared/SharedColor.dart';
 
 class BoloesViewContent {
   List<BolaoViewContent> boloes = [];
@@ -37,7 +38,7 @@ class BolaoViewContent {
   });
 
   static fromApiModel(BolaoModel? model, int index) {
-    Color background = index.isEven ? Colors.indigo : Colors.indigoAccent;
+    Color background = shadeByIndex(Colors.deepOrange, index);
     return BolaoViewContent(
       id: model?.bolaoId ?? 0,
       name: model?.name ?? "",
