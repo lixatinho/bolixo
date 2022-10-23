@@ -43,22 +43,23 @@ class Menu extends StatelessWidget {
     List<Widget> listTile = [];
     listTile.add(menuListItem(bets, 'Palpites', Icons.edit, context));
     listTile.add(menuListItem(ranking, 'Ranking', Icons.leaderboard, context));
-    listTile.add(menuListItem(logoff, 'Logoff', Icons.logout, context));
+    listTile.add(menuListItem(logoff, 'Logoff', Icons.logout, context, callback: () {AuthService().logOff();}));
 
     return listTile;
   }
 
   ListTile menuListItem(
-      int index,
-      String title,
-      IconData icon,
-      BuildContext context
+    int index,
+    String title,
+    IconData icon,
+    BuildContext context,
+    {Function? callback}
   ) {
     return ListTile(
         leading: Icon(icon),
         title: Text(title),
         onTap: () {
-          AuthService().logOff();
+          callback?.call();
           onTapCallback(index);
           Navigator.pop(context);
         },
