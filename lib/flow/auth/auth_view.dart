@@ -24,6 +24,7 @@ class AuthViewState extends State<AuthView> {
   String _name = "";
   String _email = "";
   String _password = "";
+  bool isLoading = false;
   final formKey = GlobalKey<FormState>();
 
   AuthViewState({required this.authFormType});
@@ -78,6 +79,12 @@ class AuthViewState extends State<AuthView> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
+  }
+
+  void updateIsLoading(bool newIsLoadingValue) {
+    setState(() {
+      isLoading = newIsLoadingValue;
+    });
   }
 
   void updateViewContent(AuthViewContent viewContent) {

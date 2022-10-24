@@ -30,6 +30,7 @@ class AuthViewController {
   }
 
   void onSubmitClicked(String? name, String? email, String? password) {
+    view!.updateIsLoading(true);
     switch (_authFormType) {
       case AuthFormType.signIn:
         return signIn(name!, password!);
