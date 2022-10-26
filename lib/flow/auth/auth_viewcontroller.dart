@@ -40,17 +40,16 @@ class AuthViewController {
   }
 
   void signUp(String name, String email, String password) async {
-    UserModel user =
-        UserModel(username: name, email: email, password: password);
+    UserModel user = UserModel(username: name, email: email, password: password);
 
     await authService.initialize();
     authService.createUser(user).then((response) {
+      view!.updateIsLoading(false);
       view!.showSuccessMessage("Usuário criado com sucesso");
       switchAuthType();
     }, onError: (error) {
-      if (kDebugMode) {
-        print('error signup $error');
-      }
+      view!.updateIsLoading(false);
+      view!.showErrorMessage("Erro ao criar conta");
     });
   }
 
@@ -62,9 +61,8 @@ class AuthViewController {
         navigateToHome(view!.context);
       });
     }, onError: (error) {
-      if (kDebugMode) {
-        print('error signin $error');
-      }
+      view!.updateIsLoading(false);
+      view!.showErrorMessage("Erro ao fazer login");
     });
   }
 

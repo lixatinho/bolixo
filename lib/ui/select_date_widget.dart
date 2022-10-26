@@ -5,6 +5,7 @@ class SelectDateWidget extends StatelessWidget {
 
   final DateSelectionViewContent viewContent;
   final Function onTapCallback;
+  static const ferretOffset = 100.0;
 
   const SelectDateWidget({
     super.key,
@@ -16,7 +17,57 @@ class SelectDateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.indigo,
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 0),
+      child: Stack(
+        children: [
+          ferret(),
+          dateSelectionWidget(),
+          ferretLeftHand(),
+          ferretRightHand(),
+        ]
+      )
+    );
+  }
+
+  Widget ferret() {
+    return const Positioned(
+      top: 10,
+      right: ferretOffset,
+      child: Image(
+        image: AssetImage('images/ferret-body.png'),
+        width: 100,
+        height: 210,
+      )
+    );
+  }
+
+  Widget ferretLeftHand() {
+    return const Positioned(
+        top: 64,
+        right: ferretOffset + 100,
+        child: Image(
+          image: AssetImage('images/ferret-left.png'),
+          width: 32,
+          height: 32,
+        )
+    );
+  }
+
+  Widget ferretRightHand() {
+    return const Positioned(
+        top: 56,
+        right: ferretOffset - 30,
+        child: Image(
+          image: AssetImage('images/ferret-right.png'),
+          width: 32,
+          height: 32,
+        )
+    );
+  }
+
+  Widget dateSelectionWidget() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30),
       child: Column(
         children: [
           Align(
@@ -38,11 +89,11 @@ class SelectDateWidget extends StatelessWidget {
               itemBuilder:  (context, index) {
                 final date = viewContent.dates[index];
                 return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)
-                  ),
-                  color: date.backgroundColor,
-                  child:
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    color: date.backgroundColor,
+                    child:
                     InkWell(
                       onTap: () {
                         onTapCallback(index);
@@ -82,9 +133,9 @@ class SelectDateWidget extends StatelessWidget {
               ),
               itemCount: viewContent.dates.length
             ),
-          )
+          ),
         ]
-      ),
+      )
     );
   }
 }

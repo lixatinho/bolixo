@@ -33,7 +33,7 @@ class BetsWidgetState extends State<BetsWidget> {
     } else {
       return Column(children: [
         SizedBox(
-          height: 170,
+          height: 200,
           child: SelectDateWidget(
             viewContent: DateSelectionViewContent.from(
                 betsByDay.map((e) => e.date).toList(), dateIndex),

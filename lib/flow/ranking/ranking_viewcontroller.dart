@@ -14,6 +14,12 @@ class RankingViewController {
     _fillRanking();
   }
 
+  void onRankingItemTap(String position) {
+    if(int.parse(position) == 1) {
+      view!.playChampionSong();
+    }
+  }
+
   Future _prepareApi() async {
     await api.initialize();
   }

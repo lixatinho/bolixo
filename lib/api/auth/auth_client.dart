@@ -27,7 +27,7 @@ class AuthClient implements AuthApi {
         AuthResponse authResponse = AuthResponse.fromJson(response.data);
         return Future.value(authResponse);
       } else {
-        return Future.error(response.statusCode);
+        return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
       log(e.toString());
@@ -43,7 +43,7 @@ class AuthClient implements AuthApi {
       if (response.statusCode == 200) {
         return Future.value();
       } else {
-        return Future.error(response.statusCode);
+        return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
       log(e.toString());

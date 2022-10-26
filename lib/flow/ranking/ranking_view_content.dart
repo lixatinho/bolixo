@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bolixo/ui/shared/SharedColor.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import '../../api/model/ranking_item_model.dart';
 class RankingViewContent {
   List<RankingItemModel> ranking = [];
   List<RankingItemViewContent> rankingItems = [];
+  double padding = 16;
   bool isLoading = true;
 
   Map<int, RankingInfoHeader> infoHeaders = <int, RankingInfoHeader>{};
@@ -30,7 +33,7 @@ class RankingViewContent {
   void generateInfoHeaders() {
     infoHeaders.putIfAbsent(positionHeaderId, () => RankingInfoHeader(id: 1, name: 'Posição', widthWeight: 2));
     infoHeaders.putIfAbsent(nameHeaderId, () => RankingInfoHeader(id: 2, name: 'Nome', widthWeight: 4));
-    infoHeaders.putIfAbsent(fliesHeaderId, () => RankingInfoHeader(id: 3, name: 'Moscas', widthWeight: 2));
+    infoHeaders.putIfAbsent(fliesHeaderId, () => RankingInfoHeader(id: 3, name: 'Mitou', widthWeight: 2));
     infoHeaders.putIfAbsent(pointsHeaderId, () => RankingInfoHeader(id: 4, name: 'Pontos', widthWeight: 2));
   }
 
@@ -77,6 +80,7 @@ class RankingItemViewContent {
   String name = "";
   String points = "";
   String flies = "";
+  double rotationAngle;
   Color backgroundColor = Colors.indigo;
 
   RankingItemViewContent({
@@ -85,15 +89,17 @@ class RankingItemViewContent {
     required this.points,
     required this.flies,
     required this.backgroundColor,
+    required this.rotationAngle,
   });
 
   static RankingItemViewContent fromApiModel(RankingItemModel rankingItem, int index) {
     return RankingItemViewContent(
-      position: "$index",
+      position: "${index + 1}",
       name: rankingItem.user?.username ?? "",
       points: rankingItem.score?.toString() ?? "0",
       flies: rankingItem.flies?.toString() ?? "0",
-      backgroundColor: shadeByIndex(Colors.indigo, index)
+      backgroundColor: shadeByIndex(Colors.indigo, index),
+      rotationAngle: 0
     );
   }
 

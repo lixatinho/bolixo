@@ -38,7 +38,7 @@ class RankingClient implements RankingApi {
         );
         return Future.value(ranking);
       } else {
-        return Future.error(response.statusCode);
+        return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
       log(e.toString());

@@ -35,7 +35,7 @@ class BetClient implements BetApi {
             response.data.map((model) => BetsInDayModel.fromJson(model)));
         return Future.value(betInDaysList);
       } else {
-        return Future.error(response.statusCode);
+        return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
       log(e.toString());
@@ -51,7 +51,7 @@ class BetClient implements BetApi {
       if (response.statusCode == 200) {
         return Future.value();
       } else {
-        return Future.error(response.statusCode);
+        return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
       log(e.toString());

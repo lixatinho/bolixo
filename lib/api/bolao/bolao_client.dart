@@ -37,7 +37,7 @@ class BolaoClient implements BolaoApi {
         );
         return Future.value(ranking.map((r) => r.bolao!).toList());
       } else {
-        return Future.error(response.statusCode);
+        return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
       log(e.toString());

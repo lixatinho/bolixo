@@ -1,6 +1,11 @@
+import 'dart:math';
+import 'dart:typed_data';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:bolixo/flow/ranking/ranking_view_content.dart';
 import 'package:bolixo/flow/ranking/ranking_viewcontroller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class RankingWidget extends StatefulWidget {
   const RankingWidget({super.key});
@@ -12,6 +17,7 @@ class RankingWidget extends StatefulWidget {
 class RankingWidgetState extends State<RankingWidget> {
   RankingViewContent viewContent = RankingViewContent();
   RankingViewController viewController = RankingViewController();
+  final player = AudioPlayer();
 
   @override
   initState() {
@@ -30,10 +36,13 @@ class RankingWidgetState extends State<RankingWidget> {
         padding: const EdgeInsets.only(top: 16),
         child: Column(
           children: [
-            Row(
-              children: viewContent.infoHeaders.values.map((header) {
-                return tableHeader(header.id, header.widthWeight, header.name, header.textColor);
-              }).toList(),
+            Padding(
+              padding: EdgeInsets.only(left: viewContent.padding, right: viewContent.padding),
+              child: Row(
+                children: viewContent.infoHeaders.values.map((header) {
+                  return tableHeader(header.id, header.widthWeight, header.name, header.textColor);
+                }).toList(),
+              ),
             ),
             Expanded(
               child: Container(
@@ -45,17 +54,27 @@ class RankingWidgetState extends State<RankingWidget> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
-                        color: viewContent.rankingItems[index].backgroundColor,
-                        height: 60,
-                        child: Row(
-                          children: <Widget>[
-                            textCell(2, viewContent.rankingItems[index].position),
-                            textCell(4, viewContent.rankingItems[index].name),
-                            textCell(2, viewContent.rankingItems[index].flies),
-                            textCell(2, viewContent.rankingItems[index].points),
-                          ],
-                        )
-                      );
+                      color: viewContent.rankingItems[index].backgroundColor,
+                      height: 60,
+                      padding: EdgeInsets.only(left: viewContent.padding, right: viewContent.padding),
+                      child: Transform(
+                        alignment: Alignment.center,
+                        transform: Matrix4.rotationX(viewContent.rankingItems[index].rotationAngle),
+                        child: GestureDetector(
+                          onTap: () {
+                            viewController.onRankingItemTap(viewContent.rankingItems[index].position);
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              textCell(2, viewContent.rankingItems[index].position),
+                              textCell(4, viewContent.rankingItems[index].name),
+                              textCell(2, viewContent.rankingItems[index].flies),
+                              textCell(2, viewContent.rankingItems[index].points),
+                            ],
+                          )
+                        ),
+                      )
+                    );
                   }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 0, height: 0,),
                 ),
             )
@@ -71,7 +90,7 @@ class RankingWidgetState extends State<RankingWidget> {
       child: Container(
         height: 50,
         alignment: Alignment.centerLeft,
-        child:Text(
+        child: Text(
           text,
           style: const TextStyle(
             color: Colors.white,
@@ -113,5 +132,13 @@ class RankingWidgetState extends State<RankingWidget> {
     setState(() {
       viewContent = newViewContent;
     });
+  }
+
+  Future<void> playChampionSong() async {
+    await player.stop();
+    await player.play(
+      AssetSource('audio/champ.mp3'),
+      position: const Duration(seconds: 100000)
+    );
   }
 }
