@@ -62,7 +62,7 @@ class AuthViewController {
       });
     }, onError: (error) {
       view!.updateIsLoading(false);
-      view!.showErrorMessage("Erro ao fazer login");
+      view!.showErrorMessage("Erro ao fazer login: ${error.toString()}");
     });
   }
 

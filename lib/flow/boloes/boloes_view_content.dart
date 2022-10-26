@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../api/model/bolao_model.dart';
-import '../../ui/shared/SharedColor.dart';
+import '../../ui/shared/shared_color.dart';
 
 class BoloesViewContent {
   List<BolaoViewContent> boloes = [];

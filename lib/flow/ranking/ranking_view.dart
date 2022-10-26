@@ -1,11 +1,7 @@
-import 'dart:math';
-import 'dart:typed_data';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bolixo/flow/ranking/ranking_view_content.dart';
 import 'package:bolixo/flow/ranking/ranking_viewcontroller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class RankingWidget extends StatefulWidget {
   const RankingWidget({super.key});

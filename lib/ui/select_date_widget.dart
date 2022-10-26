@@ -5,7 +5,7 @@ class SelectDateWidget extends StatelessWidget {
 
   final DateSelectionViewContent viewContent;
   final Function onTapCallback;
-  static const ferretOffset = 100.0;
+  static const ferretOffset = 50.0;
 
   const SelectDateWidget({
     super.key,
@@ -34,7 +34,7 @@ class SelectDateWidget extends StatelessWidget {
       top: 10,
       right: ferretOffset,
       child: Image(
-        image: AssetImage('images/ferret-body.png'),
+        image: AssetImage('assets/images/ferret.png'),
         width: 100,
         height: 210,
       )
@@ -46,7 +46,7 @@ class SelectDateWidget extends StatelessWidget {
         top: 64,
         right: ferretOffset + 100,
         child: Image(
-          image: AssetImage('images/ferret-left.png'),
+          image: AssetImage('assets/images/ferretLeft.png'),
           width: 32,
           height: 32,
         )
@@ -58,7 +58,7 @@ class SelectDateWidget extends StatelessWidget {
         top: 56,
         right: ferretOffset - 30,
         child: Image(
-          image: AssetImage('images/ferret-right.png'),
+          image: AssetImage('assets/images/ferretRight.png'),
           width: 32,
           height: 32,
         )

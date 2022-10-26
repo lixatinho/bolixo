@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:bolixo/ui/shared/SharedColor.dart';
+import 'package:bolixo/ui/shared/shared_color.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
