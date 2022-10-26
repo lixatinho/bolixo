@@ -57,7 +57,7 @@ class RankingWidgetState extends State<RankingWidget> {
                         alignment: Alignment.center,
                         transform: Matrix4.rotationX(viewContent.rankingItems[index].rotationAngle),
                         child: GestureDetector(
-                          onTap: () {
+                          onDoubleTap: () {
                             viewController.onRankingItemTap(viewContent.rankingItems[index].position);
                           },
                           child: Row(
@@ -130,11 +130,19 @@ class RankingWidgetState extends State<RankingWidget> {
     });
   }
 
+  Future<void> playLoserSong() async {
+    await player.stop();
+    await player.play(
+        AssetSource('audio/darkness.mp3'),
+        volume: 1.0
+    );
+  }
+
   Future<void> playChampionSong() async {
     await player.stop();
     await player.play(
       AssetSource('audio/champ.mp3'),
-      position: const Duration(seconds: 100000)
+      volume: 1.0
     );
   }
 }

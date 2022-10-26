@@ -1,6 +1,7 @@
 import 'package:bolixo/api/ranking/ranking_api_interface.dart';
 import 'package:bolixo/flow/ranking/ranking_view.dart';
 import 'package:bolixo/flow/ranking/ranking_view_content.dart';
+import 'package:bolixo/ui/menu.dart';
 
 class RankingViewController {
 
@@ -15,8 +16,11 @@ class RankingViewController {
   }
 
   void onRankingItemTap(String position) {
-    if(int.parse(position) == 1) {
+    int intPosition = int.parse(position);
+    if(intPosition == 1) {
       view!.playChampionSong();
+    } else if(intPosition == viewContent.rankingItems.length) {
+      view!.playLoserSong();
     }
   }
 
