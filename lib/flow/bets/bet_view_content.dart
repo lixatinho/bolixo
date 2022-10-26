@@ -24,11 +24,12 @@ class BetsInDayViewContent {
   static fromApiModel(BetsInDayModel betsInDayApiModel) {
     int totalScore = _calculateTotalScore(betsInDayApiModel);
     double accuracy = _calculateAccuracy(betsInDayApiModel, totalScore);
+    int maxScore = _calculateMaxScore(betsInDayApiModel);
     return BetsInDayViewContent(
         date: betsInDayApiModel.date,
         totalScore: totalScore,
         accuracy: accuracy,
-        maxScore: betsInDayApiModel.maxPointsInDay,
+        maxScore: maxScore,
         betList: betsInDayApiModel.betList
             .map((betModel) => BetViewContent.fromApiModel(betModel))
             .toList()
@@ -36,8 +37,22 @@ class BetsInDayViewContent {
   }
 
   static int _calculateTotalScore(BetsInDayModel betsInDayModel) {
-    return betsInDayModel.betList
-        .fold(0, (previousValue, bet) => bet.score ?? 0);
+    int totalScore = 0;
+    for(final e in betsInDayModel.betList){
+      if (e.score != null) {
+        totalScore += e.score!;
+      }
+    }
+    return totalScore;
+  }
+
+  static int _calculateMaxScore(BetsInDayModel betsInDayModel) {
+    int maxScore = 0;
+    int maxScoreParam = 10;
+    for(final e in betsInDayModel.betList){
+      maxScore = maxScore + (e.match!.type! + 1) * maxScoreParam;
+    }
+    return maxScore;
   }
 
   static double _calculateAccuracy(BetsInDayModel betsInDayModel, int total) {
