@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: appTitle,
+      locale: const Locale('pt', 'BR'),
       scrollBehavior: AppBehaviors.scrollBehavior,
       theme: ThemeData(
         primarySwatch: Colors.indigo,

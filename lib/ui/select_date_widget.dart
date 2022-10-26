@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class SelectDateWidget extends StatelessWidget {
 
@@ -150,6 +151,7 @@ class DateSelectionViewContent {
   });
 
   static DateSelectionViewContent from(List<DateTime> dates, int selectedIndex) {
+    initializeDateFormatting('pt_BR', null);
     final weekDayFormat = DateFormat('E');
     final monthDayFormat = DateFormat('d');
     final fullDateFormat = DateFormat('d MMMM, y');
