@@ -30,6 +30,7 @@ class AuthService {
     AuthResponse response = await api.login(user);
     if (response.auth == true) {
       await repository.saveToken(response.token!);
+      await repository.saveAvatarUrl(response.avatarUrl!);
       return Future.value(true);
     }
     return Future.value(false);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../flow/auth/auth_repository.dart';
 import '../flow/auth/auth_service.dart';
 
 class Menu extends StatelessWidget {
@@ -7,6 +8,7 @@ class Menu extends StatelessWidget {
   static const ranking = 2;
   static const logoff = 3;
   static const boloes = 4;
+  late AuthRepository repository;
   Function onTapCallback;
 
   Menu({Key? key, required this.onTapCallback}) : super(key: key);
@@ -26,6 +28,8 @@ class Menu extends StatelessWidget {
                   height: 50,
                   decoration: const BoxDecoration(shape: BoxShape.circle),
                   child: const CircleAvatar(
+                    // backgroundImage: NetworkImage(repository.getAvatarUrl()),
+                    backgroundImage: NetworkImage("https://lixolao-flags.s3.amazonaws.com/BRA.webp"),
                     backgroundColor: Colors.greenAccent,
                     child: Icon(Icons.check),
                   ),

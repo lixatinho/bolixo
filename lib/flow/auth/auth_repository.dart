@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthRepository {
   late SharedPreferences prefs;
   final String tokenKey = "tokenBolixo";
+  final String avatarUrl = "BRA.webp";
   _AuthInitStatus _initStatus = _AuthInitStatus.notStarted;
   late Future initialization;
 
@@ -29,6 +30,10 @@ class AuthRepository {
     return prefs.getString(tokenKey);
   }
 
+  String? getAvatarUrl() {
+    return prefs.getString(avatarUrl);
+  }
+
   void removeToken() async {
     prefs = await SharedPreferences.getInstance();
     prefs.remove(tokenKey);
@@ -36,6 +41,10 @@ class AuthRepository {
 
   Future saveToken(String token) async {
     await prefs.setString(tokenKey, token);
+  }
+
+  Future saveAvatarUrl(String avatarUrl) async {
+    await prefs.setString(avatarUrl, avatarUrl);
   }
 }
 
