@@ -16,6 +16,7 @@ class SelectDateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Intl.defaultLocale = 'pt_BR';
     return Container(
       color: Colors.indigo,
       padding: const EdgeInsets.only(bottom: 0),
@@ -152,9 +153,9 @@ class DateSelectionViewContent {
 
   static DateSelectionViewContent from(List<DateTime> dates, int selectedIndex) {
     initializeDateFormatting('pt_BR', null);
-    final weekDayFormat = DateFormat('E');
-    final monthDayFormat = DateFormat('d');
-    final fullDateFormat = DateFormat('d MMMM, y');
+    final weekDayFormat = DateFormat('E', 'pt_BR');
+    final monthDayFormat = DateFormat('d', 'pt_BR');
+    final fullDateFormat = DateFormat('d MMMM, y', 'pt_BR');
 
     return DateSelectionViewContent(
         dates: dates.asMap().map((i, date) => MapEntry(i, DateViewContent(
