@@ -9,7 +9,7 @@ abstract class EasterEggApi {
   static const int rankingOneKey = 1;
   static const int rankingLastKey = 2;
   static const int shakeKey = 3;
-  static const int easterEggTotal = 2;
+  static const int easterEggTotal = 3;
 
   /// Exposed methods
   Future initialize();
