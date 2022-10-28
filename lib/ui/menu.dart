@@ -52,12 +52,28 @@ class MenuState extends State<Menu> {
                   Container(
                     width: 50,
                     height: 50,
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: repository.getEasterEggCompleted() ? Colors.amber.shade700 : Colors.transparent,
+                        width: 2.0,
+                      ),
+                    ),
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(repository.getAvatarUrl()),
                       backgroundColor: Colors.greenAccent
                     ),
                   ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16),
+                      child: Text(repository.getUsername(),
+                        style: const TextStyle(
+                          fontSize: 18
+                        ),
+                      ),
+                    )
+                  )
                 ],
               ),
             ),

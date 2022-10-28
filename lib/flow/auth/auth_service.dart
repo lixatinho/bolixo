@@ -25,15 +25,20 @@ class AuthService {
   void logOff() {
     repository.removeToken();
     repository.removeAvatarUrl();
+    repository.removeUsername();
   }
 
   Future<bool> login(UserModel user) async {
     AuthResponse response = await api.login(user);
     if (response.auth == true) {
       await repository.saveToken(response.token!);
-       if (response.avatarUrl != null) {
-         await repository.saveAvatarUrl(response.avatarUrl!);
+      if (response.avatarUrl != null) {
+        await repository.saveAvatarUrl(response.avatarUrl!);
       }
+      if (response.username != null) {
+        await repository.saveUsername(response.username!);
+      }
+      await repository.saveEasterEggCompleted(response.easterEggComplete ?? false);
 
       return Future.value(true);
     }

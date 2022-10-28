@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:bolixo/api/easteregg/easteregg_api_interface.dart';
 import 'package:bolixo/api/model/ranking_item_model.dart';
 import 'package:bolixo/api/model/user_model.dart';
-import 'package:bolixo/api/ranking/ranking_api_interface.dart';
 
-class RankingMockApi extends RankingApi {
+class EasterEggMockClient extends EasterEggApi {
 
   var random = Random();
 
@@ -30,6 +30,11 @@ class RankingMockApi extends RankingApi {
 
   @override
   Future initialize() {
+    return Future.value();
+  }
+
+  @override
+  Future postEasterEgg(int easterEggId) {
     return Future.value();
   }
 }

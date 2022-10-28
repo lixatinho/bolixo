@@ -3,7 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthRepository {
   late SharedPreferences prefs;
   final String tokenKey = "tokenBolixo";
-  final String avatarUrlKey = "BRA.webp";
+  final String avatarUrlKey = "avatarUrl";
+  final String easterEggCompletedKey = "easterEggCompleted";
+  final String usernameKey = "username";
   _AuthInitStatus _initStatus = _AuthInitStatus.notStarted;
   late Future initialization;
 
@@ -34,6 +36,14 @@ class AuthRepository {
     return prefs.getString(avatarUrlKey) ?? "https://lixolao-flags.s3.amazonaws.com/BRA.webp";
   }
 
+  String getUsername() {
+    return prefs.getString(usernameKey) ?? "";
+  }
+
+  bool getEasterEggCompleted() {
+    return prefs.getBool(easterEggCompletedKey) ?? false;
+  }
+
   void removeToken() async {
     prefs = await SharedPreferences.getInstance();
     prefs.remove(tokenKey);
@@ -44,12 +54,30 @@ class AuthRepository {
     prefs.remove(avatarUrlKey);
   }
 
+  void removeUsername() async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.remove(avatarUrlKey);
+  }
+
+  void removeEasterEggCompleted() async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.remove(easterEggCompletedKey);
+  }
+
   Future saveToken(String token) async {
     await prefs.setString(tokenKey, token);
   }
 
   Future saveAvatarUrl(String url) async {
     await prefs.setString(avatarUrlKey, url);
+  }
+
+  Future saveUsername(String name) async {
+    await prefs.setString(usernameKey, name);
+  }
+
+  Future saveEasterEggCompleted(bool easterEggCompleted) async {
+    await prefs.setBool(easterEggCompletedKey, easterEggCompleted);
   }
 }
 

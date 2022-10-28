@@ -13,7 +13,8 @@ class RankingWidget extends StatefulWidget {
 class RankingWidgetState extends State<RankingWidget> {
   RankingViewContent viewContent = RankingViewContent();
   RankingViewController viewController = RankingViewController();
-  final player = AudioPlayer();
+  final winnerPlayer = AudioPlayer();
+  final loserPlayer = AudioPlayer();
 
   @override
   initState() {
@@ -63,7 +64,7 @@ class RankingWidgetState extends State<RankingWidget> {
                           child: Row(
                             children: <Widget>[
                               textCell(1, viewContent.rankingItems[index].position),
-                              imageCell(2, viewContent.rankingItems[index].avatarUrl),
+                              imageCell(2, viewContent.rankingItems[index].avatarUrl, viewContent.rankingItems[index].borderColor),
                               textCell(6, viewContent.rankingItems[index].name),
                               textCell(3, viewContent.rankingItems[index].flies),
                               textCell(3, viewContent.rankingItems[index].points),
@@ -98,16 +99,25 @@ class RankingWidgetState extends State<RankingWidget> {
     );
   }
 
-  Widget imageCell(int widthWeight, String url) {
+  Widget imageCell(int widthWeight, String url, Color borderColor) {
     return Expanded(
         flex: widthWeight,
-        child: Center (
+        child: Align (
+          alignment: Alignment.centerLeft,
           child: Container(
             height: 30,
-            alignment: Alignment.centerLeft,
+            width: 30,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: borderColor,
+                width: 2.0,
+              ),
+            ),
             child: CircleAvatar(
               foregroundImage: NetworkImage(url),
-            )
+            ),
           )
         )
     );
@@ -147,18 +157,26 @@ class RankingWidgetState extends State<RankingWidget> {
   }
 
   Future<void> playLoserSong() async {
-    await player.stop();
-    await player.play(
-        AssetSource('audio/darkness.mp3'),
-        volume: 1.0
-    );
+    winnerPlayer.stop();
+    if(loserPlayer.state == PlayerState.playing) {
+      await loserPlayer.stop();
+    } else {
+      await loserPlayer.play(
+          AssetSource('audio/darkness.mp3'),
+          volume: 1.0
+      );
+    }
   }
 
   Future<void> playChampionSong() async {
-    await player.stop();
-    await player.play(
-      AssetSource('audio/champ.mp3'),
-      volume: 1.0
-    );
+    await loserPlayer.stop();
+    if(winnerPlayer.state == PlayerState.playing) {
+      await winnerPlayer.stop();
+    } else {
+      await winnerPlayer.play(
+          AssetSource('audio/champ.mp3'),
+          volume: 1.0
+      );
+    }
   }
 }

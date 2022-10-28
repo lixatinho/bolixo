@@ -83,6 +83,7 @@ class RankingItemViewContent {
   String avatarUrl = "";
   double rotationAngle;
   Color backgroundColor = Colors.indigo;
+  Color borderColor;
 
   RankingItemViewContent({
     required this.position,
@@ -92,6 +93,7 @@ class RankingItemViewContent {
     required this.avatarUrl,
     required this.backgroundColor,
     required this.rotationAngle,
+    required this.borderColor
   });
 
   static RankingItemViewContent fromApiModel(RankingItemModel rankingItem, int index) {
@@ -102,7 +104,8 @@ class RankingItemViewContent {
       flies: rankingItem.flies?.toString() ?? "0",
       avatarUrl: rankingItem.avatarUrl?.toString() ?? "https://lixolao-flags.s3.amazonaws.com/BRA.webp",
       backgroundColor: shadeByIndex(Colors.indigo, index),
-      rotationAngle: 0
+      rotationAngle: 0,
+      borderColor: rankingItem.easterEggComplete ? Colors.amber.shade700 : Colors.transparent
     );
   }
 
