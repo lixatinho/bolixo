@@ -20,7 +20,7 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  int _selectedIndex = Menu.ranking;
+  int _selectedIndex = Menu.bets;
   AlertDialog boloesDialog = _createBoloesDialog();
   AlertDialog rulesDialog = _createRulesDialog();
 
