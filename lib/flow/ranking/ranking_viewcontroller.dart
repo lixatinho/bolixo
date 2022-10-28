@@ -2,6 +2,7 @@ import 'package:bolixo/api/easteregg/easteregg_api_interface.dart';
 import 'package:bolixo/api/ranking/ranking_api_interface.dart';
 import 'package:bolixo/flow/ranking/ranking_view.dart';
 import 'package:bolixo/flow/ranking/ranking_view_content.dart';
+import 'package:flutter/foundation.dart';
 
 class RankingViewController {
 
@@ -37,7 +38,9 @@ class RankingViewController {
       viewContent = RankingViewContent.fromApiModel(ranking);
       view!.update(viewContent);
     }, onError: (error) {
-      print(error);
+      if (kDebugMode) {
+        print(error);
+      }
     });
   }
 

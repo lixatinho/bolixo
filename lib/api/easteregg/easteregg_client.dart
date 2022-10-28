@@ -25,14 +25,11 @@ class EasterEggClient implements EasterEggApi {
 
   @override
   Future postEasterEgg(int easterEggId) async {
-    print("Posting easter egg $easterEggId");
     try {
       var response = await dio.post("$baseUrl/$getEasterEggPath", data: {"easterEggId": easterEggId});
       if (response.statusCode == 200) {
-        print("Posting easter egg success");
         return Future.value();
       } else {
-        print("Posting easter egg error");
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {

@@ -30,9 +30,7 @@ class RankingItemModel {
     results = json['results'];
     avatarUrl = json['avatarUrl'];
     bolao = json['bolao'] != null ? BolaoModel.fromJson(json['bolao']) : null;
-    print("Easter eggs do back: ${json['easterEggs']}");
     easterEggComplete = json['easterEggs'] != null ? json['easterEggs'].length >= EasterEggApi.easterEggTotal : false;
-    print("Easter eggs complete ??? $easterEggComplete");
   }
 
   Map<String, dynamic> toJson() {
