@@ -1,12 +1,12 @@
 import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
-import 'package:bolixo/flow/ranking/ranking_view.dart';
 import 'package:bolixo/flow/boloes/boloes_view.dart';
 import 'package:bolixo/ui/menu.dart';
 import 'package:flutter/material.dart';
 
 import '../flow/auth/auth_view.dart';
 import '../flow/auth/auth_view_content.dart';
+import '../flow/ranking/ranking_view.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, required this.title});
@@ -43,7 +43,7 @@ class HomeState extends State<Home> {
                 _showRulesDialog();
               },
               icon: const Icon(
-                Icons.change_circle_outlined,
+                Icons.rule_outlined,
                 color: Colors.white,
               )
           ),

@@ -62,7 +62,8 @@ class RankingWidgetState extends State<RankingWidget> {
                           },
                           child: Row(
                             children: <Widget>[
-                              textCell(2, viewContent.rankingItems[index].position),
+                              textCell(1, viewContent.rankingItems[index].position),
+                              imageCell(1, viewContent.rankingItems[index].avatarUrl),
                               textCell(4, viewContent.rankingItems[index].name),
                               textCell(2, viewContent.rankingItems[index].flies),
                               textCell(2, viewContent.rankingItems[index].points),
@@ -94,6 +95,21 @@ class RankingWidgetState extends State<RankingWidget> {
           ),
         )
       )
+    );
+  }
+
+  Widget imageCell(int widthWeight, String url) {
+    return Expanded(
+        flex: widthWeight,
+        child: Center (
+          child: Container(
+            height: 50,
+            alignment: Alignment.centerLeft,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(url),
+            )
+          )
+        )
     );
   }
 

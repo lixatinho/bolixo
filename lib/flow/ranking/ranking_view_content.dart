@@ -80,6 +80,7 @@ class RankingItemViewContent {
   String name = "";
   String points = "";
   String flies = "";
+  String avatarUrl = "";
   double rotationAngle;
   Color backgroundColor = Colors.indigo;
 
@@ -88,6 +89,7 @@ class RankingItemViewContent {
     required this.name,
     required this.points,
     required this.flies,
+    required this.avatarUrl,
     required this.backgroundColor,
     required this.rotationAngle,
   });
@@ -98,6 +100,7 @@ class RankingItemViewContent {
       name: rankingItem.user?.username ?? "",
       points: rankingItem.score?.toString() ?? "0",
       flies: rankingItem.flies?.toString() ?? "0",
+      avatarUrl: rankingItem.avatarUrl?.toString() ?? "https://lixolao-flags.s3.amazonaws.com/BRA.webp",
       backgroundColor: shadeByIndex(Colors.indigo, index),
       rotationAngle: 0
     );

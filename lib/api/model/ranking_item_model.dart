@@ -7,6 +7,7 @@ class RankingItemModel {
   int? score;
   int? flies;
   int? results;
+  String? avatarUrl;
   BolaoModel? bolao;
 
   RankingItemModel({
@@ -14,6 +15,7 @@ class RankingItemModel {
     this.score,
     this.flies,
     this.results,
+    this.avatarUrl,
     this.bolao
   });
 
@@ -22,6 +24,7 @@ class RankingItemModel {
     score = json['score'];
     flies = json['flies'];
     results = json['results'];
+    avatarUrl = json['avatarUrl'];
     bolao = json['bolao'] != null ? BolaoModel.fromJson(json['bolao']) : null;
   }
 
@@ -31,6 +34,7 @@ class RankingItemModel {
     data['score'] = score;
     data['flies'] = flies;
     data['results'] = results;
+    data['avatarUrl'] = avatarUrl;
     if (user != null) {
       data['user'] = user!.toJson();
     }
