@@ -24,6 +24,7 @@ class AuthService {
 
   void logOff() {
     repository.removeToken();
+    repository.removeAvatarUrl();
   }
 
   Future<bool> login(UserModel user) async {

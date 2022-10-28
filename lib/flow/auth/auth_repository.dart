@@ -39,6 +39,11 @@ class AuthRepository {
     prefs.remove(tokenKey);
   }
 
+  void removeAvatarUrl() async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.remove(avatarUrlKey);
+  }
+
   Future saveToken(String token) async {
     await prefs.setString(tokenKey, token);
   }
