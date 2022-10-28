@@ -17,6 +17,12 @@ class RankingViewController {
     _fillRanking();
   }
 
+  void onShake() {
+    print('shaking');
+    view!.makeShit();
+    easterEggApi.postEasterEgg(EasterEggApi.shakeKey);
+  }
+
   void onRankingItemTap(String position) {
     int intPosition = int.parse(position);
     if(intPosition == 1) {

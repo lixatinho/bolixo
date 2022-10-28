@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:bolixo/flow/ranking/ranking_view_content.dart';
 import 'package:bolixo/flow/ranking/ranking_viewcontroller.dart';
 import 'package:flutter/material.dart';
+import 'package:shake/shake.dart';
 
 class RankingWidget extends StatefulWidget {
   const RankingWidget({super.key});
@@ -15,16 +16,29 @@ class RankingWidgetState extends State<RankingWidget> {
   RankingViewController viewController = RankingViewController();
   final winnerPlayer = AudioPlayer();
   final loserPlayer = AudioPlayer();
+  late ShakeDetector shakeDetector;
+  late bool isShitted = false;
 
   @override
   initState() {
     super.initState();
     viewController.onInit(this);
+    shakeDetector = ShakeDetector.autoStart(
+      onPhoneShake: () {
+        viewController.onShake();
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (viewContent.isLoading) {
+    if(isShitted) {
+      return Container(
+        alignment: Alignment.center,
+        color: Colors.black,
+        child: Image.asset('assets/images/spiderman.gif'),
+      );
+    } else if (viewContent.isLoading) {
       return const Center(
         child: CircularProgressIndicator(),
       );
@@ -147,6 +161,7 @@ class RankingWidgetState extends State<RankingWidget> {
   @override
   void dispose() {
     super.dispose();
+    shakeDetector.stopListening();
     viewController.onDispose();
   }
 
@@ -170,7 +185,7 @@ class RankingWidgetState extends State<RankingWidget> {
 
   Future<void> playChampionSong() async {
     await loserPlayer.stop();
-    if(winnerPlayer.state == PlayerState.playing) {
+    if (winnerPlayer.state == PlayerState.playing) {
       await winnerPlayer.stop();
     } else {
       await winnerPlayer.play(
@@ -178,5 +193,11 @@ class RankingWidgetState extends State<RankingWidget> {
           volume: 1.0
       );
     }
+  }
+
+  void makeShit() {
+    setState(() {
+      isShitted = true;
+    });
   }
 }
