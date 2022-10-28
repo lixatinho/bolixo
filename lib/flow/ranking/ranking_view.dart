@@ -63,10 +63,10 @@ class RankingWidgetState extends State<RankingWidget> {
                           child: Row(
                             children: <Widget>[
                               textCell(1, viewContent.rankingItems[index].position),
-                              imageCell(1, viewContent.rankingItems[index].avatarUrl),
-                              textCell(4, viewContent.rankingItems[index].name),
-                              textCell(2, viewContent.rankingItems[index].flies),
-                              textCell(2, viewContent.rankingItems[index].points),
+                              imageCell(2, viewContent.rankingItems[index].avatarUrl),
+                              textCell(6, viewContent.rankingItems[index].name),
+                              textCell(3, viewContent.rankingItems[index].flies),
+                              textCell(3, viewContent.rankingItems[index].points),
                             ],
                           )
                         ),
@@ -103,10 +103,10 @@ class RankingWidgetState extends State<RankingWidget> {
         flex: widthWeight,
         child: Center (
           child: Container(
-            height: 50,
+            height: 30,
             alignment: Alignment.centerLeft,
             child: CircleAvatar(
-              backgroundImage: NetworkImage(url),
+              foregroundImage: NetworkImage(url),
             )
           )
         )

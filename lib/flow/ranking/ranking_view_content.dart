@@ -31,10 +31,10 @@ class RankingViewContent {
   }
 
   void generateInfoHeaders() {
-    infoHeaders.putIfAbsent(positionHeaderId, () => RankingInfoHeader(id: 1, name: 'Posição', widthWeight: 2));
-    infoHeaders.putIfAbsent(nameHeaderId, () => RankingInfoHeader(id: 2, name: 'Nome', widthWeight: 4));
-    infoHeaders.putIfAbsent(fliesHeaderId, () => RankingInfoHeader(id: 3, name: 'Mitou', widthWeight: 2));
-    infoHeaders.putIfAbsent(pointsHeaderId, () => RankingInfoHeader(id: 4, name: 'Pontos', widthWeight: 2));
+    infoHeaders.putIfAbsent(positionHeaderId, () => RankingInfoHeader(id: 1, name: 'Posição', widthWeight: 3));
+    infoHeaders.putIfAbsent(nameHeaderId, () => RankingInfoHeader(id: 2, name: 'Nome', widthWeight: 6));
+    infoHeaders.putIfAbsent(fliesHeaderId, () => RankingInfoHeader(id: 3, name: 'Mitou', widthWeight: 3));
+    infoHeaders.putIfAbsent(pointsHeaderId, () => RankingInfoHeader(id: 4, name: 'Pontos', widthWeight: 3));
   }
 
   void selectSort(int headerId) {
