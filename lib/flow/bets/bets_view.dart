@@ -118,4 +118,10 @@ class BetsWidgetState extends State<BetsWidget> {
       isLoading = newIsLoadingValue;
     });
   }
+
+  void showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+    ));
+  }
 }

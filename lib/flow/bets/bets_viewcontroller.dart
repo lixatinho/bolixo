@@ -54,8 +54,10 @@ class BetsViewController {
         .cast();
     view!.updateIsLoading(true);
     api.saveUserBets(betList).then((empty) {
+      view!.showMessage("Aposta salva com sucesso.");
       view!.updateIsLoading(false);
     }, onError: (error) {
+      view!.showMessage("Erro ao salvar aposta");
       if (kDebugMode) {
         print(error);
       }
