@@ -22,7 +22,7 @@ class SelectDateWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 0),
       child: Stack(
         children: [
-          ferret(),
+          ferretWithArms(),
           dateSelectionWidget(),
           ferretLeftHand(),
           ferretRightHand(),
@@ -43,9 +43,22 @@ class SelectDateWidget extends StatelessWidget {
     );
   }
 
+
+  Widget ferretWithArms() {
+    return const Positioned(
+        top: 10,
+        right: ferretOffset,
+        child: Image(
+          image: AssetImage('assets/images/ferretWithArms.png'),
+          width: 130,
+          height: 210,
+        )
+    );
+  }
+
   Widget ferretLeftHand() {
     return const Positioned(
-        top: 64,
+        top: 68,
         right: ferretOffset + 100,
         child: Image(
           image: AssetImage('assets/images/ferretLeft.png'),
@@ -57,8 +70,8 @@ class SelectDateWidget extends StatelessWidget {
 
   Widget ferretRightHand() {
     return const Positioned(
-        top: 56,
-        right: ferretOffset - 30,
+        top: 60,
+        right: ferretOffset - 15,
         child: Image(
           image: AssetImage('assets/images/ferretRight.png'),
           width: 32,

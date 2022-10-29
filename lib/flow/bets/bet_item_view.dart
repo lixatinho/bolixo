@@ -96,14 +96,14 @@ class BetItemView extends StatelessWidget {
         message: bet.betFieldTooltip,
         padding: EdgeInsets.only(left: marginLeft, right: marginRight),
         child: SizedBox(
-          width: 45,
+          width: 55,
           child: TextField(
             keyboardType: TextInputType.number,
             decoration: AppDecoration.inputDecoration,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
             ],
-            maxLength: 2,
+            maxLength: 3,
             textAlign: TextAlign.center,
             controller: controller,
             onChanged: (goals) => callback(controller.text),
