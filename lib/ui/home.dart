@@ -23,6 +23,8 @@ class HomeState extends State<Home> {
   int _selectedIndex = Menu.bets;
   AlertDialog boloesDialog = _createBoloesDialog();
   AlertDialog rulesDialog = _createRulesDialog();
+  String bolaoName = BolaoCache().bolaoName;
+  int bolaoId = BolaoCache().bolaoId;
 
   final pages = {
     Menu.bets: const BetsWidget(),
@@ -31,12 +33,24 @@ class HomeState extends State<Home> {
   };
 
   @override
+  void initState() {
+    bolaoName = BolaoCache().bolaoName;
+    BolaoCache().onBolaoChanged((newId, newName) {
+      setState(() {
+        bolaoId = newId;
+        bolaoName = newName;
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
         elevation: 0,
-        title: const Text('Bolixo'),
+        title: Text(bolaoName),
         actions: [
           IconButton(
               onPressed: () {
@@ -70,7 +84,7 @@ class HomeState extends State<Home> {
   Future<void> _showBolaoDialog() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: BolaoCache().bolaoId != 0,
+      barrierDismissible: bolaoId != 0,
       builder: (BuildContext context) {
         return boloesDialog;
       },

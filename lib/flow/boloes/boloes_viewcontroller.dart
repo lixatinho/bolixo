@@ -16,8 +16,8 @@ class BoloesViewController {
     _fillBoloes();
   }
 
-  void onBolaoSelected(int bolaoId) {
-    BolaoCache().bolaoId = bolaoId;
+  void onBolaoSelected(int bolaoId, String name) {
+    BolaoCache().updateBolao(bolaoId, name);
   }
 
   Future _prepareApi() async {

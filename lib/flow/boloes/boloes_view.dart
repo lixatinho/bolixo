@@ -42,7 +42,7 @@ class BoloesWidgetState extends State<BoloesWidget> {
               color: viewContent.boloes[index].backgroundColor,
               child: InkWell(
                 onTap: () {
-                  viewController.onBolaoSelected(viewContent.boloes[index].id);
+                  viewController.onBolaoSelected(viewContent.boloes[index].id, viewContent.boloes[index].name);
                   navigateToHome(context);
                 },
                 child: Center(

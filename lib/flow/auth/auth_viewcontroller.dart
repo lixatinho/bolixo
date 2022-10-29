@@ -83,7 +83,7 @@ class AuthViewController {
     api.initialize().then((value) {
       api.getBoloes().then((boloes) {
         if(boloes.isNotEmpty) {
-          BolaoCache().bolaoId = boloes[0].bolaoId!;
+          BolaoCache().updateBolao(boloes[0].bolaoId!, boloes[0].name!);
           callback();
         } else {
           if(kDebugMode) {
