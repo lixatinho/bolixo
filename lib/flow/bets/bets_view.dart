@@ -125,7 +125,7 @@ class BetsWidgetState extends State<BetsWidget> {
     ));
   }
 
-  //todo - chamar getBetsByBolaoAndMatch 
+  //todo - chamar getBetsByBolaoAndMatch
   void _showBetsByMatch() {
     showModalBottomSheet(
       context: context,

@@ -38,8 +38,14 @@ class BetsViewController {
               BetsInDayViewContent.fromApiModel(betsInDayApiModel))
           .toList()
           .cast<BetsInDayViewContent>();
-
       view!.update(betsInDayViewContentList);
+      var today = DateTime.now();
+      for (var i = 0; i < betsInDayViewContentList.length; i++) {
+        if (betsInDayViewContentList[i].date.day == today.day && betsInDayViewContentList[i].date.month == today.month && betsInDayViewContentList[i].date.year == today.year) {
+          view!.updateDate(i);
+          break;
+        }
+      }
     }, onError: (error) {
       if (kDebugMode) {
         print(error);
