@@ -41,7 +41,9 @@ class BetsViewController {
       view!.update(betsInDayViewContentList);
       var today = DateTime.now();
       for (var i = 0; i < betsInDayViewContentList.length; i++) {
-        if (betsInDayViewContentList[i].date.day == today.day && betsInDayViewContentList[i].date.month == today.month && betsInDayViewContentList[i].date.year == today.year) {
+        if (betsInDayViewContentList[i].date.day == today.day &&
+            betsInDayViewContentList[i].date.month == today.month &&
+            betsInDayViewContentList[i].date.year == today.year) {
           view!.updateDate(i);
           break;
         }
@@ -70,15 +72,16 @@ class BetsViewController {
     });
   }
 
-  void getBetsByBolaoAndMatch() {
-    api.getUserBets().then((betsInDayList) {
-      List<BetsInDayViewContent> betsInDayViewContentList = betsInDayList
-          .map((betsInDayApiModel) =>
-          BetsInDayViewContent.fromApiModel(betsInDayApiModel))
+  void getBetsByBolaoAndMatch(int? matchId) {
+    api.getBetsByBolaoAndMatch(matchId).then((betsByBolaoAndMatch) {
+      List<BetsByBolaoAndMatchViewContent> betsViewContentList = betsByBolaoAndMatch
+          .map((betsByBolaoAndMatchApiModel) =>
+          BetsByBolaoAndMatchViewContent.fromApiModel(betsByBolaoAndMatchApiModel))
           .toList()
-          .cast<BetsInDayViewContent>();
+          .cast<BetsByBolaoAndMatchViewContent>();
 
-      view!.update(betsInDayViewContentList);
+      view!.updateViewBets(betsViewContentList);
+      view!.showBetsByMatch();
     }, onError: (error) {
       if (kDebugMode) {
         print(error);

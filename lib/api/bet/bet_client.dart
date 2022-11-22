@@ -60,7 +60,7 @@ class BetClient implements BetApi {
   }
 
   @override
-  Future<List<BetModel>> getBetsByBolaoAndMatch(int matchId) async {
+  Future<List<BetModel>> getBetsByBolaoAndMatch(int? matchId) async {
     try {
       var response = await dio.get("$baseUrl/$getBets/$bolaoId/$matchId");
       if (response.statusCode == 200) {

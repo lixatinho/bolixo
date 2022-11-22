@@ -4,6 +4,7 @@ import 'package:bolixo/flow/bets/bets_viewcontroller.dart';
 import 'package:flutter/material.dart';
 
 import '../../ui/select_date_widget.dart';
+import 'bet_view_item_view.dart';
 
 class BetsWidget extends StatefulWidget {
   const BetsWidget({super.key});
@@ -14,6 +15,7 @@ class BetsWidget extends StatefulWidget {
 
 class BetsWidgetState extends State<BetsWidget> {
   List<BetsInDayViewContent> betsByDay = [];
+  List<BetsByBolaoAndMatchViewContent> betsByBolaoAndMatch = [];
   int dateIndex = 0;
   bool isLoading = true;
   BetsViewController viewController = BetsViewController();
@@ -50,12 +52,21 @@ class BetsWidgetState extends State<BetsWidget> {
                 itemCount: betsByDay[dateIndex].betList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return BetItemView(
-                    bet: betsByDay[dateIndex].betList[index],
-                    homeGoalsChanged: (goals) =>
-                        viewController.onGoalsTeam1Changed(index, goals),
-                    awayGoalsChanged: (goals) =>
-                        viewController.onGoalsTeam2Changed(index, goals),
+                  return GestureDetector(
+                    onTap: () {
+                      print ("tapped");
+                      if (betsByDay[dateIndex].betList[index].model.match?.matchDate.isBefore(DateTime.now().toUtc()) == true) {
+                        viewController.getBetsByBolaoAndMatch(betsByDay[dateIndex].betList[index].model.match?.id);
+                        print ("mostrou os palpites");
+                      }
+                    },
+                    child:  BetItemView(
+                      bet: betsByDay[dateIndex].betList[index],
+                      homeGoalsChanged: (goals) =>
+                          viewController.onGoalsTeam1Changed(index, goals),
+                      awayGoalsChanged: (goals) =>
+                          viewController.onGoalsTeam2Changed(index, goals),
+                    ),
                   );
                 },
                 separatorBuilder: (context, index) =>
@@ -83,6 +94,13 @@ class BetsWidgetState extends State<BetsWidget> {
   void update(List<BetsInDayViewContent> newBets) {
     setState(() {
       betsByDay = newBets;
+      isLoading = false;
+    });
+  }
+
+  void updateViewBets(List<BetsByBolaoAndMatchViewContent> newBets) {
+    setState(() {
+      betsByBolaoAndMatch = newBets;
       isLoading = false;
     });
   }
@@ -125,26 +143,27 @@ class BetsWidgetState extends State<BetsWidget> {
     ));
   }
 
-  //todo - chamar getBetsByBolaoAndMatch
-  void _showBetsByMatch() {
+  void showBetsByMatch() {
     showModalBottomSheet(
-      context: context,
-      isScrollControlled: true, // set this to true
-      builder: (_) {
-        return DraggableScrollableSheet(
-          expand: false,
-          builder: (_, controller) {
-            return Container(
-              color: Colors.blue[500],
-              child: ListView.builder(
-                controller: controller, // set this too
-                itemBuilder: (_, i) => ListTile(title: Text('Item $i')),
-              ),
-            );
-          },
-        );
-      },
-    );
+        context: context,
+        isScrollControlled: true, // set this to true
+        builder: (_) {
+          return DraggableScrollableSheet(
+            expand: false,
+            builder: (_, controller) {
+              return Container(
+                // color: Colors.blue[500],
+                child: ListView.builder(
+                  controller: controller, // set this too
+                  itemBuilder: (context, index) {
+                    return BetViewItemView(
+                      bet: betsByBolaoAndMatch[index]
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        });
   }
-
 }

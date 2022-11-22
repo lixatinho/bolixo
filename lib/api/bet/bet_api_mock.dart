@@ -75,7 +75,7 @@ class MockBetApi implements BetApi {
   }
 
   @override
-  Future<List<BetModel>> getBetsByBolaoAndMatch(int matchId) {
+  Future<List<BetModel>> getBetsByBolaoAndMatch(int? matchId) {
     // TODO: implement getBetsByBolaoAndMatch
     throw UnimplementedError();
   }

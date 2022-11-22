@@ -1,6 +1,7 @@
 
 import 'package:bolixo/api/model/bets_in_day_model.dart';
 import 'package:bolixo/api/model/bet_model.dart';
+import 'package:bolixo/api/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -207,5 +208,66 @@ class DateViewContent {
       value: df.format(dateTime),
       color: Colors.black87,
     );
+  }
+
+
+}
+
+class BetsByBolaoAndMatchViewContent {
+  BetModel model;
+  TeamViewContent homeTeam;
+  TeamViewContent awayTeam;
+  String type;
+  ScoreViewContent score;
+  bool isBetEnabled;
+  String betFieldTooltip;
+  String scoreTooltip;
+  String earnedPointsTooltip;
+  String savedBetTooltip;
+  DateViewContent date;
+
+  BetsByBolaoAndMatchViewContent({
+    required this.model,
+    required this.homeTeam,
+    required this.awayTeam,
+    required this.type,
+    required this.score,
+    required this.isBetEnabled,
+    required this.date,
+    required this.betFieldTooltip,
+    required this.scoreTooltip,
+    required this.savedBetTooltip,
+    required this.earnedPointsTooltip,
+  });
+
+  static fromApiModel(BetModel betApiModel) {
+    return BetsByBolaoAndMatchViewContent(
+      model: betApiModel,
+      homeTeam: TeamViewContent.fromApiModel(
+        betApiModel.match?.home,
+        betApiModel.homeScoreBet,
+        betApiModel.match?.homeScore,
+      ),
+      awayTeam: TeamViewContent.fromApiModel(betApiModel.match?.away,
+          betApiModel.awayScoreBet, betApiModel.match?.awayScore),
+      date: DateViewContent.fromApiModel(betApiModel.match?.matchDate),
+      type: _defineType(betApiModel.match!.type),
+      score: ScoreViewContent.fromApiModel(betApiModel.score),
+      isBetEnabled:
+      betApiModel.match?.matchDate.isAfter(DateTime.now().toUtc()) == true,
+      betFieldTooltip: "Aposta",
+      scoreTooltip: "Resultado do jogo",
+      savedBetTooltip: "Aposta",
+      earnedPointsTooltip: " Pontos ganhos ",
+    );
+  }
+
+  toApiModel() {
+    return BetModel(
+        id: model.id,
+        match: model.match,
+        homeScoreBet: int.tryParse(homeTeam.scoreBet),
+        awayScoreBet: int.tryParse(awayTeam.scoreBet),
+        score: model.score);
   }
 }
