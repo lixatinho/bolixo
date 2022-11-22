@@ -9,6 +9,7 @@ abstract class BetApi {
   /// Exposed methods
   Future initialize();
   Future<List<BetsInDayModel>> getUserBets();
+  Future<List<BetModel>> getBetsByBolaoAndMatch(int matchId);
   Future saveUserBets(List<BetModel> betList);
 
   /// Injection turnaround

@@ -1,4 +1,5 @@
 import 'package:bolixo/api/model/match_model.dart';
+import 'package:bolixo/api/model/user_model.dart';
 
 class BetModel {
   int? id;
@@ -6,13 +7,15 @@ class BetModel {
   int? homeScoreBet;
   int? awayScoreBet;
   int? score;
+  UserModel? user;
 
   BetModel({
     this.id,
     required this.match,
     this.awayScoreBet,
     this.homeScoreBet,
-    this.score
+    this.score,
+    this.user
   });
 
   BetModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +26,9 @@ class BetModel {
     homeScoreBet = json['homeScoreBet'];
     awayScoreBet = json['awayScoreBet'];
     score = json['score'];
+    if(json['user'] != null) {
+      user = UserModel.fromJson(json['user']);
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -32,6 +38,7 @@ class BetModel {
     data['homeScoreBet'] = homeScoreBet;
     data['awayScoreBet'] = awayScoreBet;
     data['score'] = score;
+    data['user'] = user?.toJson();
     return data;
   }
 }

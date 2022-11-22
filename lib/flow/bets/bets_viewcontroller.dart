@@ -64,6 +64,22 @@ class BetsViewController {
     });
   }
 
+  void getBetsByBolaoAndMatch() {
+    api.getUserBets().then((betsInDayList) {
+      List<BetsInDayViewContent> betsInDayViewContentList = betsInDayList
+          .map((betsInDayApiModel) =>
+          BetsInDayViewContent.fromApiModel(betsInDayApiModel))
+          .toList()
+          .cast<BetsInDayViewContent>();
+
+      view!.update(betsInDayViewContentList);
+    }, onError: (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    });
+  }
+
   void onDispose() {
     view = null;
   }

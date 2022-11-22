@@ -58,4 +58,21 @@ class BetClient implements BetApi {
       return Future.error(e);
     }
   }
+
+  @override
+  Future<List<BetModel>> getBetsByBolaoAndMatch(int matchId) async {
+    try {
+      var response = await dio.get("$baseUrl/$getBets/$bolaoId/$matchId");
+      if (response.statusCode == 200) {
+        var betList = List<BetModel>.from(
+            response.data.map((model) => BetModel.fromJson(model)));
+        return Future.value(betList);
+      } else {
+        return Future.error(response.statusCode ?? 500);
+      }
+    } catch (e) {
+      log(e.toString());
+      return Future.error(e);
+    }
+  }
 }

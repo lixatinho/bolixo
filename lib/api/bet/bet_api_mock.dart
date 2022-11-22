@@ -73,4 +73,10 @@ class MockBetApi implements BetApi {
   Future saveUserBets(List<BetModel> betList) {
     return Future.value();
   }
+
+  @override
+  Future<List<BetModel>> getBetsByBolaoAndMatch(int matchId) {
+    // TODO: implement getBetsByBolaoAndMatch
+    throw UnimplementedError();
+  }
 }
