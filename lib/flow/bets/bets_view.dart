@@ -154,6 +154,7 @@ class BetsWidgetState extends State<BetsWidget> {
               return Container(
                 // color: Colors.blue[500],
                 child: ListView.builder(
+                  itemCount: betsByBolaoAndMatch.length,
                   controller: controller, // set this too
                   itemBuilder: (context, index) {
                     return BetViewItemView(
