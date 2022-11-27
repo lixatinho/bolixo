@@ -19,9 +19,9 @@ abstract class AuthApi {
         case Flavor.local:
           return AuthClient(baseUrl: "http://localhost:8080");
         case Flavor.staging:
-          return AuthClient(baseUrl: 'https://lixolao.herokuapp.com');
+          return AuthClient(baseUrl: 'http://lixolao.quizon.com.br:8080');
         case Flavor.production:
-          return AuthClient(baseUrl: 'https://lixolao.herokuapp.com');
+          return AuthClient(baseUrl: 'http://lixolao.quizon.com.br:8080');
       }
     }
     return betApi!;
