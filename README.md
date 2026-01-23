@@ -25,6 +25,6 @@ COMPLETAR INSTRUÇÕES
 - Ranking
 
 ## Repositório do backend
-Link: [Ainda indisponível](https://github.com/lixatinho/lixolao)
+Link: [Lixolao](https://github.com/lixatinho/lixolao)
 
 ## PA meu pato
