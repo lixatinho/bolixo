@@ -17,7 +17,7 @@ class AppElevatedButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0)
         ),
-        primary: Colors.indigo),
+        backgroundColor: Colors.indigo),
       onPressed: () {
         onPressedCallback();
       },
