@@ -17,7 +17,7 @@ abstract class RankingApi {
         case Flavor.mock:
           return RankingMockApi();
         case Flavor.staging:
-          return RankingClient(baseUrl: 'http://lixolao.quizon.com.br:8080');
+          return RankingClient(baseUrl: 'https://lixolao-backend.onrender.com');
         case Flavor.production:
           return RankingMockApi();
         case Flavor.local:
