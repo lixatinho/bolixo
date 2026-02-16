@@ -1,11 +1,13 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'shared/ferret_animation.dart';
 import 'theme/bolixo_colors.dart';
 import 'theme/bolixo_typography.dart';
 
-class SelectDateWidget extends StatelessWidget {
+class SelectDateWidget extends StatefulWidget {
   final DateSelectionViewContent viewContent;
   final Function onTapCallback;
 
@@ -14,6 +16,41 @@ class SelectDateWidget extends StatelessWidget {
     required this.viewContent,
     required this.onTapCallback,
   });
+
+  @override
+  State<SelectDateWidget> createState() => _SelectDateWidgetState();
+}
+
+class _SelectDateWidgetState extends State<SelectDateWidget> {
+  final GlobalKey<FerretAnimationState> _ferretKey = GlobalKey();
+
+  void _onPointerMove(PointerMoveEvent event) {
+    final direction = (event.delta.dx / 6.0).clamp(-1.0, 1.0);
+    _ferretKey.currentState?.setDirection(direction);
+  }
+
+  void _onPointerUp(PointerUpEvent event) {
+    _ferretKey.currentState?.resetDirection();
+  }
+
+  void _onPointerSignal(PointerSignalEvent event) {
+    if (event is PointerScrollEvent) {
+      // Trackpad/mouse wheel: use horizontal or vertical scroll delta
+      final dx = event.scrollDelta.dx != 0
+          ? event.scrollDelta.dx
+          : event.scrollDelta.dy;
+      final direction = (dx / 30.0).clamp(-1.0, 1.0);
+      _ferretKey.currentState?.setDirection(direction);
+      Future.delayed(const Duration(milliseconds: 200), () {
+        _ferretKey.currentState?.resetDirection();
+      });
+    }
+  }
+
+  void _onDateTap(int index) {
+    _ferretKey.currentState?.bounce();
+    widget.onTapCallback(index);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +66,7 @@ class SelectDateWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 16),
               child: Text(
-                viewContent.selectedDate().fullDate,
+                widget.viewContent.selectedDate().fullDate,
                 style: BolixoTypography.headlineMedium,
               ),
             ),
@@ -39,29 +76,35 @@ class SelectDateWidget extends StatelessWidget {
                 alignment: Alignment.center,
                 clipBehavior: Clip.none,
                 children: [
-                  // Ferret behind - arms stick up above the date chips
+                  // Ferret behind - Rive animated (or fallback with idle breathing)
                   Positioned(
                     bottom: -4,
-                    child: Image.asset(
-                      'assets/images/ferretWithArms.png',
+                    child: FerretAnimation(
+                      key: _ferretKey,
                       width: 80,
                       height: 110,
-                      fit: BoxFit.contain,
                     ),
                   ),
                   // Date chips on top
                   Center(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          for (int index = 0; index < viewContent.dates.length; index++) ...[
-                            if (index > 0) const SizedBox(width: 8),
-                            _buildDateChip(index),
+                    child: Listener(
+                      onPointerMove: _onPointerMove,
+                      onPointerUp: _onPointerUp,
+                      onPointerSignal: _onPointerSignal,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            for (int index = 0;
+                                index < widget.viewContent.dates.length;
+                                index++) ...[
+                              if (index > 0) const SizedBox(width: 8),
+                              _buildDateChip(index),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -75,8 +118,8 @@ class SelectDateWidget extends StatelessWidget {
   }
 
   Widget _buildDateChip(int index) {
-    final date = viewContent.dates[index];
-    final isSelected = index == viewContent.selectedIndex;
+    final date = widget.viewContent.dates[index];
+    final isSelected = index == widget.viewContent.selectedIndex;
     return Container(
       decoration: BoxDecoration(
         color: isSelected
@@ -91,7 +134,7 @@ class SelectDateWidget extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: () => onTapCallback(index),
+          onTap: () => _onDateTap(index),
           child: Container(
             padding: const EdgeInsets.symmetric(
                 horizontal: 18, vertical: 8),
