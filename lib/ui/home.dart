@@ -49,8 +49,9 @@ class HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
+        iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
-        title: Text(bolaoName),
+        title: Text(bolaoName, style: const TextStyle(color: Colors.white)),
         actions: [
           IconButton(
               onPressed: () {
