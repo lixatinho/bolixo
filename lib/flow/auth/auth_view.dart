@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
 import 'package:bolixo/ui/shared/app_text_button.dart';
-import 'package:bolixo/ui/shared/bolixo_trophy.dart';
 import 'package:bolixo/ui/shared/loading_widget.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_decorations.dart';
@@ -83,7 +82,10 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
                           child: child,
                         );
                       },
-                      child: const BolixoTrophy(size: 120),
+                      child: Image.asset(
+                        'assets/images/world_cup_trophy.png',
+                        height: 160,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     // App name
