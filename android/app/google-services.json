@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "685587018969",
+    "project_id": "bolixo-app",
+    "storage_bucket": "bolixo-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685587018969:android:45af1be6ba29c60334fac8",
+        "android_client_info": {
+          "package_name": "br.com.lixatinho.bolixo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPDkGeDnnX_GiGCFZlILi_7QiAPniuCNs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
