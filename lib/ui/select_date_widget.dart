@@ -1,12 +1,15 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'shared/ferret_animation.dart';
+import 'theme/bolixo_colors.dart';
+import 'theme/bolixo_typography.dart';
 
-class SelectDateWidget extends StatelessWidget {
-
+class SelectDateWidget extends StatefulWidget {
   final DateSelectionViewContent viewContent;
   final Function onTapCallback;
-  static const ferretOffset = 50.0;
 
   const SelectDateWidget({
     super.key,
@@ -15,142 +18,154 @@ class SelectDateWidget extends StatelessWidget {
   });
 
   @override
+  State<SelectDateWidget> createState() => _SelectDateWidgetState();
+}
+
+class _SelectDateWidgetState extends State<SelectDateWidget> {
+  final GlobalKey<FerretAnimationState> _ferretKey = GlobalKey();
+
+  void _onPointerMove(PointerMoveEvent event) {
+    final direction = (event.delta.dx / 6.0).clamp(-1.0, 1.0);
+    _ferretKey.currentState?.setDirection(direction);
+  }
+
+  void _onPointerUp(PointerUpEvent event) {
+    _ferretKey.currentState?.resetDirection();
+  }
+
+  void _onPointerSignal(PointerSignalEvent event) {
+    if (event is PointerScrollEvent) {
+      // Trackpad/mouse wheel: use horizontal or vertical scroll delta
+      final dx = event.scrollDelta.dx != 0
+          ? event.scrollDelta.dx
+          : event.scrollDelta.dy;
+      final direction = (dx / 30.0).clamp(-1.0, 1.0);
+      _ferretKey.currentState?.setDirection(direction);
+      Future.delayed(const Duration(milliseconds: 200), () {
+        _ferretKey.currentState?.resetDirection();
+      });
+    }
+  }
+
+  void _onDateTap(int index) {
+    _ferretKey.currentState?.bounce();
+    widget.onTapCallback(index);
+  }
+
+  @override
   Widget build(BuildContext context) {
     Intl.defaultLocale = 'pt_BR';
     return Container(
-      color: Colors.indigo,
-      padding: const EdgeInsets.only(bottom: 0),
-      child: Stack(
-        children: [
-          ferretWithArms(),
-          dateSelectionWidget(),
-          ferretLeftHand(),
-          ferretRightHand(),
-        ]
-      )
-    );
-  }
-
-  Widget ferret() {
-    return const Positioned(
-      top: 10,
-      right: ferretOffset,
-      child: Image(
-        image: AssetImage('assets/images/ferret.png'),
-        width: 100,
-        height: 210,
-      )
-    );
-  }
-
-
-  Widget ferretWithArms() {
-    return const Positioned(
-        top: 10,
-        right: ferretOffset,
-        child: Image(
-          image: AssetImage('assets/images/ferretWithArms.png'),
-          width: 130,
-          height: 210,
-        )
-    );
-  }
-
-  Widget ferretLeftHand() {
-    return const Positioned(
-        top: 68,
-        right: ferretOffset + 100,
-        child: Image(
-          image: AssetImage('assets/images/ferretLeft.png'),
-          width: 32,
-          height: 32,
-        )
-    );
-  }
-
-  Widget ferretRightHand() {
-    return const Positioned(
-        top: 60,
-        right: ferretOffset - 15,
-        child: Image(
-          image: AssetImage('assets/images/ferretRight.png'),
-          width: 32,
-          height: 32,
-        )
-    );
-  }
-
-  Widget dateSelectionWidget() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16, top: 24, bottom: 24),
-              child: Text(viewContent.selectedDate().fullDate,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                ),
+      width: double.infinity,
+      color: BolixoColors.deepPlum,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Column(
+          children: [
+            // Full date - centered
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 16),
+              child: Text(
+                widget.viewContent.selectedDate().fullDate,
+                style: BolixoTypography.headlineMedium,
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.separated(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemBuilder:  (context, index) {
-                final date = viewContent.dates[index];
-                return Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
+            // Date chips with ferret BEHIND
+            Expanded(
+              child: Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  // Ferret behind - Rive animated (or fallback with idle breathing)
+                  Positioned(
+                    bottom: -4,
+                    child: FerretAnimation(
+                      key: _ferretKey,
+                      width: 80,
+                      height: 110,
                     ),
-                    color: date.backgroundColor,
-                    child:
-                    InkWell(
-                      onTap: () {
-                        onTapCallback(index);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 18, right: 18, top: 12, bottom: 12),
-                        child: Column(
+                  ),
+                  // Date chips on top
+                  Center(
+                    child: Listener(
+                      onPointerMove: _onPointerMove,
+                      onPointerUp: _onPointerUp,
+                      onPointerSignal: _onPointerSignal,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                                padding: const EdgeInsets.only(bottom: 4),
-                                child: Text(date.monthDay,
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      color: date.fontColor
-                                  ),
-                                )
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.only(bottom: 0),
-                                child: Text(date.weekDay,
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: date.fontColor
-                                  ),
-                                )
-                            )
+                            for (int index = 0;
+                                index < widget.viewContent.dates.length;
+                                index++) ...[
+                              if (index > 0) const SizedBox(width: 8),
+                              _buildDateChip(index),
+                            ],
                           ],
                         ),
                       ),
-                    )
-                );
-              },
-              separatorBuilder:(context, index) => const SizedBox(
-                  width: 6
+                    ),
+                  ),
+                ],
               ),
-              itemCount: viewContent.dates.length
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDateChip(int index) {
+    final date = widget.viewContent.dates[index];
+    final isSelected = index == widget.viewContent.selectedIndex;
+    return Container(
+      decoration: BoxDecoration(
+        color: isSelected
+            ? BolixoColors.accentGreen
+            : BolixoColors.surfaceCard,
+        borderRadius: BorderRadius.circular(16),
+        border: isSelected
+            ? null
+            : Border.all(color: BolixoColors.white10, width: 1),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () => _onDateTap(index),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 18, vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  date.monthDay,
+                  style: GoogleFonts.poppins(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: BolixoColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  date.weekDay,
+                  style: GoogleFonts.inter(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: isSelected
+                        ? BolixoColors.textPrimary
+                        : BolixoColors.textSecondary,
+                  ),
+                ),
+              ],
             ),
           ),
-        ]
-      )
+        ),
+      ),
     );
   }
 }
@@ -164,22 +179,31 @@ class DateSelectionViewContent {
     required this.selectedIndex,
   });
 
-  static DateSelectionViewContent from(List<DateTime> dates, int selectedIndex) {
+  static DateSelectionViewContent from(
+      List<DateTime> dates, int selectedIndex) {
     initializeDateFormatting('pt_BR', null);
     final weekDayFormat = DateFormat('E', 'pt_BR');
     final monthDayFormat = DateFormat('d', 'pt_BR');
     final fullDateFormat = DateFormat('d MMMM, y', 'pt_BR');
 
     return DateSelectionViewContent(
-        dates: dates.asMap().map((i, date) => MapEntry(i, DateViewContent(
-          date: date,
-          backgroundColor: i == selectedIndex ? Colors.white : const Color(0xFF5670C7),
-          fontColor: i == selectedIndex ? Colors.black87 : Colors.white,
-          weekDay: weekDayFormat.format(date),
-          monthDay: monthDayFormat.format(date),
-          fullDate: fullDateFormat.format(date)
-        ))).values.toList().cast<DateViewContent>(),
-        selectedIndex: selectedIndex
+      dates: dates
+          .asMap()
+          .map((i, date) => MapEntry(
+                i,
+                DateViewContent(
+                  date: date,
+                  backgroundColor: Colors.transparent,
+                  fontColor: Colors.white,
+                  weekDay: weekDayFormat.format(date),
+                  monthDay: monthDayFormat.format(date),
+                  fullDate: fullDateFormat.format(date),
+                ),
+              ))
+          .values
+          .toList()
+          .cast<DateViewContent>(),
+      selectedIndex: selectedIndex,
     );
   }
 

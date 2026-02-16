@@ -1,6 +1,8 @@
+import 'package:bolixo/ui/shared/loading_widget.dart';
 import 'package:bolixo/ui/shared/navigation.dart';
+import 'package:bolixo/ui/theme/bolixo_colors.dart';
+import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
-
 import 'boloes_view_content.dart';
 import 'boloes_viewcontroller.dart';
 
@@ -26,37 +28,64 @@ class BoloesWidgetState extends State<BoloesWidget> {
   @override
   Widget build(BuildContext context) {
     if (viewContent.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const LoadingWidget();
     } else {
-      return Container(
-        padding: EdgeInsets.zero,
-        color: Colors.white,
-        child: ListView.builder(
-          itemCount: viewContent.boloes.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Container(
-              height: 50,
-              color: viewContent.boloes[index].backgroundColor,
+      return ListView.separated(
+        itemCount: viewContent.boloes.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        separatorBuilder: (context, index) => const SizedBox(height: 8),
+        itemBuilder: (context, index) {
+          final bolao = viewContent.boloes[index];
+          return Container(
+            decoration: BoxDecoration(
+              color: BolixoColors.surfaceCard,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: BolixoColors.white8, width: 1),
+            ),
+            child: Material(
+              color: Colors.transparent,
               child: InkWell(
+                borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  viewController.onBolaoSelected(viewContent.boloes[index].id, viewContent.boloes[index].name);
+                  viewController.onBolaoSelected(bolao.id, bolao.name);
                   navigateToHome(context);
                 },
-                child: Center(
-                  child: Text(
-                    viewContent.boloes[index].name,
-                    style: TextStyle(
-                      color: viewContent.boloes[index].textColor
-                    ),
-                  )
-                )
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Row(
+                    children: [
+                      // Accent bar
+                      Container(
+                        width: 4,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [BolixoColors.accentGreen, BolixoColors.accentGreenLight],
+                          ),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          bolao.name,
+                          style: BolixoTypography.titleMedium,
+                        ),
+                      ),
+                      const Icon(
+                        Icons.chevron_right,
+                        color: BolixoColors.textTertiary,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       );
     }
   }
