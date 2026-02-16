@@ -2,6 +2,7 @@
 import 'package:bolixo/api/model/bets_in_day_model.dart';
 import 'package:bolixo/api/model/bet_model.dart';
 import 'package:bolixo/api/model/user_model.dart';
+import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -166,7 +167,7 @@ class ScoreViewContent {
     }
     return ScoreViewContent(
         value: score > 0 ? "+ $score" : (score == 0 ? " $score " : "- $score "),
-        color: score > 0 ? Colors.green : Colors.red,
+        color: score > 0 ? BolixoColors.success : BolixoColors.error,
         background: Colors.transparent);
   }
 }
@@ -206,11 +207,9 @@ class DateViewContent {
     DateFormat df = DateFormat('HH:mm');
     return DateViewContent(
       value: df.format(dateTime),
-      color: Colors.black87,
+      color: BolixoColors.textTertiary,
     );
   }
-
-
 }
 
 class BetsByBolaoAndMatchViewContent {
