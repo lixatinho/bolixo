@@ -2,7 +2,8 @@ name: Build & Release Android
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build-and-release:
@@ -18,19 +19,28 @@ jobs:
           channel: stable
           cache: true
 
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties', 'android/app/build.gradle', 'android/settings.gradle') }}
+          restore-keys: gradle-
+
       - run: flutter pub get
 
       - run: flutter build apk --release
 
-      - name: Get version from pubspec
+      - name: Get version
         id: version
-        run: echo "version=$(grep 'version:' pubspec.yaml | sed 's/version: //' | sed 's/+.*//')" >> $GITHUB_OUTPUT
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | sed 's/+.*//')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.version.outputs.version }}-${{ github.run_number }}
-          name: Bolixo v${{ steps.version.outputs.version }} (build ${{ github.run_number }})
-          body: |
-            Download o APK abaixo e instale no seu Android.
+          tag_name: "v${{ steps.version.outputs.version }}-build.${{ github.run_number }}"
+          name: "Bolixo v${{ steps.version.outputs.version }} (build ${{ github.run_number }})"
+          body: "Download o APK abaixo e instale no seu Android."
           files: build/app/outputs/flutter-apk/app-release.apk
