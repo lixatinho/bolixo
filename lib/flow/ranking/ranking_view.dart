@@ -27,7 +27,7 @@ class RankingWidgetState extends State<RankingWidget> {
     super.initState();
     viewController.onInit(this);
     shakeDetector = ShakeDetector.autoStart(
-      onPhoneShake: () {
+      onPhoneShake: (_) {
         viewController.onShake();
       },
     );
