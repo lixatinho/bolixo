@@ -26,7 +26,7 @@ class AppElevatedButton extends StatelessWidget {
         child: Text(
           text,
           style:
-          const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
+          const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300, color: Colors.white),
         ),
       ),
     );
