@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:bolixo/ui/shared/shared_color.dart';
+import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
@@ -82,7 +81,7 @@ class RankingItemViewContent {
   String flies = "";
   String avatarUrl = "";
   double rotationAngle;
-  Color backgroundColor = Colors.indigo;
+  Color backgroundColor = BolixoColors.backgroundSecondary;
   Color borderColor;
 
   RankingItemViewContent({
@@ -103,14 +102,14 @@ class RankingItemViewContent {
       points: rankingItem.score?.toString() ?? "0",
       flies: rankingItem.flies?.toString() ?? "0",
       avatarUrl: rankingItem.avatarUrl?.toString() ?? "https://lixolao-flags.s3.amazonaws.com/BRA.webp",
-      backgroundColor: shadeByIndex(Colors.indigo, index),
+      backgroundColor: rankingRowColor(index),
       rotationAngle: 0,
-      borderColor: rankingItem.easterEggComplete ? Colors.amber.shade700 : Colors.transparent
+      borderColor: rankingItem.easterEggComplete ? BolixoColors.easterEgg : Colors.transparent
     );
   }
 
   void updateSortedItem(int newPosition) {
-    backgroundColor = shadeByIndex(Colors.indigo, newPosition);
+    backgroundColor = rankingRowColor(newPosition);
   }
 }
 
@@ -118,10 +117,10 @@ class RankingInfoHeader {
   int id = 0;
   String name = "";
   int widthWeight = 0;
-  Color textColor = Colors.indigo;
+  Color textColor = BolixoColors.textTertiary;
 
-  static const selectedColor = Colors.indigoAccent;
-  static const notSelectedColor = Colors.indigo;
+  static const selectedColor = BolixoColors.textLink;
+  static const notSelectedColor = BolixoColors.textTertiary;
 
   RankingInfoHeader({
     required this.id,

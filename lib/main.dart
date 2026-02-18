@@ -1,5 +1,6 @@
 import 'package:bolixo/flow/auth/auth_view.dart';
 import 'package:bolixo/ui/shared/app_behavior.dart';
+import 'package:bolixo/ui/theme/bolixo_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'flow/auth/auth_view_content.dart';
@@ -19,11 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: appTitle,
       scrollBehavior: AppBehaviors.scrollBehavior,
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      // home: const Home(title: appTitle)
+      theme: BolixoTheme.dark,
       home: AuthView(authFormType: AuthFormType.signIn),
     );
   }

@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:bolixo/ui/theme/bolixo_colors.dart';
 
 import '../../api/model/bolao_model.dart';
-import '../../ui/shared/shared_color.dart';
 
 class BoloesViewContent {
   List<BolaoViewContent> boloes = [];
@@ -38,15 +38,11 @@ class BolaoViewContent {
   });
 
   static fromApiModel(BolaoModel? model, int index) {
-    Color background = shadeByIndex(Colors.deepOrange, index);
     return BolaoViewContent(
       id: model?.bolaoId ?? 0,
       name: model?.name ?? "",
-      backgroundColor: background,
-      textColor: Colors.white
+      backgroundColor: BolixoColors.surfaceCard,
+      textColor: BolixoColors.textPrimary,
     );
   }
 }
-
-
-
