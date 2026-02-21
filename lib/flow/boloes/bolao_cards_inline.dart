@@ -18,6 +18,28 @@ class _BolaoCardsInlineState extends State<BolaoCardsInline> {
   BoloesViewContent viewContent = BoloesViewContent();
   BoloesViewController viewController = BoloesViewController();
   late PageController _pageController;
+  final List<Gradient> _headerGradients = [
+    const LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [BolixoColors.royalPurple, BolixoColors.electricViolet],
+    ),
+    const LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [BolixoColors.accentGreen, BolixoColors.accentGreenLight],
+    ),
+    const LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [BolixoColors.accentCyan, BolixoColors.royalPurple],
+    ),
+    const LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [BolixoColors.deepPlum, BolixoColors.royalPurple],
+    ),
+  ];
 
   @override
   void initState() {
@@ -78,34 +100,50 @@ class _BolaoCardsInlineState extends State<BolaoCardsInline> {
                       ),
                     );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 4,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [BolixoColors.accentGreen, BolixoColors.accentGreenLight],
-                            ),
-                            borderRadius: BorderRadius.circular(2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Card header with bolão title (gradient varies by index)
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        decoration: BoxDecoration(
+                          gradient: _headerGradients[index % _headerGradients.length],
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16),
                           ),
                         ),
-                        Column(
+                        child: Text(
+                          bolao.name,
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: BolixoColors.textOnAccent,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              bolao.name,
-                              style: BolixoTypography.titleMedium,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            Container(
+                              width: 4,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [BolixoColors.accentGreen, BolixoColors.accentGreenLight],
+                                ),
+                                borderRadius: BorderRadius.circular(2),
+                              ),
                             ),
-                            const SizedBox(height: 6),
+                            const SizedBox(height: 8),
                             Text(
                               'Competição: não disponível',
                               style: GoogleFonts.inter(
@@ -129,8 +167,8 @@ class _BolaoCardsInlineState extends State<BolaoCardsInline> {
                             ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
