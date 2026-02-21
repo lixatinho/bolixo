@@ -8,9 +8,11 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+
     return Container(
       width: double.infinity,
-      height: double.infinity,
+      height: height,
       decoration: const BoxDecoration(
         gradient: BolixoGradients.primary,
       ),

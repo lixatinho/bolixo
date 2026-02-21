@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../home.dart';
+import '../../flow/menu/menu_home_view.dart';
 
 void navigateToHome(BuildContext context) {
   Navigator.of(context).pushReplacement(
     MaterialPageRoute(
-      builder: (context) => const Home(
-        title: 'Bolixo'
-      )
+      builder: (context) => const MenuHomeView()
     )
   );
 }

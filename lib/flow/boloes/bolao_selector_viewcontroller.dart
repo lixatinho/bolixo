@@ -1,17 +1,13 @@
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/cache/bolao_cache.dart';
-import 'package:bolixo/flow/boloes/boloes_view.dart';
+import 'package:bolixo/flow/boloes/bolao_selector_view.dart';
 import 'package:flutter/foundation.dart';
 
 import 'boloes_view_content.dart';
 
-class BoloesViewController {
-
+class BolaoSelectorViewController {
   BolaoApi api = BolaoApi.getInstance();
-  // Allow any view implementation that exposes `update(BoloesViewContent)`.
-  // Using a dynamic type so the controller can be reused by different widgets
-  // (e.g., the original `BoloesWidget` and the new `BolaoCardsInline`).
-  dynamic view;
+  late BolaoSelectorViewState? view;
 
   void onInit(viewInstance) async {
     view = viewInstance;
@@ -33,7 +29,7 @@ class BoloesViewController {
       view!.update(viewContent);
     }, onError: (error) {
       if (kDebugMode) {
-        print(error);
+        print('Erro ao carregar bolões: $error');
       }
     });
   }
