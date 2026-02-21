@@ -1,6 +1,7 @@
 import 'package:bolixo/flow/auth/auth_view.dart';
 import 'package:bolixo/flow/auth/auth_view_content.dart';
 import 'package:bolixo/flow/auth/auth_service.dart';
+import 'package:bolixo/flow/auth/auth_repository.dart';
 import 'package:bolixo/flow/boloes/bolao_cards_inline.dart';
 import 'package:bolixo/flow/ranking/ranking_view.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
@@ -10,12 +11,88 @@ import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MenuHomeView extends StatelessWidget {
+class MenuHomeView extends StatefulWidget {
   const MenuHomeView({Key? key}) : super(key: key);
+
+  @override
+  State<MenuHomeView> createState() => _MenuHomeViewState();
+}
+
+class _MenuHomeViewState extends State<MenuHomeView> {
+  late AuthRepository authRepository;
+  String username = '';
+  String avatarUrl = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    authRepository = AuthRepository();
+    await authRepository.initialize();
+    setState(() {
+      username = authRepository.getUsername();
+      avatarUrl = authRepository.getAvatarUrl();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 18,
+                  backgroundImage: NetworkImage(avatarUrl),
+                  backgroundColor: BolixoColors.surfaceCard,
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Bolão dos Lixos',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: BolixoColors.textPrimary,
+                      ),
+                    ),
+                    Text(
+                      username.isNotEmpty ? username : 'Bem-vindo',
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                        color: BolixoColors.textSecondary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        leadingWidth: 220,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: BolixoColors.error),
+            onPressed: () => _handleLogout(context),
+          ),
+          const SizedBox(width: 10),
+        ],
+      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -73,15 +150,6 @@ class MenuHomeView extends StatelessWidget {
                     label: 'Ranking',
                     icon: Icons.leaderboard,
                     onPressed: () => _navigateToRanking(context),
-                  ),
-                  const SizedBox(height: 16),
-
-                  _buildMenuButton(
-                    context,
-                    label: 'Sair',
-                    icon: Icons.logout,
-                    onPressed: () => _handleLogout(context),
-                    isPrimaryAction: false,
                   ),
 
                   const SizedBox(height: 40),

@@ -223,6 +223,7 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
     textFields.add(TextFormField(
       keyboardType: TextInputType.name,
       onChanged: (value) => _name = value,
+      onFieldSubmitted: (value) => _handlePasswordFieldSubmit(),
       style: BolixoTypography.bodyLarge,
       decoration: buildSignUpDecoration("Username", icon: Icons.person_outline),
     ));
@@ -232,6 +233,7 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
       textFields.add(TextFormField(
         keyboardType: TextInputType.emailAddress,
         onChanged: (value) => _email = value,
+        onFieldSubmitted: (value) => _handlePasswordFieldSubmit(),
         style: BolixoTypography.bodyLarge,
         decoration: buildSignUpDecoration("Email", icon: Icons.email_outlined),
       ));
@@ -242,6 +244,7 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
     textFields.add(TextFormField(
       keyboardType: TextInputType.visiblePassword,
       onChanged: (value) => _password = value,
+      onFieldSubmitted: (value) => _handlePasswordFieldSubmit(),
       style: BolixoTypography.bodyLarge,
       decoration: buildSignUpDecoration("Senha", icon: Icons.lock_outline),
       obscureText: true,
@@ -249,5 +252,9 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
     textFields.add(const SizedBox(height: 24));
 
     return textFields;
+  }
+
+  void _handlePasswordFieldSubmit() {
+    authViewController.onSubmitClicked(_name, _email, _password);
   }
 }
