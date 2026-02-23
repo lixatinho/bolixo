@@ -139,7 +139,7 @@ class TeamViewContent {
     return TeamViewContent(
         name: teamApiModel?.abbreviation ?? "",
         tooltip: teamApiModel?.name ?? "",
-        flagUrl: teamApiModel?.flagUrl ?? "",
+        flagUrl: teamApiModel?.abbreviation != null ? "assets/images/teams/${teamApiModel.abbreviation}.png" : "",
         scoreBet: bet?.toString() ?? "",
         actualScore: actualScore?.toString() ?? "");
   }

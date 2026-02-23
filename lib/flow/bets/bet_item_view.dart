@@ -177,7 +177,7 @@ class BetItemView extends StatelessWidget {
           border: Border.all(color: BolixoColors.white10, width: 1.5),
         ),
         child: CircleAvatar(
-          backgroundImage: NetworkImage(flagUrl),
+          backgroundImage: AssetImage(flagUrl),
           backgroundColor: BolixoColors.surfaceCard,
         ),
       ),
