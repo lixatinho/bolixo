@@ -136,10 +136,11 @@ class TeamViewContent {
       required this.actualScore});
 
   static fromApiModel(TeamModel? teamApiModel, int? bet, int? actualScore) {
+    final abbreviation = teamApiModel?.abbreviation;
     return TeamViewContent(
-        name: teamApiModel?.abbreviation ?? "",
+        name: abbreviation ?? "",
         tooltip: teamApiModel?.name ?? "",
-        flagUrl: teamApiModel?.abbreviation != null ? "assets/images/teams/${teamApiModel.abbreviation}.png" : "",
+        flagUrl: abbreviation != null ? "assets/images/teams/$abbreviation.png" : "",
         scoreBet: bet?.toString() ?? "",
         actualScore: actualScore?.toString() ?? "");
   }
