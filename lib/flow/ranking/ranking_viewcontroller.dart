@@ -1,8 +1,10 @@
 import 'package:bolixo/api/easteregg/easteregg_api_interface.dart';
 import 'package:bolixo/api/ranking/ranking_api_interface.dart';
+import 'package:bolixo/flow/bets/user_bets_view.dart';
 import 'package:bolixo/flow/ranking/ranking_view.dart';
 import 'package:bolixo/flow/ranking/ranking_view_content.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class RankingViewController {
 
@@ -31,6 +33,16 @@ class RankingViewController {
     } else if(intPosition == viewContent.rankingItems.length) {
       view!.playLoserSong();
       easterEggApi.postEasterEgg(EasterEggApi.rankingLastKey);
+    }
+  }
+
+  void onUserTap(int userId, String userName) {
+    if (view != null && view!.mounted) {
+      Navigator.of(view!.context).push(
+        MaterialPageRoute(
+          builder: (context) => UserBetsWidget(userId: userId, userName: userName),
+        ),
+      );
     }
   }
 

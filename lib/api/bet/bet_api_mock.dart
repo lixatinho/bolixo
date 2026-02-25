@@ -15,6 +15,15 @@ class MockBetApi implements BetApi {
 
   @override
   Future<List<BetsInDayModel>> getUserBets() {
+    return _generateMockBets();
+  }
+
+  @override
+  Future<List<BetsInDayModel>> getBetsByUser(int userId) {
+    return _generateMockBets();
+  }
+
+  Future<List<BetsInDayModel>> _generateMockBets() {
     var random = Random();
     var today = DateTime.now().toUtc();
     int numberOfDays = 20;
@@ -31,6 +40,10 @@ class MockBetApi implements BetApi {
               int awayScore = random.nextInt(5);
               int homeBet = random.nextInt(5);
               int awayBet = random.nextInt(5);
+
+              String team1Abbr = "T${betsInDayIndex * 2}";
+              String team2Abbr = "T${betsInDayIndex * 2 + 1}";
+
               return BetModel(
                   id: betsInDayIndex,
                   match: MatchModel(
@@ -38,18 +51,17 @@ class MockBetApi implements BetApi {
                       home: TeamModel(
                           id: betsInDayIndex * 2,
                           name: "Team ${betsInDayIndex * 2}",
-                          flagUrl:
-                              "https://lixolao-flags.s3.amazonaws.com/BRA.webp",
-                          abbreviation: "T${betsInDayIndex * 2}"),
+                          flagUrl: "assets/images/teams/$team1Abbr.png",
+                          abbreviation: team1Abbr),
                       away: TeamModel(
                           id: betsInDayIndex * 2 + 1,
                           name: "Team ${betsInDayIndex * 2 + 1}",
-                          flagUrl:
-                              "https://lixolao-flags.s3.amazonaws.com/ARG.webp",
-                          abbreviation: "T${betsInDayIndex * 2 + 1}"),
+                          flagUrl: "assets/images/teams/$team2Abbr.png",
+                          abbreviation: team2Abbr),
                       matchDate: today.add(Duration(days: daysIndex - middle)),
                       homeScore: homeScore,
-                      awayScore: awayScore),
+                      awayScore: awayScore,
+                      type: 0),
                   homeScoreBet: homeBet,
                   awayScoreBet: awayBet,
                   score: daysIndex > middle
@@ -76,7 +88,6 @@ class MockBetApi implements BetApi {
 
   @override
   Future<List<BetModel>> getBetsByBolaoAndMatch(int? matchId) {
-    // TODO: implement getBetsByBolaoAndMatch
-    throw UnimplementedError();
+    return Future.value([]);
   }
 }

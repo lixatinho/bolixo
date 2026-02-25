@@ -33,7 +33,11 @@ class AuthRepository {
   }
 
   String getAvatarUrl() {
-    return prefs.getString(avatarUrlKey) ?? "https://lixolao-flags.s3.amazonaws.com/BRA.webp";
+    final avatarName = prefs.getString(avatarUrlKey);
+    if (avatarName != null && avatarName.isNotEmpty) {
+      return "assets/images/avatars/$avatarName.png";
+    }
+    return "assets/images/spiderman.gif";
   }
 
   String getUsername() {

@@ -75,6 +75,7 @@ class RankingViewContent {
 }
 
 class RankingItemViewContent {
+  int userId = 0;
   String position = "";
   String name = "";
   String points = "";
@@ -85,6 +86,7 @@ class RankingItemViewContent {
   Color borderColor;
 
   RankingItemViewContent({
+    required this.userId,
     required this.position,
     required this.name,
     required this.points,
@@ -96,12 +98,20 @@ class RankingItemViewContent {
   });
 
   static RankingItemViewContent fromApiModel(RankingItemModel rankingItem, int index) {
+    String avatar;
+    if (rankingItem.avatarUrl != null && rankingItem.avatarUrl!.isNotEmpty) {
+      avatar = "assets/images/avatars/${rankingItem.avatarUrl}.png";
+    } else {
+      avatar = "assets/images/spiderman.gif"; // Placeholder
+    }
+
     return RankingItemViewContent(
+      userId: rankingItem.user?.id ?? 0,
       position: "${index + 1}",
       name: rankingItem.user?.username ?? "",
       points: rankingItem.score?.toString() ?? "0",
       flies: rankingItem.flies?.toString() ?? "0",
-      avatarUrl: rankingItem.avatarUrl?.toString() ?? "https://lixolao-flags.s3.amazonaws.com/BRA.webp",
+      avatarUrl: avatar,
       backgroundColor: rankingRowColor(index),
       rotationAngle: 0,
       borderColor: rankingItem.easterEggComplete ? BolixoColors.easterEgg : Colors.transparent

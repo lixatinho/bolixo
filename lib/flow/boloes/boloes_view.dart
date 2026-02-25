@@ -49,7 +49,15 @@ class BoloesWidgetState extends State<BoloesWidget> {
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
                   viewController.onBolaoSelected(bolao.id, bolao.name);
-                  navigateToHome(context);
+
+                  // Se estivermos dentro de um Modal (BottomSheet), fechamos ele.
+                  // O callback BolaoCache.onBolaoChanged na Home se encarregará de atualizar a UI.
+                  if (Navigator.of(context).canPop()) {
+                    Navigator.of(context).pop();
+                  } else {
+                    // Se não for um modal (ex: tela inicial de seleção), navegamos para a Home.
+                    navigateToHome(context);
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

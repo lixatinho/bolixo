@@ -77,6 +77,9 @@ class RankingWidgetState extends State<RankingWidget> {
                         onDoubleTap: () {
                           viewController.onRankingItemTap(item.position);
                         },
+                        onTap: () {
+                          viewController.onUserTap(item.userId, item.name);
+                        },
                         child: Row(
                           children: <Widget>[
                             // Position
@@ -147,7 +150,7 @@ class RankingWidgetState extends State<RankingWidget> {
             ),
           ),
           child: CircleAvatar(
-            foregroundImage: NetworkImage(url),
+            backgroundImage: AssetImage(url),
             backgroundColor: BolixoColors.surfaceCard,
           ),
         ),
