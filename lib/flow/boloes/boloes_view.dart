@@ -7,8 +7,13 @@ import 'boloes_view_content.dart';
 import 'boloes_viewcontroller.dart';
 
 class BoloesWidget extends StatefulWidget {
+  final ScrollController? scrollController;
+  final EdgeInsetsGeometry? padding;
+
   const BoloesWidget({
     Key? key,
+    this.scrollController,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -31,9 +36,11 @@ class BoloesWidgetState extends State<BoloesWidget> {
       return const LoadingWidget();
     } else {
       return ListView.separated(
+        controller: widget.scrollController,
+        padding: widget.padding,
         itemCount: viewContent.boloes.length,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
+        // Ao usar com DraggableScrollableSheet, o shrinkWrap deve ser false (padrão)
+        // e o physics deve ser o padrão ou o provido pelo controller.
         separatorBuilder: (context, index) => const SizedBox(height: 8),
         itemBuilder: (context, index) {
           final bolao = viewContent.boloes[index];
@@ -50,12 +57,9 @@ class BoloesWidgetState extends State<BoloesWidget> {
                 onTap: () {
                   viewController.onBolaoSelected(bolao.id, bolao.name);
 
-                  // Se estivermos dentro de um Modal (BottomSheet), fechamos ele.
-                  // O callback BolaoCache.onBolaoChanged na Home se encarregará de atualizar a UI.
                   if (Navigator.of(context).canPop()) {
                     Navigator.of(context).pop();
                   } else {
-                    // Se não for um modal (ex: tela inicial de seleção), navegamos para a Home.
                     navigateToHome(context);
                   }
                 },
@@ -63,7 +67,6 @@ class BoloesWidgetState extends State<BoloesWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Row(
                     children: [
-                      // Accent bar
                       Container(
                         width: 4,
                         height: 32,

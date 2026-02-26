@@ -227,10 +227,9 @@ class HomeState extends State<Home> {
                 ),
                 const SizedBox(height: 16),
                 Expanded(
-                  child: SingleChildScrollView(
-                    controller: controller,
+                  child: BoloesWidget(
+                    scrollController: controller,
                     padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: const BoloesWidget(),
                   ),
                 ),
               ],
