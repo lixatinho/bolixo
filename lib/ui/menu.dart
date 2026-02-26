@@ -60,7 +60,7 @@ class MenuState extends State<Menu> {
                       ),
                     ),
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(repository.getAvatarUrl()),
+                      backgroundImage: AssetImage(repository.getAvatarUrl()),
                       backgroundColor: Colors.greenAccent
                     ),
                   ),

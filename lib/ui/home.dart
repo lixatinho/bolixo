@@ -255,10 +255,10 @@ class HomeState extends State<Home> {
             "Acertar resultado: 5 pontos.\n\n"
             "Acertar quantidade de gols de um time: 1 ponto.\n\n"
             "Cada fase possui um peso, que pode multiplicar os valores anteriores.\n"
-            "Fase de grupos, peso 1. Oitavas, peso 2, e assim por diante.\n\n"
+            "Fase de grupos, peso 1. Próxima fase, peso 2, e assim por diante.\n\n"
             "Exemplo 1: resultado do jogo 1x0. Palpite 2x0. Pontuação = 6, acertou resultado e o número de gols de um time.\n\n"
             "Exemplo 2: resultado do jogo 0x0. Palpite 1x1. Pontuação = 5, acertou resultado.\n\n"
-            "Exemplo 3: resultado do jogo 3 x 3, semi-final. Palpite 3x3. Pontuação = 40, 10 x 4 (peso da semi-final)",
+            "Exemplo 3: resultado do jogo 3 x 3, oitavas-de-final. Palpite 3x3. Pontuação = 20, 10 x 2 (peso das oitavas, considerando que ela seria a próxima fase)",
             style: BolixoTypography.bodyMedium,
           ),
         );

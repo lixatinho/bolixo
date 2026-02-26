@@ -47,16 +47,16 @@ class BetClient implements BetApi {
   Future<List<BetsInDayModel>> getBetsByUser(int userId) async {
     try {
       String url = "$baseUrl/$getBets/$bolaoId/user/$userId";
-      print("Calling URL: $url");
+//       print("Calling URL: $url");
       var response = await dio.get(url);
-      print (response);
+//       print (response);
       if (response.statusCode == 200) {
-      print ("deu bom, 200, BET_CLIENT.DART");
+//       print ("deu bom, 200, BET_CLIENT.DART");
         var betInDaysList = List<BetsInDayModel>.from(
             response.data.map((model) => BetsInDayModel.fromJson(model)));
         return Future.value(betInDaysList);
       } else {
-      print ("deu RUIM, 500, BET_CLIENT.DART");
+//       print ("deu RUIM, 500, BET_CLIENT.DART");
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
