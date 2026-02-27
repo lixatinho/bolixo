@@ -25,8 +25,8 @@ class BetsInDayViewContent {
 
   static fromApiModel(BetsInDayModel betsInDayApiModel) {
     int totalScore = _calculateTotalScore(betsInDayApiModel);
-    double accuracy = _calculateAccuracy(betsInDayApiModel, totalScore);
     int maxScore = _calculateMaxScore(betsInDayApiModel);
+    double accuracy = _calculateAccuracy(totalScore, maxScore);
     return BetsInDayViewContent(
         date: betsInDayApiModel.date,
         totalScore: totalScore,
@@ -57,8 +57,9 @@ class BetsInDayViewContent {
     return maxScore;
   }
 
-  static double _calculateAccuracy(BetsInDayModel betsInDayModel, int total) {
-    return total / betsInDayModel.maxPointsInDay;
+  static double _calculateAccuracy(int total, int max) {
+    if (max == 0) return 0.0;
+    return total / max;
   }
 }
 

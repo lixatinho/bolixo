@@ -39,20 +39,39 @@ class BetsViewController {
           .toList()
           .cast<BetsInDayViewContent>();
       view!.update(betsInDayViewContentList);
-      var today = DateTime.now();
-      for (var i = 0; i < betsInDayViewContentList.length; i++) {
-        if (betsInDayViewContentList[i].date.day == today.day &&
-            betsInDayViewContentList[i].date.month == today.month &&
-            betsInDayViewContentList[i].date.year == today.year) {
-          view!.updateDate(i);
-          break;
-        }
-      }
+
+      _selectClosestDate(betsInDayViewContentList);
     }, onError: (error) {
       if (kDebugMode) {
         print(error);
       }
     });
+  }
+
+  void _selectClosestDate(List<BetsInDayViewContent> betsInDayViewContentList) {
+    if (betsInDayViewContentList.isEmpty) return;
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    int selectedIndex = 0;
+    bool found = false;
+
+    for (int i = 0; i < betsInDayViewContentList.length; i++) {
+      final betDate = betsInDayViewContentList[i].date;
+      final betDay = DateTime(betDate.year, betDate.month, betDate.day);
+
+      if (!betDay.isBefore(today)) {
+        selectedIndex = i;
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      selectedIndex = betsInDayViewContentList.length - 1;
+    }
+
+    view!.updateDate(selectedIndex);
   }
 
   void saveBets() {

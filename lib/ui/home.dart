@@ -28,16 +28,12 @@ class HomeState extends State<Home> {
   int bolaoId = BolaoCache().bolaoId;
   late PageController _pageController;
 
-  final pages = <Widget>[
-    const BetsWidget(),
-    const RankingWidget(),
-  ];
-
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _selectedIndex);
     bolaoName = BolaoCache().bolaoName;
+    bolaoId = BolaoCache().bolaoId;
     BolaoCache().onBolaoChanged((newId, newName) {
       setState(() {
         bolaoId = newId;
@@ -79,7 +75,10 @@ class HomeState extends State<Home> {
         onPageChanged: (index) {
           setState(() => _selectedIndex = index);
         },
-        children: pages,
+        children: [
+          BetsWidget(key: ValueKey("bets_$bolaoId")),
+          RankingWidget(key: ValueKey("ranking_$bolaoId")),
+        ],
       ),
       bottomNavigationBar: _buildBottomNav(),
     );

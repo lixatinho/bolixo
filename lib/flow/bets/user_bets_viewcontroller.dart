@@ -34,11 +34,38 @@ class UserBetsViewController {
           .cast<BetsInDayViewContent>();
 
       _state.update(viewContentList);
+      _selectClosestDate(viewContentList);
     } catch (e, s) {
       log("Erro capturado no _loadUserBets", error: e, stackTrace: s);
       _state.updateIsLoading(false);
       _state.showMessage("Erro ao carregar palpites do usuário.");
     }
+  }
+
+  void _selectClosestDate(List<BetsInDayViewContent> viewContentList) {
+    if (viewContentList.isEmpty) return;
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    int selectedIndex = 0;
+    bool found = false;
+
+    for (int i = 0; i < viewContentList.length; i++) {
+      final betDate = viewContentList[i].date;
+      final betDay = DateTime(betDate.year, betDate.month, betDate.day);
+
+      if (!betDay.isBefore(today)) {
+        selectedIndex = i;
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      selectedIndex = viewContentList.length - 1;
+    }
+
+    _state.updateDate(selectedIndex);
   }
 
   void onDateChanged(int index) {

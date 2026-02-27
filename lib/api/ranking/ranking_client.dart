@@ -11,7 +11,7 @@ class RankingClient implements RankingApi {
 
   String baseUrl;
   String getRankingPath = "ranking";
-  int bolaoId = BolaoCache().bolaoId;
+  int get bolaoId => BolaoCache().bolaoId;
   Dio dio = Dio();
   late AuthRepository repository;
 

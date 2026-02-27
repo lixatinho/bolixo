@@ -13,7 +13,7 @@ class BetClient implements BetApi {
   String baseUrl;
   String getBets = "bet";
   String saveBet = "bet";
-  int bolaoId = BolaoCache().bolaoId;
+  int get bolaoId => BolaoCache().bolaoId;
   Dio dio = Dio();
   late AuthRepository repository;
 
