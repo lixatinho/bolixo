@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   static const appTitle = 'Bolão dos lixos';
-  static const flavor = Flavor.local;
+  static const flavor = Flavor.production;
 
   @override
   Widget build(BuildContext context) {
