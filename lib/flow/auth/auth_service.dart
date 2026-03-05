@@ -5,10 +5,15 @@ import 'package:bolixo/flow/auth/auth_repository.dart';
 import '../../api/auth/auth_api.dart';
 
 class AuthService {
+  static final AuthService _instance = AuthService._internal();
   late AuthApi api;
   late AuthRepository repository;
 
-  AuthService() {
+  factory AuthService() {
+    return _instance;
+  }
+
+  AuthService._internal() {
     repository = AuthRepository();
     api = AuthApi.getInstance();
   }
@@ -26,6 +31,8 @@ class AuthService {
     repository.removeToken();
     repository.removeAvatarUrl();
     repository.removeUsername();
+    repository.removeRole();
+    repository.removeEasterEggCompleted();
   }
 
   Future<bool> login(UserModel user) async {
@@ -38,6 +45,9 @@ class AuthService {
       if (response.username != null) {
         await repository.saveUsername(response.username!);
       }
+      if (response.role != null) {
+        await repository.saveRole(response.role!);
+      }
       await repository.saveEasterEggCompleted(response.easterEggComplete ?? false);
 
       return Future.value(true);
@@ -47,5 +57,9 @@ class AuthService {
 
   Future createUser(UserModel user) {
     return api.signUp(user);
+  }
+
+  Future recoverPassword(String email) {
+    return api.recoverPassword(email);
   }
 }

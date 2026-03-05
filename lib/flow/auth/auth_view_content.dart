@@ -4,6 +4,8 @@ class AuthViewContent {
   String headerText = "";
   String buttonText = "";
   bool isEmailVisible = false;
+  bool isNameVisible = true;
+  bool isPasswordVisible = true;
   String switchText = "";
 
   AuthViewContent();
@@ -15,6 +17,8 @@ class AuthViewContent {
         headerText = "Entrar";
         buttonText = "Logar";
         isEmailVisible = false;
+        isNameVisible = true;
+        isPasswordVisible = true;
         switchText = "Criar conta";
         break;
       case AuthFormType.signUp:
@@ -22,10 +26,21 @@ class AuthViewContent {
         headerText = "Criar conta";
         buttonText = "Criar";
         isEmailVisible = true;
+        isNameVisible = true;
+        isPasswordVisible = true;
         switchText = "Ir para Login";
+        break;
+      case AuthFormType.recoverPassword:
+        isLoading = false;
+        headerText = "Recuperar senha";
+        buttonText = "Enviar";
+        isEmailVisible = true;
+        isNameVisible = false;
+        isPasswordVisible = false;
+        switchText = "Voltar para Login";
         break;
     }
   }
 }
 
-enum AuthFormType { signIn, signUp }
+enum AuthFormType { signIn, signUp, recoverPassword }

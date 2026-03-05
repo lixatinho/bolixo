@@ -15,4 +15,14 @@ class MockAuthApi implements AuthApi {
   Future signUp(UserModel user) {
     return Future.value();
   }
+
+  @override
+  Future recoverPassword(String email) {
+    return Future.value();
+  }
+
+  @override
+  Future changePassword(String token, String oldPassword, String newPassword) {
+    return Future.value();
+  }
 }

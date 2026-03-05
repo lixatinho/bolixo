@@ -8,6 +8,8 @@ abstract class AuthApi {
   /// Exposed methods
   Future signUp(UserModel user);
   Future<AuthResponse> login(UserModel user);
+  Future recoverPassword(String email);
+  Future changePassword(String token, String oldPassword, String newPassword);
 
   /// Injection turnaround
   static AuthApi? betApi;

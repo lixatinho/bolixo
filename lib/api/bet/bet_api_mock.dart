@@ -51,12 +51,10 @@ class MockBetApi implements BetApi {
                       home: TeamModel(
                           id: betsInDayIndex * 2,
                           name: "Team ${betsInDayIndex * 2}",
-                          flagUrl: "assets/images/teams/$team1Abbr.png",
                           abbreviation: team1Abbr),
                       away: TeamModel(
                           id: betsInDayIndex * 2 + 1,
                           name: "Team ${betsInDayIndex * 2 + 1}",
-                          flagUrl: "assets/images/teams/$team2Abbr.png",
                           abbreviation: team2Abbr),
                       matchDate: today.add(Duration(days: daysIndex - middle)),
                       homeScore: homeScore,

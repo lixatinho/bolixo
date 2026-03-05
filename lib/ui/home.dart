@@ -1,3 +1,4 @@
+import 'package:bolixo/api/model/user_model.dart';
 import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:bolixo/flow/boloes/boloes_view.dart';
@@ -9,6 +10,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../flow/auth/auth_view.dart';
 import '../flow/auth/auth_view_content.dart';
 import '../flow/auth/auth_service.dart';
+import '../flow/auth/change_password_view.dart';
+import '../flow/boloes/create_bolao_view.dart';
+import '../flow/competition/manage_competitions_view.dart';
 import '../flow/ranking/ranking_view.dart';
 
 class Home extends StatefulWidget {
@@ -27,6 +31,8 @@ class HomeState extends State<Home> {
   String bolaoName = BolaoCache().bolaoName;
   int bolaoId = BolaoCache().bolaoId;
   late PageController _pageController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _isAuthInitialized = false;
 
   @override
   void initState() {
@@ -34,27 +40,51 @@ class HomeState extends State<Home> {
     _pageController = PageController(initialPage: _selectedIndex);
     bolaoName = BolaoCache().bolaoName;
     bolaoId = BolaoCache().bolaoId;
-    BolaoCache().onBolaoChanged((newId, newName) {
+    BolaoCache().onBolaoChanged(_handleBolaoChanged);
+
+    AuthService().initialize().then((_) {
+      if (mounted) {
+        setState(() {
+          _isAuthInitialized = true;
+        });
+      }
+    });
+  }
+
+  void _handleBolaoChanged(int newId, String newName) {
+    if (mounted) {
       setState(() {
         bolaoId = newId;
         bolaoName = newName;
       });
-    });
+    }
   }
 
   @override
   void dispose() {
+    BolaoCache().onBolaoChanged(null);
     _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_isAuthInitialized) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen)),
+      );
+    }
+
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
         backgroundColor: BolixoColors.deepPlum,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.menu, color: Colors.white),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        ),
         title: Text(
           bolaoName,
           style: BolixoTypography.titleLarge,
@@ -70,6 +100,7 @@ class HomeState extends State<Home> {
           ),
         ],
       ),
+      drawer: _buildDrawer(),
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
@@ -81,6 +112,103 @@ class HomeState extends State<Home> {
         ],
       ),
       bottomNavigationBar: _buildBottomNav(),
+    );
+  }
+
+  Widget _buildDrawer() {
+    final role = AuthService().repository.getRole();
+
+    return Drawer(
+      child: Container(
+        color: BolixoColors.backgroundPrimary,
+        child: Column(
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [BolixoColors.deepPlum, BolixoColors.backgroundPrimary],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/world_cup_trophy.png', height: 60),
+                    const SizedBox(height: 10),
+                    Text(
+                      AuthService().repository.getUsername(),
+                      style: BolixoTypography.titleLarge,
+                    ),
+                    Text(
+                      role.toString().split('.').last,
+                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentGreenLight),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            _buildDrawerItem(Icons.edit, 'Palpites', 0),
+            _buildDrawerItem(Icons.leaderboard, 'Ranking', 1),
+
+            if (role == UserRole.PREMIUM || role == UserRole.ADMIN)
+              _buildDrawerAction(Icons.add_circle_outline, 'Criar Bolão', () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CreateBolaoView()),
+                );
+              }),
+
+            if (role == UserRole.ADMIN)
+              _buildDrawerAction(Icons.settings, 'Gerenciar Competições', () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ManageCompetitionsView()),
+                );
+              }),
+
+            const Divider(color: BolixoColors.white6),
+            _buildDrawerAction(Icons.vpn_key, 'Trocar Senha', () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ChangePasswordView()),
+              );
+            }),
+            _buildDrawerAction(Icons.logout, 'Sair', () {
+              AuthService().logOff();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => AuthView(authFormType: AuthFormType.signIn),
+                ),
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem(IconData icon, String label, int index) {
+    return ListTile(
+      leading: Icon(icon, color: BolixoColors.textPrimary),
+      title: Text(label, style: BolixoTypography.bodyLarge),
+      onTap: () {
+        Navigator.pop(context);
+        setState(() => _selectedIndex = index);
+        _pageController.jumpToPage(index);
+      },
+    );
+  }
+
+  Widget _buildDrawerAction(IconData icon, String label, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon, color: BolixoColors.textPrimary),
+      title: Text(label, style: BolixoTypography.bodyLarge),
+      onTap: onTap,
     );
   }
 
@@ -100,14 +228,6 @@ class HomeState extends State<Home> {
             children: [
               _buildNavItem(0, Icons.edit, 'Palpites'),
               _buildNavItem(1, Icons.leaderboard, 'Ranking'),
-              _buildNavItemAction(Icons.logout, 'Sair', () {
-                AuthService().logOff();
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => AuthView(authFormType: AuthFormType.signIn),
-                  ),
-                );
-              }),
             ],
           ),
         ),
@@ -155,31 +275,6 @@ class HomeState extends State<Home> {
               decoration: BoxDecoration(
                 color: BolixoColors.accentGreen,
                 borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItemAction(IconData icon, String label, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: SizedBox(
-        width: 80,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: BolixoColors.textTertiary, size: 24),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: GoogleFonts.inter(
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                color: BolixoColors.textTertiary,
               ),
             ),
           ],

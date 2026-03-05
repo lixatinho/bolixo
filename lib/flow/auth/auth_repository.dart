@@ -1,36 +1,40 @@
+import 'package:bolixo/api/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository {
+  static final AuthRepository _instance = AuthRepository._internal();
   late SharedPreferences prefs;
   final String tokenKey = "tokenBolixo";
   final String avatarUrlKey = "avatarUrl";
   final String easterEggCompletedKey = "easterEggCompleted";
   final String usernameKey = "username";
+  final String roleKey = "userRole";
+
   _AuthInitStatus _initStatus = _AuthInitStatus.notStarted;
-  late Future initialization;
+  Future? _initializationFuture;
+
+  factory AuthRepository() {
+    return _instance;
+  }
+
+  AuthRepository._internal();
 
   Future initialize() async {
-    switch (_initStatus) {
-      case _AuthInitStatus.started:
-        return initialization;
-      case _AuthInitStatus.notStarted:
-        initialization = Future(_initComputation);
-        return initialization;
-      case _AuthInitStatus.finished:
-        return Future.value(this);
-    }
+    if (_initStatus == _AuthInitStatus.finished) return this;
+    if (_initStatus == _AuthInitStatus.started) return _initializationFuture;
+
+    _initStatus = _AuthInitStatus.started;
+    _initializationFuture = _initComputation();
+    return _initializationFuture;
   }
 
   Future _initComputation() async {
-    _initStatus = _AuthInitStatus.started;
     prefs = await SharedPreferences.getInstance();
     _initStatus = _AuthInitStatus.finished;
-    return Future.value(this);
+    return this;
   }
 
-  String? getToken() {
-    return prefs.getString(tokenKey);
-  }
+  String? getToken() => prefs.getString(tokenKey);
 
   String getAvatarUrl() {
     final avatarName = prefs.getString(avatarUrlKey);
@@ -40,49 +44,29 @@ class AuthRepository {
     return "assets/images/spiderman.gif";
   }
 
-  String getUsername() {
-    return prefs.getString(usernameKey) ?? "";
+  String getUsername() => prefs.getString(usernameKey) ?? "";
+
+  UserRole getRole() {
+    String? roleStr = prefs.getString(roleKey);
+    if (roleStr != null) {
+      return UserRole.values.firstWhere((e) => e.toString().split('.').last == roleStr);
+    }
+    return UserRole.USER;
   }
 
-  bool getEasterEggCompleted() {
-    return prefs.getBool(easterEggCompletedKey) ?? false;
-  }
+  bool getEasterEggCompleted() => prefs.getBool(easterEggCompletedKey) ?? false;
 
-  void removeToken() async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.remove(tokenKey);
-  }
+  void removeToken() => prefs.remove(tokenKey);
+  void removeAvatarUrl() => prefs.remove(avatarUrlKey);
+  void removeUsername() => prefs.remove(usernameKey);
+  void removeRole() => prefs.remove(roleKey);
+  void removeEasterEggCompleted() => prefs.remove(easterEggCompletedKey);
 
-  void removeAvatarUrl() async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.remove(avatarUrlKey);
-  }
-
-  void removeUsername() async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.remove(avatarUrlKey);
-  }
-
-  void removeEasterEggCompleted() async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.remove(easterEggCompletedKey);
-  }
-
-  Future saveToken(String token) async {
-    await prefs.setString(tokenKey, token);
-  }
-
-  Future saveAvatarUrl(String url) async {
-    await prefs.setString(avatarUrlKey, url);
-  }
-
-  Future saveUsername(String name) async {
-    await prefs.setString(usernameKey, name);
-  }
-
-  Future saveEasterEggCompleted(bool easterEggCompleted) async {
-    await prefs.setBool(easterEggCompletedKey, easterEggCompleted);
-  }
+  Future saveToken(String token) => prefs.setString(tokenKey, token);
+  Future saveAvatarUrl(String url) => prefs.setString(avatarUrlKey, url);
+  Future saveUsername(String name) => prefs.setString(usernameKey, name);
+  Future saveRole(UserRole role) => prefs.setString(roleKey, role.toString().split('.').last);
+  Future saveEasterEggCompleted(bool completed) => prefs.setBool(easterEggCompletedKey, completed);
 }
 
 enum _AuthInitStatus { notStarted, started, finished }

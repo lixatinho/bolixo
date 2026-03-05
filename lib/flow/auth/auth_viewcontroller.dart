@@ -1,5 +1,6 @@
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/cache/bolao_cache.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../api/model/user_model.dart';
@@ -33,9 +34,14 @@ class AuthViewController {
     view!.updateIsLoading(true);
     switch (_authFormType) {
       case AuthFormType.signIn:
-        return signIn(name!, password!);
+        signIn(name!, password!);
+        break;
       case AuthFormType.signUp:
-        return signUp(name!, email!, password!);
+        signUp(name!, email!, password!);
+        break;
+      case AuthFormType.recoverPassword:
+        recoverPassword(email!);
+        break;
     }
   }
 
@@ -49,20 +55,49 @@ class AuthViewController {
       switchAuthType();
     }, onError: (error) {
       view!.updateIsLoading(false);
-      view!.showErrorMessage("Erro ao criar conta");
+      view!.showErrorMessage(error.toString());
     });
   }
 
   void signIn(String username, String password) async {
+    if (username.isEmpty || password.isEmpty) {
+      view!.updateIsLoading(false);
+      view!.showErrorMessage("Preencha todos os campos");
+      return;
+    }
+
     UserModel user = UserModel(username: username, email: null, password: password);
     await authService.initialize();
     authService.login(user).then((response) {
-      selectFirstBolao(() {
-        navigateToHome(view!.context);
-      });
+      if (response) {
+        selectFirstBolao(() {
+          navigateToHome(view!.context);
+        });
+      } else {
+        view!.updateIsLoading(false);
+        view!.showErrorMessage("Erro inesperado no login");
+      }
     }, onError: (error) {
       view!.updateIsLoading(false);
-      view!.showErrorMessage("Erro ao fazer login");
+      view!.showErrorMessage(error.toString());
+    });
+  }
+
+  void recoverPassword(String email) async {
+    if (email.isEmpty) {
+      view!.updateIsLoading(false);
+      view!.showErrorMessage("Informe seu e-mail");
+      return;
+    }
+
+    await authService.initialize();
+    authService.recoverPassword(email).then((value) {
+      view!.updateIsLoading(false);
+      view!.showSuccessMessage("E-mail de recuperação enviado!");
+      goToLogin();
+    }, onError: (error) {
+      view!.updateIsLoading(false);
+      view!.showErrorMessage(error.toString());
     });
   }
 
@@ -72,6 +107,16 @@ class AuthViewController {
     } else {
       _authFormType = AuthFormType.signIn;
     }
+    updateViewWithAuthType();
+  }
+
+  void goToRecoverPassword() {
+    _authFormType = AuthFormType.recoverPassword;
+    updateViewWithAuthType();
+  }
+
+  void goToLogin() {
+    _authFormType = AuthFormType.signIn;
     updateViewWithAuthType();
   }
 
@@ -86,11 +131,13 @@ class AuthViewController {
           BolaoCache().updateBolao(boloes[0].bolaoId!, boloes[0].name!);
           callback();
         } else {
-          if(kDebugMode) {
-            print('Error: user has no big balls');
-          }
+          view!.updateIsLoading(false);
+          callback();
         }
       });
+    }, onError: (error) {
+      view!.updateIsLoading(false);
+      view!.showErrorMessage("Erro ao carregar dados do bolão");
     });
   }
 

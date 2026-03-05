@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/api/model/bolao_model.dart';
+import 'package:bolixo/api/model/competition_model.dart';
 
 class BolaoMockApi extends BolaoApi {
 
@@ -21,5 +22,18 @@ class BolaoMockApi extends BolaoApi {
       );
     });
     return Future.value(ranking);
+  }
+
+  @override
+  Future<List<CompetitionModel>> getActiveCompetitions() {
+    return Future.value([
+      CompetitionModel(id: 1, name: "Copa do Mundo 2026"),
+      CompetitionModel(id: 2, name: "Champions League 24/25"),
+    ]);
+  }
+
+  @override
+  Future createBolao(String name, int competitionId) {
+    return Future.value();
   }
 }

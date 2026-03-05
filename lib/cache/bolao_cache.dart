@@ -5,7 +5,7 @@ class BolaoCache {
 
   int _bolaoId = 0;
   String _bolaoName = "";
-  Function? _bolaoChangedCallback;
+  Function(int, String)? _bolaoChangedCallback;
 
   factory BolaoCache() {
     return _singleton;
@@ -19,7 +19,7 @@ class BolaoCache {
     _bolaoChangedCallback?.call(id, newName);
   }
 
-  void onBolaoChanged(Function callback) {
+  void onBolaoChanged(Function(int, String)? callback) {
     _bolaoChangedCallback = callback;
   }
 }

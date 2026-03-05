@@ -25,9 +25,9 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
   AuthViewContent viewContent = AuthViewContent();
   AuthViewController authViewController = AuthViewController();
   AuthFormType authFormType;
-  String _name = "";
-  String _email = "";
-  String _password = "";
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   late AnimationController _floatController;
   late Animation<double> _floatAnimation;
@@ -49,121 +49,116 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context) {
-    if (viewContent.isLoading) {
-      return const LoadingWidget();
-    } else {
-      return Scaffold(
-        body: Container(
-          // Full screen gradient - no gaps
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: BolixoGradients.primary,
-          ),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 32),
-                    // Floating trophy
-                    AnimatedBuilder(
-                      animation: _floatAnimation,
-                      builder: (context, child) {
-                        return Transform.translate(
-                          offset: Offset(0, _floatAnimation.value),
-                          child: child,
-                        );
-                      },
-                      child: Image.asset(
-                        'assets/images/world_cup_trophy.png',
-                        height: 160,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // App name
-                    Text(
-                      'Bolão dos Lixos',
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: BolixoColors.textSecondary,
-                        letterSpacing: 2,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    // Header (Entrar / Criar conta)
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(0, 0.1),
-                              end: Offset.zero,
-                            ).animate(animation),
+    return Scaffold(
+      body: Container(
+        // Full screen gradient - no gaps
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: BolixoGradients.primary,
+        ),
+        child: SafeArea(
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 32),
+                      // Floating trophy
+                      AnimatedBuilder(
+                        animation: _floatAnimation,
+                        builder: (context, child) {
+                          return Transform.translate(
+                            offset: Offset(0, _floatAnimation.value),
                             child: child,
-                          ),
-                        );
-                      },
-                      child: AutoSizeText(
-                        viewContent.headerText,
-                        key: ValueKey(viewContent.headerText),
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        style: BolixoTypography.displayLarge,
+                          );
+                        },
+                        child: Image.asset(
+                          'assets/images/world_cup_trophy.png',
+                          height: 160,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 32),
-                    // Glassmorphism form container
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: Container(
-                          padding: const EdgeInsets.all(24),
-                          decoration: BolixoDecorations.glass(radius: 24),
-                          child: Form(
-                            key: formKey,
-                            child: AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 300),
-                              transitionBuilder: (child, animation) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
+                      const SizedBox(height: 20),
+                      // App name
+                      Text(
+                        'Bolão dos Lixos',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: BolixoColors.textSecondary,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      // Header (Entrar / Criar conta)
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder: (child, animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(0, 0.1),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: AutoSizeText(
+                          viewContent.headerText,
+                          key: ValueKey(viewContent.headerText),
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: BolixoTypography.displayLarge,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      // Glassmorphism form container
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(24),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                          child: Container(
+                            padding: const EdgeInsets.all(24),
+                            decoration: BolixoDecorations.glass(radius: 24),
+                            child: Form(
+                              key: formKey,
                               child: Column(
-                                key: ValueKey(viewContent.type),
                                 children: buildInputs() + buildButtons(),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 48),
-                  ],
+                      const SizedBox(height: 48),
+                    ],
+                  ),
                 ),
               ),
-            ),
+              if (viewContent.isLoading)
+                const LoadingWidget(),
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 
   @override
   void dispose() {
     _floatController.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     authViewController.onDispose();
     super.dispose();
   }
@@ -197,12 +192,13 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
   }
 
   List<Widget> buildButtons() {
-    return [
+    List<Widget> buttons = [
       SizedBox(
         width: double.infinity,
         child: AppElevatedButton(
           onPressedCallback: () {
-            authViewController.onSubmitClicked(_name, _email, _password);
+            authViewController.onSubmitClicked(
+                _nameController.text, _emailController.text, _passwordController.text);
           },
           text: viewContent.buttonText,
         ),
@@ -210,28 +206,47 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
       const SizedBox(height: 12),
       AppTextButton(
         onPressedCallback: () {
-          authViewController.switchAuthType();
+          if (viewContent.type == AuthFormType.recoverPassword) {
+            authViewController.goToLogin();
+          } else {
+            authViewController.switchAuthType();
+          }
         },
         text: viewContent.switchText,
       ),
     ];
+
+    if (viewContent.type == AuthFormType.signIn) {
+      buttons.add(
+        AppTextButton(
+          onPressedCallback: () {
+            authViewController.goToRecoverPassword();
+          },
+          text: "Esqueci minha senha",
+        ),
+      );
+    }
+
+    return buttons;
   }
 
   List<Widget> buildInputs() {
     List<Widget> textFields = [];
     // Name
-    textFields.add(TextFormField(
-      keyboardType: TextInputType.name,
-      onChanged: (value) => _name = value,
-      style: BolixoTypography.bodyLarge,
-      decoration: buildSignUpDecoration("Username", icon: Icons.person_outline),
-    ));
-    textFields.add(const SizedBox(height: 16));
+    if (viewContent.isNameVisible) {
+      textFields.add(TextFormField(
+        controller: _nameController,
+        keyboardType: TextInputType.name,
+        style: BolixoTypography.bodyLarge,
+        decoration: buildSignUpDecoration("Username", icon: Icons.person_outline),
+      ));
+      textFields.add(const SizedBox(height: 16));
+    }
 
     if (viewContent.isEmailVisible) {
       textFields.add(TextFormField(
+        controller: _emailController,
         keyboardType: TextInputType.emailAddress,
-        onChanged: (value) => _email = value,
         style: BolixoTypography.bodyLarge,
         decoration: buildSignUpDecoration("Email", icon: Icons.email_outlined),
       ));
@@ -239,14 +254,16 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
     }
 
     // Password
-    textFields.add(TextFormField(
-      keyboardType: TextInputType.visiblePassword,
-      onChanged: (value) => _password = value,
-      style: BolixoTypography.bodyLarge,
-      decoration: buildSignUpDecoration("Senha", icon: Icons.lock_outline),
-      obscureText: true,
-    ));
-    textFields.add(const SizedBox(height: 24));
+    if (viewContent.isPasswordVisible) {
+      textFields.add(TextFormField(
+        controller: _passwordController,
+        keyboardType: TextInputType.visiblePassword,
+        style: BolixoTypography.bodyLarge,
+        decoration: buildSignUpDecoration("Senha", icon: Icons.lock_outline),
+        obscureText: true,
+      ));
+      textFields.add(const SizedBox(height: 24));
+    }
 
     return textFields;
   }
