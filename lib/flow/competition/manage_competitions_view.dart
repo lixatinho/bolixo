@@ -17,6 +17,7 @@ class ManageCompetitionsView extends StatefulWidget {
 class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
   final CompetitionApi _api = CompetitionApi.getInstance();
   List<CompetitionModel> _competitions = [];
+  Map<int, int> _matchCounts = {};
   bool _isLoading = true;
 
   @override
@@ -28,17 +29,69 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
   void _fetchCompetitions() async {
     setState(() => _isLoading = true);
     await _api.initialize();
-    _api.getAllCompetitions().then((list) {
+
+    try {
+      final list = await _api.getAllCompetitions();
+      final Map<int, int> counts = {};
+
+      // Busca a quantidade de partidas para cada competição para validar a exclusão
+      await Future.wait(list.map((comp) async {
+        if (comp.id != null) {
+          try {
+            final matches = await _api.getMatchesByCompetition(comp.id!);
+            counts[comp.id!] = matches.length;
+          } catch (e) {
+            counts[comp.id!] = 0;
+          }
+        }
+      }));
+
       setState(() {
         _competitions = list;
+        _matchCounts = counts;
         _isLoading = false;
       });
-    }).catchError((error) {
+    } catch (error) {
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Erro ao carregar competições")),
       );
-    });
+    }
+  }
+
+  void _deleteCompetition(int id) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Excluir Competição"),
+        content: const Text("Tem certeza que deseja excluir esta competição?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("Cancelar"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text("Excluir", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      setState(() => _isLoading = true);
+      _api.deleteCompetition(id).then((_) {
+        _fetchCompetitions();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Competição excluída com sucesso")),
+        );
+      }).catchError((error) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Erro ao excluir competição: $error")),
+        );
+      });
+    }
   }
 
   @override
@@ -76,6 +129,14 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
 
   Widget _buildCompetitionCard(CompetitionModel comp) {
     final df = DateFormat('dd/MM/yyyy');
+    final int matchCount = _matchCounts[comp.id] ?? 0;
+
+    // Condições para excluir:
+    // 1. Data de início nula ou futura
+    // 2. Não possui nenhuma partida cadastrada
+    final bool canDelete = (comp.startDate == null || comp.startDate!.isAfter(DateTime.now()))
+        && matchCount == 0;
+
     return Card(
       color: BolixoColors.surfaceElevated,
       margin: const EdgeInsets.only(bottom: 16),
@@ -91,9 +152,15 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
               "Início: ${comp.startDate != null ? df.format(comp.startDate!) : '-'} | Fim: ${comp.endDate != null ? df.format(comp.endDate!) : '-'}",
               style: BolixoTypography.bodySmall,
             ),
+            Text(
+              "Partidas cadastradas: $matchCount",
+              style: BolixoTypography.bodySmall.copyWith(color: Colors.white70),
+            ),
             const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Wrap(
+              spacing: 8,
+              alignment: WrapAlignment.end,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 TextButton.icon(
                   onPressed: () async {
@@ -106,7 +173,6 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
                   icon: const Icon(Icons.edit, color: BolixoColors.accentGreen),
                   label: const Text("Editar", style: TextStyle(color: BolixoColors.accentGreen)),
                 ),
-                const SizedBox(width: 8),
                 TextButton.icon(
                   onPressed: () {
                     Navigator.push(
@@ -117,6 +183,12 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
                   icon: const Icon(Icons.sports_soccer, color: BolixoColors.accentGreen),
                   label: const Text("Partidas", style: TextStyle(color: BolixoColors.accentGreen)),
                 ),
+                if (canDelete && comp.id != null)
+                  TextButton.icon(
+                    onPressed: () => _deleteCompetition(comp.id!),
+                    icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                    label: const Text("Excluir", style: TextStyle(color: Colors.redAccent)),
+                  ),
               ],
             )
           ],

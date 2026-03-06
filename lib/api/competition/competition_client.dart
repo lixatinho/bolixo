@@ -149,6 +149,21 @@ class CompetitionClient implements CompetitionApi {
   }
 
   @override
+  Future deleteCompetition(int competitionId) async {
+    try {
+      var response = await dio.delete("$baseUrl/$competitionsPath/$competitionId");
+      return (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300)
+          ? Future.value()
+          : Future.error(response.statusCode ?? 500);
+    } on DioException catch (e) {
+      return Future.error(e.response?.data?['msg'] ?? e.message ?? "Erro ao deletar competição");
+    } catch (e) {
+      log(e.toString());
+      return Future.error(e);
+    }
+  }
+
+  @override
   Future<List<MatchModel>> getMatchesByCompetition(int competitionId) async {
     try {
       var response = await dio.get("$baseUrl/$competitionsPath/$competitionId/match");

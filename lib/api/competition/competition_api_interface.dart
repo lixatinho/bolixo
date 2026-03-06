@@ -11,6 +11,7 @@ abstract class CompetitionApi {
   Future<TeamModel> createTeam(TeamModel team);
   Future createCompetition(CompetitionModel competition, List<int> teamIds);
   Future updateCompetition(CompetitionModel competition, List<int> teamIds);
+  Future deleteCompetition(int competitionId);
   Future<List<MatchModel>> getMatchesByCompetition(int competitionId);
   Future saveMatches(int competitionId, List<MatchModel> matches);
   Future updateMatchResult(MatchModel match);

@@ -33,6 +33,7 @@ class BolaoClient implements BolaoApi {
   Future<List<BolaoModel>> getBoloes() async {
     try {
       var response = await dio.get("$baseUrl/$getBoloesPath");
+
       if (response.statusCode == 200) {
         var ranking = List<RankingItemModel>.from(
             response.data.map(
@@ -44,7 +45,7 @@ class BolaoClient implements BolaoApi {
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
-      log(e.toString());
+      log('GET Boloes - Error: ${e.toString()}');
       return Future.error(e);
     }
   }
