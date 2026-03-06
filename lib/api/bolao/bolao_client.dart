@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/api/model/bolao_model.dart';
@@ -45,7 +44,6 @@ class BolaoClient implements BolaoApi {
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
-      log('GET Boloes - Error: ${e.toString()}');
       return Future.error(e);
     }
   }
@@ -62,18 +60,18 @@ class BolaoClient implements BolaoApi {
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
-      log(e.toString());
       return Future.error(e);
     }
   }
 
   @override
-  Future createBolao(String name, int competitionId) async {
+  Future createBolao(String name, int competitionId, bool isGlobal) async {
     try {
       var response = await dio.post(
           "$baseUrl/$createBolaoPath",
           data: jsonEncode({
             "name": name,
+            "isGlobal": isGlobal,
             "competition": {
               "id": competitionId
             }
@@ -85,7 +83,6 @@ class BolaoClient implements BolaoApi {
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
-      log(e.toString());
       return Future.error(e);
     }
   }

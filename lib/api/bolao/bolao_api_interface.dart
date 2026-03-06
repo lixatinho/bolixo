@@ -11,7 +11,7 @@ abstract class BolaoApi {
   Future initialize();
   Future<List<BolaoModel>> getBoloes();
   Future<List<CompetitionModel>> getActiveCompetitions();
-  Future createBolao(String name, int competitionId);
+  Future createBolao(String name, int competitionId, bool isGlobal);
 
   /// Injection turnaround
   static BolaoApi? bolaoApi;

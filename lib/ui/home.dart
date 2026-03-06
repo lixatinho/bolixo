@@ -2,6 +2,7 @@ import 'package:bolixo/api/model/user_model.dart';
 import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:bolixo/flow/boloes/boloes_view.dart';
+import 'package:bolixo/flow/boloes/boloes_widget.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -152,14 +153,13 @@ class HomeState extends State<Home> {
             _buildDrawerItem(Icons.edit, 'Palpites', 0),
             _buildDrawerItem(Icons.leaderboard, 'Ranking', 1),
 
-            if (role == UserRole.PREMIUM || role == UserRole.ADMIN)
-              _buildDrawerAction(Icons.add_circle_outline, 'Criar Bolão', () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const CreateBolaoView()),
-                );
-              }),
+            _buildDrawerAction(Icons.groups, 'Bolões', () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const BoloesView()),
+              );
+            }),
 
             if (role == UserRole.ADMIN)
               _buildDrawerAction(Icons.settings, 'Gerenciar Competições', () {
