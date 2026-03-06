@@ -99,7 +99,7 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
     return Scaffold(
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Gerenciar Competições", style: TextStyle(color: Colors.white)),
+        title: const Text("Competições", style: TextStyle(color: Colors.white)),
         backgroundColor: BolixoColors.deepPlum,
         iconTheme: const IconThemeData(color: Colors.white),
       ),

@@ -162,7 +162,7 @@ class HomeState extends State<Home> {
               }),
 
             if (role == UserRole.ADMIN)
-              _buildDrawerAction(Icons.settings, 'Gerenciar Competições', () {
+              _buildDrawerAction(Icons.settings, 'Competições', () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,

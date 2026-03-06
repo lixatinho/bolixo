@@ -47,10 +47,12 @@ class _EditMatchesViewState extends State<EditMatchesView> {
 
   void _addMatch() {
     setState(() {
-      _matches.add(MatchModel(
+      _matches.insert(0, MatchModel(
         matchDate: DateTime.now(),
         type: 1,
       ));
+      // Se houver algum placar sendo editado, resetamos o índice para evitar confusão no deslocamento da lista
+      _matchIndexToResult = null;
     });
   }
 
@@ -188,23 +190,44 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                   child: Column(
                     children: [
                       _buildTeamDropZone(match, true),
-                      if (hasResult && !isEditingResult)
-                        Text("${match.homeScore}", style: const TextStyle(color: BolixoColors.accentGreen, fontSize: 24, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 8),
+                      if (!isEditingResult)
+                        Text(
+                          match.homeScore?.toString() ?? "-",
+                          style: TextStyle(
+                            color: hasResult ? BolixoColors.accentGreen : Colors.white38,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
                     ],
                   ),
                 ),
                 // VS
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text("VS", style: TextStyle(fontWeight: FontWeight.bold, color: hasResult ? BolixoColors.accentGreen : Colors.white, fontSize: 16)),
+                  child: Column(
+                    children: [
+                      Text("VS", style: TextStyle(fontWeight: FontWeight.bold, color: hasResult ? BolixoColors.accentGreen : Colors.white, fontSize: 16)),
+                      const SizedBox(height: 12),
+                    ],
+                  ),
                 ),
                 // Away Team
                 Expanded(
                   child: Column(
                     children: [
                       _buildTeamDropZone(match, false),
-                      if (hasResult && !isEditingResult)
-                        Text("${match.awayScore}", style: const TextStyle(color: BolixoColors.accentGreen, fontSize: 24, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 8),
+                      if (!isEditingResult)
+                        Text(
+                          match.awayScore?.toString() ?? "-",
+                          style: TextStyle(
+                            color: hasResult ? BolixoColors.accentGreen : Colors.white38,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -323,52 +346,56 @@ class _EditMatchesViewState extends State<EditMatchesView> {
       onWillAccept: (data) => true,
       onAccept: (team) {
         setState(() {
-          if (isHome) match.home = team; else match.away = team;
+          if (isHome) {
+            match.home = team;
+          } else {
+            match.away = team;
+          }
         });
       },
       builder: (context, candidateData, rejectedData) {
-        return Column(
-          children: [
-            _buildTeamAvatar(selectedTeam),
-            const SizedBox(height: 4),
-            Text(
-              selectedTeam?.name ?? (isHome ? "Casa" : "Fora"),
-              textAlign: TextAlign.center,
-              style: TextStyle(color: selectedTeam == null ? Colors.grey : Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
+        return Container(
+          height: 80,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: candidateData.isNotEmpty ? BolixoColors.accentGreen.withOpacity(0.2) : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: candidateData.isNotEmpty ? BolixoColors.accentGreen : Colors.white12),
+          ),
+          child: selectedTeam == null
+              ? const Icon(Icons.add_circle_outline, color: Colors.white24)
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildTeamAvatar(selectedTeam),
+                    const SizedBox(height: 4),
+                    Text(
+                      selectedTeam.name ?? "",
+                      style: BolixoTypography.bodySmall.copyWith(fontWeight: FontWeight.bold, fontSize: 11),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
         );
       },
     );
   }
 
-  Widget _buildTeamAvatar(TeamModel? team, {bool isDragging = false, double opacity = 1.0}) {
+  Widget _buildTeamAvatar(TeamModel team, {bool isDragging = false, double opacity = 1.0}) {
     return Opacity(
       opacity: opacity,
-      child: Material(
-        color: Colors.transparent,
-        child: CircleAvatar(
-          radius: isDragging ? 24 : 20,
-          backgroundColor: BolixoColors.backgroundPrimary,
-          child: team != null
-            ? _buildTeamFlag(team)
-            : const Icon(Icons.add, color: Colors.grey, size: 16),
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: isDragging ? BolixoColors.accentGreen.withOpacity(0.5) : Colors.transparent,
+          shape: BoxShape.circle,
         ),
-      ),
-    );
-  }
-
-  Widget _buildTeamFlag(TeamModel team) {
-    String assetPath = "assets/images/teams/${team.abbreviation}.png";
-    return ClipOval(
-      child: Image.asset(
-        assetPath,
-        width: 40,
-        height: 40,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => const Icon(Icons.sports_soccer, color: BolixoColors.accentGreen),
+        child: CircleAvatar(
+          radius: 18,
+          backgroundColor: BolixoColors.backgroundSecondary,
+          backgroundImage: team.abbreviation != null ? AssetImage("assets/images/teams/${team.abbreviation}.png") : null,
+          child: team.abbreviation == null ? const Icon(Icons.sports_soccer, color: Colors.white24) : null,
+        ),
       ),
     );
   }
