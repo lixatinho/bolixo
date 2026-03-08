@@ -41,7 +41,7 @@ class _MenuHomeViewState extends State<MenuHomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final double imageHeight = math.min(260.0, MediaQuery.of(context).size.height * 0.22);
+    final double imageHeight = math.min(320.0, MediaQuery.of(context).size.height * 0.30);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
