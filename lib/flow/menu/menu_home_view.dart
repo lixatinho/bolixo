@@ -9,6 +9,7 @@ import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_gradients.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 import 'package:google_fonts/google_fonts.dart';
 
 class MenuHomeView extends StatefulWidget {
@@ -40,6 +41,7 @@ class _MenuHomeViewState extends State<MenuHomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final double imageHeight = math.min(260.0, MediaQuery.of(context).size.height * 0.22);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -111,12 +113,13 @@ class _MenuHomeViewState extends State<MenuHomeView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Trophy Icon with animation
+                  // Trophy Icon with animation (direct ferretWithTroph image)
                   SizedBox(
-                    height: 140,
+                    height: imageHeight,
                     child: Image.asset(
-                      'assets/images/world_cup_trophy.png',
+                      'assets/images/ferretWithTroph.png',
                       fit: BoxFit.contain,
+                      height: imageHeight,
                     ),
                   ),
                   const SizedBox(height: 40),

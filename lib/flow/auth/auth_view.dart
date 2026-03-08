@@ -73,7 +73,7 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 32),
-                    // Floating trophy
+                    // Floating trophy (restored original login image)
                     AnimatedBuilder(
                       animation: _floatAnimation,
                       builder: (context, child) {
