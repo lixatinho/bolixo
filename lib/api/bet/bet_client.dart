@@ -29,16 +29,25 @@ class BetClient implements BetApi {
   @override
   Future<List<BetsInDayModel>> getUserBets() async {
     try {
-      var response = await dio.get("$baseUrl/$getBets/$bolaoId");
+      final url = "$baseUrl/$getBets/$bolaoId";
+      log('GET UserBets - URL: $url');
+      log('GET UserBets - BolaoId from Cache: $bolaoId');
+
+      var response = await dio.get(url);
+
+      log('GET UserBets - Status: ${response.statusCode}');
+      log('GET UserBets - Data: ${response.data}');
+
       if (response.statusCode == 200) {
         var betInDaysList = List<BetsInDayModel>.from(
             response.data.map((model) => BetsInDayModel.fromJson(model)));
+        log('GET UserBets - Mapped ${betInDaysList.length} days');
         return Future.value(betInDaysList);
       } else {
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
-      log(e.toString());
+      log('GET UserBets - Error: ${e.toString()}');
       return Future.error(e);
     }
   }
@@ -47,20 +56,17 @@ class BetClient implements BetApi {
   Future<List<BetsInDayModel>> getBetsByUser(int userId) async {
     try {
       String url = "$baseUrl/$getBets/$bolaoId/user/$userId";
-//       print("Calling URL: $url");
+      log('GET BetsByUser - URL: $url');
       var response = await dio.get(url);
-//       print (response);
       if (response.statusCode == 200) {
-//       print ("deu bom, 200, BET_CLIENT.DART");
         var betInDaysList = List<BetsInDayModel>.from(
             response.data.map((model) => BetsInDayModel.fromJson(model)));
         return Future.value(betInDaysList);
       } else {
-//       print ("deu RUIM, 500, BET_CLIENT.DART");
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
-      log(e.toString());
+      log('GET BetsByUser - Error: ${e.toString()}');
       return Future.error(e);
     }
   }
@@ -68,15 +74,16 @@ class BetClient implements BetApi {
   @override
   Future saveUserBets(List<BetModel> betList) async {
     try {
-      var response = await dio.put("$baseUrl/$saveBet/$bolaoId",
-          data: jsonEncode(betList));
+      final url = "$baseUrl/$saveBet/$bolaoId";
+      log('PUT SaveUserBets - URL: $url');
+      var response = await dio.put(url, data: jsonEncode(betList));
       if (response.statusCode == 200) {
         return Future.value();
       } else {
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
-      log(e.toString());
+      log('PUT SaveUserBets - Error: ${e.toString()}');
       return Future.error(e);
     }
   }
@@ -84,7 +91,9 @@ class BetClient implements BetApi {
   @override
   Future<List<BetModel>> getBetsByBolaoAndMatch(int? matchId) async {
     try {
-      var response = await dio.get("$baseUrl/$getBets/$bolaoId/$matchId");
+      final url = "$baseUrl/$getBets/$bolaoId/$matchId";
+      log('GET BetsByBolaoAndMatch - URL: $url');
+      var response = await dio.get(url);
       if (response.statusCode == 200) {
         var betList = List<BetModel>.from(
             response.data.map((model) => BetModel.fromJson(model)));
@@ -93,7 +102,7 @@ class BetClient implements BetApi {
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
-      log(e.toString());
+      log('GET BetsByBolaoAndMatch - Error: ${e.toString()}');
       return Future.error(e);
     }
   }

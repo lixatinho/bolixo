@@ -18,7 +18,9 @@ class BolaoMockApi extends BolaoApi {
     int boloesSize = 10;
     List<BolaoModel> ranking = List.generate(boloesSize, (index) {
       return BolaoModel(
+          bolaoId: index,
           name: "Bolao $index",
+          isGlobal: index % 3 == 0
       );
     });
     return Future.value(ranking);
@@ -33,7 +35,7 @@ class BolaoMockApi extends BolaoApi {
   }
 
   @override
-  Future createBolao(String name, int competitionId) {
+  Future createBolao(String name, int competitionId, bool isGlobal) {
     return Future.value();
   }
 }

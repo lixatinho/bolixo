@@ -1,5 +1,7 @@
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/api/model/competition_model.dart';
+import 'package:bolixo/api/model/user_model.dart';
+import 'package:bolixo/flow/auth/auth_repository.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_decorations.dart';
@@ -19,12 +21,16 @@ class _CreateBolaoViewState extends State<CreateBolaoView> {
   CompetitionModel? _selectedCompetition;
   List<CompetitionModel> _competitions = [];
   bool _isLoading = false;
+  bool _isGlobal = false;
   bool _isFetchingCompetitions = true;
   final BolaoApi _bolaoApi = BolaoApi.getInstance();
+  final AuthRepository _auth = AuthRepository();
+  late UserRole _userRole;
 
   @override
   void initState() {
     super.initState();
+    _userRole = _auth.getRole();
     _fetchCompetitions();
   }
 
@@ -50,12 +56,13 @@ class _CreateBolaoViewState extends State<CreateBolaoView> {
       _bolaoApi.createBolao(
         _nameController.text,
         _selectedCompetition!.id!,
+        _isGlobal,
       ).then((_) {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Bolão criado com sucesso!")),
         );
-        Navigator.of(context).pop(true); // Retorna true para indicar que houve criação
+        Navigator.of(context).pop(true);
       }).catchError((error) {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
@@ -127,6 +134,30 @@ class _CreateBolaoViewState extends State<CreateBolaoView> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 24),
+                  if (_userRole == UserRole.ADMIN)
+                    Theme(
+                      data: Theme.of(context).copyWith(
+                        unselectedWidgetColor: Colors.white70,
+                      ),
+                      child: CheckboxListTile(
+                        title: Text("Bolão Global", style: BolixoTypography.bodyLarge),
+                        subtitle: const Text(
+                          "Se marcado, qualquer usuário poderá visualizar e participar deste bolão.",
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                        ),
+                        value: _isGlobal,
+                        activeColor: BolixoColors.accentGreen,
+                        checkColor: Colors.white,
+                        contentPadding: EdgeInsets.zero,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _isGlobal = value ?? false;
+                          });
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
+                    ),
                   const SizedBox(height: 48),
                   _isLoading
                     ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))

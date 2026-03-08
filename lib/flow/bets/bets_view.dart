@@ -34,97 +34,121 @@ class BetsWidgetState extends State<BetsWidget> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return const LoadingWidget();
-    } else {
+    }
+
+    if (betsByDay.isEmpty) {
       return Container(
         color: BolixoColors.backgroundPrimary,
-        child: Column(children: [
-          // Date selector
-          SizedBox(
-            height: 160,
-            child: SelectDateWidget(
-              viewContent: DateSelectionViewContent.from(
-                  betsByDay.map((e) => e.date).toList(), dateIndex),
-              onTapCallback: (int index) => viewController.onDateChanged(index),
-            ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.sentiment_dissatisfied, size: 64, color: Colors.white70),
+              const SizedBox(height: 16),
+              Text(
+                "Nenhum jogo disponível para este bolão.",
+                style: BolixoTypography.titleMedium.copyWith(color: Colors.white),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Aguarde o administrador cadastrar as partidas.",
+                style: BolixoTypography.bodyMedium.copyWith(color: Colors.white70),
+              ),
+            ],
           ),
-          // Score overview bar
-          scoreOverview(),
-          // Bet cards list
-          Expanded(
-            child: Stack(
-              children: [
-                ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
-                  itemCount: betsByDay[dateIndex].betList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        if (betsByDay[dateIndex]
-                                .betList[index]
-                                .model
-                                .match
-                                ?.matchDate
-                                .isBefore(DateTime.now().toUtc()) ==
-                            true) {
-                          viewController.getBetsByBolaoAndMatch(
-                              betsByDay[dateIndex].betList[index].model.match?.id);
-                        }
-                      },
-                      child: BetItemView(
-                        bet: betsByDay[dateIndex].betList[index],
-                        homeGoalsChanged: (goals) =>
-                            viewController.onGoalsTeam1Changed(index, goals),
-                        awayGoalsChanged: (goals) =>
-                            viewController.onGoalsTeam2Changed(index, goals),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 12),
-                ),
-                // Save button - solid green at bottom
-                Positioned(
-                  left: 16,
-                  right: 16,
-                  bottom: 16,
-                  child: Container(
-                    height: 52,
-                    decoration: BoxDecoration(
-                      color: BolixoColors.accentGreen,
-                      borderRadius: BorderRadius.circular(16),
+        ),
+      );
+    }
+
+    return Container(
+      color: BolixoColors.backgroundPrimary,
+      child: Column(children: [
+        // Date selector
+        SizedBox(
+          height: 160,
+          child: SelectDateWidget(
+            viewContent: DateSelectionViewContent.from(
+                betsByDay.map((e) => e.date).toList(), dateIndex),
+            onTapCallback: (int index) => viewController.onDateChanged(index),
+          ),
+        ),
+        // Score overview bar
+        scoreOverview(),
+        // Bet cards list
+        Expanded(
+          child: Stack(
+            children: [
+              ListView.separated(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
+                itemCount: betsByDay[dateIndex].betList.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (betsByDay[dateIndex]
+                              .betList[index]
+                              .model
+                              .match
+                              ?.matchDate
+                              .isBefore(DateTime.now().toUtc()) ==
+                          true) {
+                        viewController.getBetsByBolaoAndMatch(
+                            betsByDay[dateIndex].betList[index].model.match?.id);
+                      }
+                    },
+                    child: BetItemView(
+                      bet: betsByDay[dateIndex].betList[index],
+                      homeGoalsChanged: (goals) =>
+                          viewController.onGoalsTeam1Changed(index, goals),
+                      awayGoalsChanged: (goals) =>
+                          viewController.onGoalsTeam2Changed(index, goals),
                     ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(16),
-                        onTap: () => viewController.saveBets(),
-                        child: Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(Icons.save, color: BolixoColors.textOnAccent, size: 20),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Salvar Palpites',
-                                style: GoogleFonts.inter(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: BolixoColors.textOnAccent,
-                                ),
+                  );
+                },
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
+              ),
+              // Save button - solid green at bottom
+              Positioned(
+                left: 16,
+                right: 16,
+                bottom: 16,
+                child: Container(
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: BolixoColors.accentGreen,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(16),
+                      onTap: () => viewController.saveBets(),
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.save, color: BolixoColors.textOnAccent, size: 20),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Salvar Palpites',
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: BolixoColors.textOnAccent,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ]),
-      );
-    }
+        ),
+      ]),
+    );
   }
 
   @override
@@ -148,6 +172,11 @@ class BetsWidgetState extends State<BetsWidget> {
   }
 
   Widget scoreOverview() {
+    final currentDay = betsByDay[dateIndex];
+    final String phase = currentDay.betList.isNotEmpty
+        ? currentDay.betList[0].type
+        : "N/A";
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -162,7 +191,7 @@ class BetsWidgetState extends State<BetsWidget> {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              betsByDay[dateIndex].betList[0].type,
+              phase,
               style: GoogleFonts.inter(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -177,7 +206,7 @@ class BetsWidgetState extends State<BetsWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${betsByDay[dateIndex].totalScore}/${betsByDay[dateIndex].maxScore} pts",
+                  "${currentDay.totalScore}/${currentDay.maxScore} pts",
                   style: BolixoTypography.bodySmall.copyWith(
                     color: BolixoColors.textPrimary,
                   ),
@@ -186,7 +215,7 @@ class BetsWidgetState extends State<BetsWidget> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: LinearProgressIndicator(
-                    value: betsByDay[dateIndex].accuracy,
+                    value: currentDay.accuracy,
                     backgroundColor: BolixoColors.white8,
                     valueColor: const AlwaysStoppedAnimation<Color>(BolixoColors.accentCyan),
                     minHeight: 6,
