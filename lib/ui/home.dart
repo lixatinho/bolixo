@@ -1,25 +1,21 @@
 import 'package:bolixo/api/model/user_model.dart';
 import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
-import 'package:bolixo/flow/boloes/boloes_view.dart';
-import 'package:bolixo/flow/boloes/boloes_widget.dart';
+import 'package:bolixo/flow/ranking/ranking_view.dart';
+import 'package:bolixo/ui/shared/bolixo_drawer.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../flow/auth/auth_view.dart';
-import '../flow/auth/auth_view_content.dart';
 import '../flow/auth/auth_service.dart';
-import '../flow/auth/change_password_view.dart';
-import '../flow/boloes/create_bolao_view.dart';
-import '../flow/competition/manage_competitions_view.dart';
-import '../flow/ranking/ranking_view.dart';
+import '../flow/boloes/boloes_widget.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key, required this.title});
+  const Home({super.key, required this.title, this.initialIndex = 0});
 
   final String title;
+  final int initialIndex;
 
   @override
   State<StatefulWidget> createState() {
@@ -28,7 +24,7 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
   String bolaoName = BolaoCache().bolaoName;
   int bolaoId = BolaoCache().bolaoId;
   late PageController _pageController;
@@ -38,6 +34,7 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    _selectedIndex = widget.initialIndex;
     _pageController = PageController(initialPage: _selectedIndex);
     bolaoName = BolaoCache().bolaoName;
     bolaoId = BolaoCache().bolaoId;
@@ -101,7 +98,14 @@ class HomeState extends State<Home> {
           ),
         ],
       ),
-      drawer: _buildDrawer(),
+      drawer: BolixoDrawer(
+        onTabSelected: (index) {
+          setState(() {
+            _selectedIndex = index;
+            _pageController.jumpToPage(index);
+          });
+        },
+      ),
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
@@ -112,103 +116,18 @@ class HomeState extends State<Home> {
           RankingWidget(key: ValueKey("ranking_$bolaoId")),
         ],
       ),
+      floatingActionButton: _selectedIndex == 1 ? FloatingActionButton.extended(
+        onPressed: () {
+          setState(() {
+            _selectedIndex = 0;
+            _pageController.animateToPage(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+          });
+        },
+        label: const Text("Palpites Hoje"),
+        icon: const Icon(Icons.edit),
+        backgroundColor: BolixoColors.accentGreen,
+      ) : null,
       bottomNavigationBar: _buildBottomNav(),
-    );
-  }
-
-  Widget _buildDrawer() {
-    final role = AuthService().repository.getRole();
-
-    return Drawer(
-      child: Container(
-        color: BolixoColors.backgroundPrimary,
-        child: Column(
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [BolixoColors.deepPlum, BolixoColors.backgroundPrimary],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/world_cup_trophy.png', height: 60),
-                    const SizedBox(height: 10),
-                    Text(
-                      AuthService().repository.getUsername(),
-                      style: BolixoTypography.titleLarge,
-                    ),
-                    Text(
-                      role.toString().split('.').last,
-                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentGreenLight),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            _buildDrawerItem(Icons.edit, 'Palpites', 0),
-            _buildDrawerItem(Icons.leaderboard, 'Ranking', 1),
-
-            _buildDrawerAction(Icons.groups, 'Bolões', () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const BoloesView()),
-              );
-            }),
-
-            if (role == UserRole.ADMIN)
-              _buildDrawerAction(Icons.settings, 'Competições', () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ManageCompetitionsView()),
-                );
-              }),
-
-            const Divider(color: BolixoColors.white6),
-            _buildDrawerAction(Icons.vpn_key, 'Trocar Senha', () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ChangePasswordView()),
-              );
-            }),
-            _buildDrawerAction(Icons.logout, 'Sair', () {
-              AuthService().logOff();
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => AuthView(authFormType: AuthFormType.signIn),
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDrawerItem(IconData icon, String label, int index) {
-    return ListTile(
-      leading: Icon(icon, color: BolixoColors.textPrimary),
-      title: Text(label, style: BolixoTypography.bodyLarge),
-      onTap: () {
-        Navigator.pop(context);
-        setState(() => _selectedIndex = index);
-        _pageController.jumpToPage(index);
-      },
-    );
-  }
-
-  Widget _buildDrawerAction(IconData icon, String label, VoidCallback onTap) {
-    return ListTile(
-      leading: Icon(icon, color: BolixoColors.textPrimary),
-      title: Text(label, style: BolixoTypography.bodyLarge),
-      onTap: onTap,
     );
   }
 
@@ -348,7 +267,7 @@ class HomeState extends State<Home> {
             "Mitou: acertou na mosca, 10 pontos.\n\n"
             "Acertar resultado: 5 pontos.\n\n"
             "Acertar quantidade de gols de um time: 1 ponto.\n\n"
-            "Cada fase possui um peso, que pode multiplicar os valores anteriores.\n"
+            "Cada fase possui um peso, que pode multiplicar os values anteriores.\n"
             "Fase de grupos, peso 1. Próxima fase, peso 2, e assim por diante.\n\n"
             "Exemplo 1: resultado do jogo 1x0. Palpite 2x0. Pontuação = 6, acertou resultado e o número de gols de um time.\n\n"
             "Exemplo 2: resultado do jogo 0x0. Palpite 1x1. Pontuação = 5, acertou resultado.\n\n"

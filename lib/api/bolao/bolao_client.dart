@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/api/model/bolao_model.dart';
@@ -31,19 +32,34 @@ class BolaoClient implements BolaoApi {
   @override
   Future<List<BolaoModel>> getBoloes() async {
     try {
-      var response = await dio.get("$baseUrl/$getBoloesPath");
+      final url = "$baseUrl/$getBoloesPath";
+      log('GET Boloes - URL: $url');
+
+      var response = await dio.get(url);
+
+      log('GET Boloes - Status: ${response.statusCode}');
+      // Print the full response to the terminal for debugging
+      print('DEBUG: Full Ranking Response: ${jsonEncode(response.data)}');
 
       if (response.statusCode == 200) {
         var ranking = List<RankingItemModel>.from(
             response.data.map(
-                    (model) => RankingItemModel.fromJson(model)
+                    (model) {
+                      print('DEBUG: Ranking Item JSON: $model');
+                      return RankingItemModel.fromJson(model);
+                    }
             )
         );
-        return Future.value(ranking.map((r) => r.bolao!).toList());
+        var boloes = ranking.map((r) => r.bolao!).toList();
+        log('GET Boloes - Found ${boloes.length} boloes');
+        return Future.value(boloes);
       } else {
+        log('GET Boloes - Error status: ${response.statusCode}');
         return Future.error(response.statusCode ?? 500);
       }
     } catch (e) {
+      log('GET Boloes - Exception: $e');
+      print('DEBUG: getBoloes Exception: $e');
       return Future.error(e);
     }
   }
