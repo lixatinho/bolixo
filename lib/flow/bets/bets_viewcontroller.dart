@@ -9,10 +9,10 @@ class BetsViewController {
   BetApi api = BetApi.getInstance();
   late BetsWidgetState? view;
 
-  void onInit(state) async {
+  void onInit(state, {int? competitionId}) async {
     view = state;
     await _prepareApi();
-    _fillBets();
+    _fillBets(competitionId: competitionId);
   }
 
   void onDateChanged(int index) {
@@ -31,8 +31,8 @@ class BetsViewController {
     await api.initialize();
   }
 
-  void _fillBets() {
-    api.getUserBets().then((betsInDayList) {
+  void _fillBets({int? competitionId}) {
+    api.getUserBets(competitionId: competitionId).then((betsInDayList) {
       List<BetsInDayViewContent> betsInDayViewContentList = betsInDayList
           .map((betsInDayApiModel) =>
               BetsInDayViewContent.fromApiModel(betsInDayApiModel))

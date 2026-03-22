@@ -5,6 +5,7 @@ import 'package:bolixo/flow/auth/auth_repository.dart';
 import 'package:bolixo/flow/boloes/admin_boloes_view.dart';
 import 'package:bolixo/flow/boloes/create_bolao_view.dart';
 import 'package:bolixo/flow/ranking/ranking_view.dart';
+import 'package:bolixo/ui/shared/app_bottom_nav.dart';
 import 'package:bolixo/ui/shared/app_drawer.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -167,6 +168,7 @@ class _BoloesViewState extends State<BoloesView> {
           ),
         ],
       ),
+      bottomNavigationBar: const AppBottomNav(selectedIndex: 1),
     );
   }
 

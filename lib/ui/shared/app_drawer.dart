@@ -43,16 +43,12 @@ class AppDrawer extends StatelessWidget {
                       AuthService().repository.getUsername(),
                       style: BolixoTypography.titleLarge,
                     ),
-                    Text(
-                      role.toString().split('.').last,
-                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentGreenLight),
-                    ),
                   ],
                 ),
               ),
             ),
-            _buildDrawerItem(context, Icons.edit, 'Palpites', 0),
-            _buildDrawerItem(context, Icons.leaderboard, 'Ranking', 1),
+            // _buildDrawerItem(context, Icons.edit, 'Palpites', 0),
+            // _buildDrawerItem(context, Icons.leaderboard, 'Ranking', 1),
 
             _buildDrawerAction(context, Icons.sports_soccer, 'Palpites (Comp)', () {
               Navigator.pop(context);

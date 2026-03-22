@@ -11,7 +11,8 @@ import '../../ui/select_date_widget.dart';
 import 'bet_view_item_view.dart';
 
 class BetsWidget extends StatefulWidget {
-  const BetsWidget({super.key});
+  final int? competitionId;
+  const BetsWidget({super.key, this.competitionId});
 
   @override
   State<StatefulWidget> createState() => BetsWidgetState();
@@ -27,7 +28,7 @@ class BetsWidgetState extends State<BetsWidget> {
   @override
   initState() {
     super.initState();
-    viewController.onInit(this);
+    viewController.onInit(this, competitionId: widget.competitionId);
   }
 
   @override
@@ -46,7 +47,7 @@ class BetsWidgetState extends State<BetsWidget> {
               const Icon(Icons.sentiment_dissatisfied, size: 64, color: Colors.white70),
               const SizedBox(height: 16),
               Text(
-                "Nenhum jogo disponível para este bolão.",
+                "Nenhum jogo disponível.",
                 style: BolixoTypography.titleMedium.copyWith(color: Colors.white),
               ),
               const SizedBox(height: 8),

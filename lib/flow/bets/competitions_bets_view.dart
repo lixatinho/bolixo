@@ -1,6 +1,7 @@
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
+import 'package:bolixo/ui/shared/app_bottom_nav.dart';
 import 'package:bolixo/ui/shared/app_drawer.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -38,7 +39,6 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
           _isLoading = false;
         });
 
-        // Se houver apenas uma competição, redireciona automaticamente
         if (_competitions.length == 1 && !_isRedirecting) {
           _isRedirecting = true;
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -49,8 +49,9 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
                   builder: (context) => CompetitionBetsDetailView(
                     competitionId: _competitions[0].id!,
                     competitionName: _competitions[0].name ?? "Palpites",
-                    showDrawer: true, // Mostra o drawer se for o único redirecionamento
+                    showDrawer: true,
                   ),
+                  settings: const RouteSettings(name: '/competition_detail'),
                 ),
               );
             }
@@ -80,7 +81,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
       key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Palpites por Competição", style: TextStyle(color: Colors.white)),
+        title: const Text("Palpites", style: TextStyle(color: Colors.white)),
         backgroundColor: BolixoColors.deepPlum,
         leading: IconButton(
           icon: const Icon(Icons.menu, color: Colors.white),
@@ -102,6 +103,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
                       },
                     ),
             ),
+      bottomNavigationBar: const AppBottomNav(selectedIndex: 0),
     );
   }
 
@@ -137,6 +139,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
                 competitionId: comp.id!,
                 competitionName: comp.name ?? "Palpites",
               ),
+              settings: const RouteSettings(name: '/competition_detail'),
             ),
           );
         },
@@ -197,7 +200,8 @@ class CompetitionBetsDetailView extends StatelessWidget {
           : null,
       ),
       drawer: showDrawer ? const AppDrawer() : null,
-      body: const BetsWidget(),
+      body: BetsWidget(competitionId: competitionId),
+      bottomNavigationBar: const AppBottomNav(selectedIndex: 0),
     );
   }
 }
