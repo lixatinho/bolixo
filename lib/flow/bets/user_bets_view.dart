@@ -65,7 +65,7 @@ class UserBetsWidgetState extends State<UserBetsWidget> {
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Text(
-            "${widget.userName} ainda não realizou nenhum palpite!",
+            "Nada para ver aqui...",
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
               color: BolixoColors.textSecondary,

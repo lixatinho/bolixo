@@ -1,9 +1,12 @@
+import 'competition_model.dart';
+
 class BolaoModel {
   String? name;
   int? bolaoId;
   bool isGlobal;
   String? inviteCode;
   String? creatorUsername;
+  CompetitionModel? competition;
 
   BolaoModel({
     this.name,
@@ -11,6 +14,7 @@ class BolaoModel {
     this.isGlobal = false,
     this.inviteCode,
     this.creatorUsername,
+    this.competition,
   });
 
   BolaoModel.fromJson(Map<String, dynamic> json) : isGlobal = json['isGlobal'] ?? false {
@@ -18,6 +22,7 @@ class BolaoModel {
     bolaoId = json['idBolao'];
     inviteCode = json['inviteCode'];
     creatorUsername = json['creatorUsername'];
+    competition = json['competition'] != null ? CompetitionModel.fromJson(json['competition']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +32,9 @@ class BolaoModel {
     data['isGlobal'] = isGlobal;
     data['inviteCode'] = inviteCode;
     data['creatorUsername'] = creatorUsername;
+    if (competition != null) {
+      data['competition'] = competition!.toJson();
+    }
 
     return data;
   }

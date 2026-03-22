@@ -17,9 +17,10 @@ import '../flow/competition/manage_competitions_view.dart';
 import '../flow/ranking/ranking_view.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key, required this.title});
+  const Home({super.key, required this.title, this.redirectBoloes = false});
 
   final String title;
+  final bool redirectBoloes;
 
   @override
   State<StatefulWidget> createState() {
@@ -48,15 +49,28 @@ class HomeState extends State<Home> {
         setState(() {
           _isAuthInitialized = true;
         });
+
+        if (widget.redirectBoloes) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BoloesView()),
+            );
+          });
+        }
       }
     });
   }
 
   void _handleBolaoChanged(int newId, String newName) {
     if (mounted) {
-      setState(() {
-        bolaoId = newId;
-        bolaoName = newName;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            bolaoId = newId;
+            bolaoName = newName;
+          });
+        }
       });
     }
   }
@@ -178,18 +192,22 @@ class HomeState extends State<Home> {
                 MaterialPageRoute(builder: (context) => const ChangePasswordView()),
               );
             }),
-            _buildDrawerAction(Icons.logout, 'Sair', () {
-              AuthService().logOff();
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => AuthView(authFormType: AuthFormType.signIn),
-                ),
-              );
-            }),
+            _build_logout_action(),
           ],
         ),
       ),
     );
+  }
+
+  Widget _build_logout_action() {
+    return _buildDrawerAction(Icons.logout, 'Sair', () {
+      AuthService().logOff();
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => AuthView(authFormType: AuthFormType.signIn),
+        ),
+      );
+    });
   }
 
   Widget _buildDrawerItem(IconData icon, String label, int index) {

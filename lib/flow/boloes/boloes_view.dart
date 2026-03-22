@@ -4,6 +4,8 @@ import 'package:bolixo/api/model/user_model.dart';
 import 'package:bolixo/flow/auth/auth_repository.dart';
 import 'package:bolixo/flow/boloes/admin_boloes_view.dart';
 import 'package:bolixo/flow/boloes/create_bolao_view.dart';
+import 'package:bolixo/flow/ranking/ranking_view.dart';
+import 'package:bolixo/ui/shared/app_drawer.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ class BoloesView extends StatefulWidget {
 class _BoloesViewState extends State<BoloesView> {
   final BolaoApi _api = BolaoApi.getInstance();
   final AuthRepository _auth = AuthRepository();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<BolaoModel> _myBoloes = [];
   List<BolaoModel> _createdBoloes = [];
@@ -87,11 +90,15 @@ class _BoloesViewState extends State<BoloesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
         title: const Text("Meus Bolões", style: TextStyle(color: Colors.white)),
         backgroundColor: BolixoColors.deepPlum,
-        iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+          icon: const Icon(Icons.menu, color: Colors.white),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        ),
         actions: [
           if (_userRole == UserRole.ADMIN)
             IconButton(
@@ -105,6 +112,7 @@ class _BoloesViewState extends State<BoloesView> {
             )
         ],
       ),
+      drawer: const AppDrawer(),
       body: _isLoading
         ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
         : RefreshIndicator(
@@ -187,25 +195,47 @@ class _BoloesViewState extends State<BoloesView> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
         title: Text(bolao.name ?? "Sem nome", style: BolixoTypography.bodyLarge),
-        subtitle: isCreator && bolao.inviteCode != null
-          ? Row(
-              children: [
-                Text("Código: ${bolao.inviteCode}", style: const TextStyle(color: Colors.white70)),
-                IconButton(
-                  icon: const Icon(Icons.copy, size: 16, color: BolixoColors.accentGreen),
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: bolao.inviteCode!));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Código copiado!")),
-                    );
-                  },
-                )
-              ],
-            )
-          : null,
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (bolao.competition?.name != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4, bottom: 4),
+                child: Text(
+                  bolao.competition!.name!,
+                  style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentCyan),
+                ),
+              ),
+            if (isCreator && bolao.inviteCode != null)
+              Row(
+                children: [
+                  Text("Código: ${bolao.inviteCode}", style: const TextStyle(color: Colors.white70)),
+                  IconButton(
+                    icon: const Icon(Icons.copy, size: 16, color: BolixoColors.accentGreen),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: bolao.inviteCode!));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Código copiado!")),
+                      );
+                    },
+                  )
+                ],
+              )
+          ],
+        ),
         trailing: const Icon(Icons.chevron_right, color: Colors.white24),
         onTap: () {
-          // Lógica para abrir o bolão
+          if (bolao.bolaoId != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RankingWidget(
+                  bolaoId: bolao.bolaoId!,
+                  bolaoName: bolao.name ?? "Ranking",
+                ),
+              ),
+            );
+          }
         },
       ),
     );

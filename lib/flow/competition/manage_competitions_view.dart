@@ -2,6 +2,7 @@ import 'package:bolixo/api/competition/competition_api_interface.dart';
 import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/flow/competition/edit_competition_view.dart';
 import 'package:bolixo/flow/competition/edit_matches_view.dart';
+import 'package:bolixo/ui/shared/app_drawer.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class ManageCompetitionsView extends StatefulWidget {
 
 class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
   final CompetitionApi _api = CompetitionApi.getInstance();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CompetitionModel> _competitions = [];
   Map<int, int> _matchCounts = {};
   bool _isLoading = true;
@@ -97,12 +99,17 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
         title: const Text("Competições", style: TextStyle(color: Colors.white)),
         backgroundColor: BolixoColors.deepPlum,
-        iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+          icon: const Icon(Icons.menu, color: Colors.white),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        ),
       ),
+      drawer: const AppDrawer(),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
           : ListView.builder(

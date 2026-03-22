@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../home.dart';
 
-void navigateToHome(BuildContext context) {
+void navigateToHome(BuildContext context, {bool redirectBoloes = false}) {
   Navigator.of(context).pushReplacement(
     MaterialPageRoute(
-      builder: (context) => const Home(
-        title: 'Bolixo'
+      builder: (context) => Home(
+        title: 'Bolixo',
+        redirectBoloes: redirectBoloes,
       )
     )
   );

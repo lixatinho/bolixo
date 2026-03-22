@@ -9,17 +9,23 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shake/shake.dart';
 
-class RankingWidget extends StatefulWidget {
-  final int? bolaoId;
-  final String? bolaoName;
+import '../../cache/bolao_cache.dart';
 
-  const RankingWidget({super.key, this.bolaoId, this.bolaoName});
+class BolaoRankingView extends StatefulWidget {
+  final int bolaoId;
+  final String bolaoName;
+
+  const BolaoRankingView({
+    super.key,
+    required this.bolaoId,
+    required this.bolaoName,
+  });
 
   @override
-  State<StatefulWidget> createState() => RankingWidgetState();
+  State<StatefulWidget> createState() => BolaoRankingViewState();
 }
 
-class RankingWidgetState extends State<RankingWidget> implements RankingViewContract {
+class BolaoRankingViewState extends State<BolaoRankingView> implements RankingViewContract {
   RankingViewContent viewContent = RankingViewContent();
   RankingViewController viewController = RankingViewController();
   final winnerPlayer = AudioPlayer();
@@ -30,7 +36,8 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
   @override
   void initState() {
     super.initState();
-    viewController.onInit(this, bolaoId: widget.bolaoId, bolaoName: widget.bolaoName);
+    BolaoCache().updateBolao(widget.bolaoId, widget.bolaoName);
+    viewController.onInit(this);
     shakeDetector = ShakeDetector.autoStart(
       onPhoneShake: (_) {
         viewController.onShake();
@@ -40,24 +47,18 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
 
   @override
   Widget build(BuildContext context) {
-    Widget content = _buildRankingContent();
-
-    if (widget.bolaoName != null) {
-      return Scaffold(
-        backgroundColor: BolixoColors.backgroundPrimary,
-        appBar: AppBar(
-          title: Text(widget.bolaoName!, style: BolixoTypography.titleLarge),
-          backgroundColor: BolixoColors.deepPlum,
-          iconTheme: const IconThemeData(color: Colors.white),
-        ),
-        body: content,
-      );
-    }
-
-    return content;
+    return Scaffold(
+      backgroundColor: BolixoColors.backgroundPrimary,
+      appBar: AppBar(
+        title: Text(widget.bolaoName, style: BolixoTypography.titleLarge),
+        backgroundColor: BolixoColors.deepPlum,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: _buildBody(),
+    );
   }
 
-  Widget _buildRankingContent() {
+  Widget _buildBody() {
     if (isShitted) {
       return Container(
         alignment: Alignment.center,
@@ -67,74 +68,71 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
     } else if (viewContent.isLoading) {
       return const LoadingWidget();
     } else {
-      return Container(
-        color: BolixoColors.backgroundPrimary,
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            // Table headers
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: viewContent.padding),
-              child: Row(
-                children: viewContent.infoHeaders.values.map((header) {
-                  return tableHeader(header.id, header.widthWeight, header.name, header.textColor);
-                }).toList(),
-              ),
+      return Column(
+        children: [
+          const SizedBox(height: 16),
+          // Table headers
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: viewContent.padding),
+            child: Row(
+              children: viewContent.infoHeaders.values.map((header) {
+                return tableHeader(header.id, header.widthWeight, header.name, header.textColor);
+              }).toList(),
             ),
-            const SizedBox(height: 8),
-            // Ranking list
-            Expanded(
-              child: ListView.builder(
-                itemCount: viewContent.rankingItems.length,
-                padding: EdgeInsets.zero,
-                itemBuilder: (context, index) {
-                  final item = viewContent.rankingItems[index];
-                  return Container(
-                    color: item.backgroundColor,
-                    height: 60,
-                    padding: EdgeInsets.symmetric(horizontal: viewContent.padding),
-                    child: Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.rotationX(item.rotationAngle),
-                      child: GestureDetector(
-                        onDoubleTap: () {
-                          viewController.onRankingItemTap(item.position);
-                        },
-                        onTap: () {
-                          viewController.onUserTap(item.userId, item.name);
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            // Position
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                item.position,
-                                style: GoogleFonts.poppins(
-                                  color: BolixoColors.textPrimary,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                ),
+          ),
+          const SizedBox(height: 8),
+          // Ranking list
+          Expanded(
+            child: ListView.builder(
+              itemCount: viewContent.rankingItems.length,
+              padding: EdgeInsets.zero,
+              itemBuilder: (context, index) {
+                final item = viewContent.rankingItems[index];
+                return Container(
+                  color: item.backgroundColor,
+                  height: 60,
+                  padding: EdgeInsets.symmetric(horizontal: viewContent.padding),
+                  child: Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.rotationX(item.rotationAngle),
+                    child: GestureDetector(
+                      onDoubleTap: () {
+                        viewController.onRankingItemTap(item.position);
+                      },
+                      onTap: () {
+                        viewController.onUserTap(item.userId, item.name);
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          // Position
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              item.position,
+                              style: GoogleFonts.poppins(
+                                color: BolixoColors.textPrimary,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                            // Avatar
-                            imageCell(2, item.avatarUrl, item.borderColor),
-                            // Name
-                            textCell(6, item.name),
-                            // Flies
-                            textCell(3, item.flies),
-                            // Points
-                            textCell(3, item.points),
-                          ],
-                        ),
+                          ),
+                          // Avatar
+                          imageCell(2, item.avatarUrl, item.borderColor),
+                          // Name
+                          textCell(6, item.name),
+                          // Flies
+                          textCell(3, item.flies),
+                          // Points
+                          textCell(3, item.points),
+                        ],
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       );
     }
   }

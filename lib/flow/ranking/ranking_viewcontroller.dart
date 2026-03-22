@@ -1,7 +1,8 @@
 import 'package:bolixo/api/easteregg/easteregg_api_interface.dart';
 import 'package:bolixo/api/ranking/ranking_api_interface.dart';
+import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:bolixo/flow/bets/user_bets_view.dart';
-import 'package:bolixo/flow/ranking/ranking_view.dart';
+import 'package:bolixo/flow/ranking/ranking_view_interface.dart';
 import 'package:bolixo/flow/ranking/ranking_view_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,17 +11,26 @@ class RankingViewController {
 
   RankingApi api = RankingApi.getInstance();
   EasterEggApi easterEggApi = EasterEggApi.getInstance();
-  late RankingWidgetState? view;
+  late RankingViewContract? view;
   RankingViewContent viewContent = RankingViewContent();
 
-  void onInit(viewInstance) async {
+  void onInit(viewInstance, {int? bolaoId, String? bolaoName}) async {
     view = viewInstance;
+
+    // Se um bolão específico foi passado, atualizamos o cache temporariamente
+    // para que a API use o ID correto.
+    if (bolaoId != null && bolaoName != null) {
+      BolaoCache().updateBolao(bolaoId, bolaoName);
+    }
+
     await _prepareApi();
     _fillRanking();
   }
 
   void onShake() {
-    print('shaking');
+    if (kDebugMode) {
+      print('shaking');
+    }
     view!.makeShit();
     easterEggApi.postEasterEgg(EasterEggApi.shakeKey);
   }
