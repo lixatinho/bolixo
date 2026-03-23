@@ -35,7 +35,8 @@ class _EditMatchesViewState extends State<EditMatchesView> {
     await _api.initialize();
     _api.getMatchesByCompetition(widget.competition.id!).then((matches) {
       setState(() {
-        _competitionTeams = widget.competition.teams ?? [];
+        _competitionTeams = List<TeamModel>.from(widget.competition.teams ?? []);
+        _competitionTeams.sort((a, b) => (a.name ?? "").compareTo(b.name ?? ""));
         _matches = matches;
         _isLoading = false;
       });
@@ -51,7 +52,6 @@ class _EditMatchesViewState extends State<EditMatchesView> {
         matchDate: DateTime.now(),
         type: 1,
       ));
-      // Se houver algum placar sendo editado, resetamos o índice para evitar confusão no deslocamento da lista
       _matchIndexToResult = null;
     });
   }
@@ -185,7 +185,6 @@ class _EditMatchesViewState extends State<EditMatchesView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Home Team
                 Expanded(
                   child: Column(
                     children: [
@@ -203,7 +202,6 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                     ],
                   ),
                 ),
-                // VS
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Column(
@@ -213,7 +211,6 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                     ],
                   ),
                 ),
-                // Away Team
                 Expanded(
                   child: Column(
                     children: [
@@ -340,6 +337,22 @@ class _EditMatchesViewState extends State<EditMatchesView> {
     }
   }
 
+  void _showTeamSearch(MatchModel match, bool isHome) async {
+    final TeamModel? selected = await showSearch<TeamModel?>(
+      context: context,
+      delegate: TeamSearchDelegate(_competitionTeams),
+    );
+    if (selected != null) {
+      setState(() {
+        if (isHome) {
+          match.home = selected;
+        } else {
+          match.away = selected;
+        }
+      });
+    }
+  }
+
   Widget _buildTeamDropZone(MatchModel match, bool isHome) {
     final selectedTeam = isHome ? match.home : match.away;
     return DragTarget<TeamModel>(
@@ -354,28 +367,34 @@ class _EditMatchesViewState extends State<EditMatchesView> {
         });
       },
       builder: (context, candidateData, rejectedData) {
-        return Container(
-          height: 80,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: candidateData.isNotEmpty ? BolixoColors.accentGreen.withOpacity(0.2) : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: candidateData.isNotEmpty ? BolixoColors.accentGreen : Colors.white12),
+        return InkWell(
+          onTap: () => _showTeamSearch(match, isHome),
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            height: 80,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: candidateData.isNotEmpty ? BolixoColors.accentGreen.withOpacity(0.2) : Colors.transparent,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: candidateData.isNotEmpty ? BolixoColors.accentGreen : Colors.white12),
+            ),
+            child: selectedTeam == null
+                ? const Icon(Icons.add_circle_outline, color: Colors.white24)
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildTeamAvatar(selectedTeam),
+                      const SizedBox(height: 4),
+                      Text(
+                        selectedTeam.name ?? "",
+                        style: BolixoTypography.bodySmall.copyWith(fontWeight: FontWeight.bold, fontSize: 11),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
           ),
-          child: selectedTeam == null
-              ? const Icon(Icons.add_circle_outline, color: Colors.white24)
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildTeamAvatar(selectedTeam),
-                    const SizedBox(height: 4),
-                    Text(
-                      selectedTeam.name ?? "",
-                      style: BolixoTypography.bodySmall.copyWith(fontWeight: FontWeight.bold, fontSize: 11),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
         );
       },
     );
@@ -396,6 +415,71 @@ class _EditMatchesViewState extends State<EditMatchesView> {
           backgroundImage: team.abbreviation != null ? AssetImage("assets/images/teams/${team.abbreviation}.png") : null,
           child: team.abbreviation == null ? const Icon(Icons.sports_soccer, color: Colors.white24) : null,
         ),
+      ),
+    );
+  }
+}
+
+class TeamSearchDelegate extends SearchDelegate<TeamModel?> {
+  final List<TeamModel> teams;
+  TeamSearchDelegate(this.teams);
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return Theme.of(context).copyWith(
+      appBarTheme: const AppBarTheme(backgroundColor: BolixoColors.deepPlum),
+      inputDecorationTheme: const InputDecorationTheme(
+        hintStyle: TextStyle(color: Colors.white54),
+        border: InputBorder.none,
+      ),
+      textTheme: const TextTheme(titleLarge: TextStyle(color: Colors.white)),
+    );
+  }
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(icon: const Icon(Icons.clear), onPressed: () => query = ''),
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () => close(context, null),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) => _buildList();
+
+  @override
+  Widget buildSuggestions(BuildContext context) => _buildList();
+
+  Widget _buildList() {
+    final filtered = teams.where((t) =>
+      (t.name?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+      (t.abbreviation?.toLowerCase().contains(query.toLowerCase()) ?? false)
+    ).toList();
+
+    return Container(
+      color: BolixoColors.backgroundPrimary,
+      child: ListView.builder(
+        itemCount: filtered.length,
+        itemBuilder: (context, index) {
+          final team = filtered[index];
+          return ListTile(
+            leading: CircleAvatar(
+              radius: 15,
+              backgroundImage: team.abbreviation != null ? AssetImage("assets/images/teams/${team.abbreviation}.png") : null,
+              backgroundColor: BolixoColors.backgroundSecondary,
+            ),
+            title: Text(team.name ?? "", style: const TextStyle(color: Colors.white)),
+            subtitle: Text(team.abbreviation ?? "", style: const TextStyle(color: Colors.grey)),
+            onTap: () => close(context, team),
+          );
+        },
       ),
     );
   }

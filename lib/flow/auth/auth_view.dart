@@ -191,15 +191,17 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
     return BolixoDecorations.inputDecoration(hint: hint, prefixIcon: icon);
   }
 
+  void _submit() {
+    authViewController.onSubmitClicked(
+        _nameController.text, _emailController.text, _passwordController.text);
+  }
+
   List<Widget> buildButtons() {
     List<Widget> buttons = [
       SizedBox(
         width: double.infinity,
         child: AppElevatedButton(
-          onPressedCallback: () {
-            authViewController.onSubmitClicked(
-                _nameController.text, _emailController.text, _passwordController.text);
-          },
+          onPressedCallback: _submit,
           text: viewContent.buttonText,
         ),
       ),
@@ -237,6 +239,7 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
       textFields.add(TextFormField(
         controller: _nameController,
         keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.next,
         style: BolixoTypography.bodyLarge,
         decoration: buildSignUpDecoration("Username", icon: Icons.person_outline),
       ));
@@ -247,6 +250,10 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
       textFields.add(TextFormField(
         controller: _emailController,
         keyboardType: TextInputType.emailAddress,
+        textInputAction: viewContent.isPasswordVisible ? TextInputAction.next : TextInputAction.done,
+        onFieldSubmitted: (_) {
+          if (!viewContent.isPasswordVisible) _submit();
+        },
         style: BolixoTypography.bodyLarge,
         decoration: buildSignUpDecoration("Email", icon: Icons.email_outlined),
       ));
@@ -258,6 +265,8 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
       textFields.add(TextFormField(
         controller: _passwordController,
         keyboardType: TextInputType.visiblePassword,
+        textInputAction: TextInputAction.done,
+        onFieldSubmitted: (_) => _submit(),
         style: BolixoTypography.bodyLarge,
         decoration: buildSignUpDecoration("Senha", icon: Icons.lock_outline),
         obscureText: true,
