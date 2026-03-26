@@ -110,31 +110,35 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                     itemBuilder: (context, index) => _buildMatchItem(index),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          onPressed: _addMatch,
-                          icon: const Icon(Icons.add, color: BolixoColors.accentGreen),
-                          label: const Text("Nova Partida", style: TextStyle(color: BolixoColors.accentGreen)),
-                          style: OutlinedButton.styleFrom(side: const BorderSide(color: BolixoColors.accentGreen)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      _isSaving
-                        ? const CircularProgressIndicator(color: BolixoColors.accentGreen)
-                        : SizedBox(
-                            width: double.infinity,
-                            child: AppElevatedButton(onPressedCallback: _saveAllMatches, text: "Salvar Estrutura de Partidas"),
-                          ),
-                    ],
-                  ),
-                )
               ],
             ),
+      bottomNavigationBar: _isLoading ? null : Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        color: BolixoColors.backgroundPrimary,
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: _addMatch,
+                  icon: const Icon(Icons.add, color: BolixoColors.accentGreen),
+                  label: const Text("Nova Partida", style: TextStyle(color: BolixoColors.accentGreen)),
+                  style: OutlinedButton.styleFrom(side: const BorderSide(color: BolixoColors.accentGreen)),
+                ),
+              ),
+              const SizedBox(height: 12),
+              _isSaving
+                ? const CircularProgressIndicator(color: BolixoColors.accentGreen)
+                : SizedBox(
+                    width: double.infinity,
+                    child: AppElevatedButton(onPressedCallback: _saveAllMatches, text: "Salvar Estrutura de Partidas"),
+                  ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

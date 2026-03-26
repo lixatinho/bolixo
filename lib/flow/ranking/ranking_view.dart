@@ -50,11 +50,11 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
           backgroundColor: BolixoColors.deepPlum,
           iconTheme: const IconThemeData(color: Colors.white),
         ),
-        body: content,
+        body: SafeArea(child: content),
       );
     }
 
-    return content;
+    return SafeArea(child: content);
   }
 
   Widget _buildRankingContent() {
@@ -86,7 +86,7 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
             Expanded(
               child: ListView.builder(
                 itemCount: viewContent.rankingItems.length,
-                padding: EdgeInsets.zero,
+                padding: const EdgeInsets.only(bottom: 24),
                 itemBuilder: (context, index) {
                   final item = viewContent.rankingItems[index];
                   return Container(

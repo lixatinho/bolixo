@@ -51,7 +51,7 @@ class UserBetsWidgetState extends State<UserBetsWidget> {
         ),
       ),
       backgroundColor: BolixoColors.backgroundPrimary,
-      body: _buildBody(),
+      body: SafeArea(child: _buildBody()),
     );
   }
 
@@ -89,7 +89,7 @@ class UserBetsWidgetState extends State<UserBetsWidget> {
       // Bet cards list
       Expanded(
         child: ListView.separated(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 40),
           itemCount: betsByDay[dateIndex].betList.length,
           itemBuilder: (context, index) {
             final bet = betsByDay[dateIndex].betList[index];

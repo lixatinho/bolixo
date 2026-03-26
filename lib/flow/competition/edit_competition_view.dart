@@ -175,48 +175,50 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
       ),
       body: _isFetchingTeams
           ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Nome da Competição", style: BolixoTypography.bodyLarge),
-                        const SizedBox(height: 8),
-                        TextFormField(
-                          controller: _nameController,
-                          style: BolixoTypography.bodyLarge,
-                          decoration: BolixoDecorations.inputDecoration(
-                              hint: "Ex: Copa 2026", prefixIcon: Icons.emoji_events),
-                          validator: (v) => v!.isEmpty ? "Campo obrigatório" : null,
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Expanded(child: _buildDatePickerField("Data Início", _startDateController, true)),
-                            const SizedBox(width: 16),
-                            Expanded(child: _buildDatePickerField("Data Fim", _endDateController, false)),
-                          ],
-                        ),
-                      ],
+          : SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Nome da Competição", style: BolixoTypography.bodyLarge),
+                          const SizedBox(height: 8),
+                          TextFormField(
+                            controller: _nameController,
+                            style: BolixoTypography.bodyLarge,
+                            decoration: BolixoDecorations.inputDecoration(
+                                hint: "Ex: Copa 2026", prefixIcon: Icons.emoji_events),
+                            validator: (v) => v!.isEmpty ? "Campo obrigatório" : null,
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(child: _buildDatePickerField("Data Início", _startDateController, true)),
+                              const SizedBox(width: 16),
+                              Expanded(child: _buildDatePickerField("Data Fim", _endDateController, false)),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  _buildDualTeamLists(),
-                  const SizedBox(height: 32),
-                  _buildQuickCreateTeam(),
-                  const SizedBox(height: 48),
-                  _isLoading
-                      ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
-                      : SizedBox(
-                          width: double.infinity,
-                          child: AppElevatedButton(onPressedCallback: _save, text: "Salvar Competição"),
-                        ),
-                ],
+                    const SizedBox(height: 32),
+                    _buildDualTeamLists(),
+                    const SizedBox(height: 32),
+                    _buildQuickCreateTeam(),
+                    const SizedBox(height: 48),
+                    _isLoading
+                        ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
+                        : SizedBox(
+                            width: double.infinity,
+                            child: AppElevatedButton(onPressedCallback: _save, text: "Salvar Competição"),
+                          ),
+                  ],
+                ),
               ),
             ),
     );
