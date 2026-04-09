@@ -1,3 +1,6 @@
+import 'package:bolixo/api/model/user_model.dart';
+import 'package:bolixo/flow/auth/auth_service.dart';
+import 'package:bolixo/flow/competition/match_result_dialog.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_decorations.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -8,25 +11,28 @@ import 'package:google_fonts/google_fonts.dart';
 import 'bet_view_content.dart';
 
 class BetItemView extends StatelessWidget {
-  BetViewContent bet;
-  Function homeGoalsChanged;
-  Function awayGoalsChanged;
+  final BetViewContent bet;
+  final Function homeGoalsChanged;
+  final Function awayGoalsChanged;
+  final VoidCallback? onResultSaved;
 
-  TextEditingController homeScoreTextFieldController = TextEditingController();
-  TextEditingController awayScoreTextFieldController = TextEditingController();
+  final TextEditingController homeScoreTextFieldController;
+  final TextEditingController awayScoreTextFieldController;
 
   BetItemView({
     Key? key,
     required this.bet,
     required this.homeGoalsChanged,
     required this.awayGoalsChanged,
-  }) : super(key: key) {
-    homeScoreTextFieldController = TextEditingController(text: bet.homeTeam.score());
-    awayScoreTextFieldController = TextEditingController(text: bet.awayTeam.score());
-  }
+    this.onResultSaved,
+  })  : homeScoreTextFieldController = TextEditingController(text: bet.homeTeam.scoreBet),
+        awayScoreTextFieldController = TextEditingController(text: bet.awayTeam.scoreBet),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isAdmin = AuthService().repository.getRole() == UserRole.ADMIN;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -34,40 +40,60 @@ class BetItemView extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: BolixoColors.white6, width: 1),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
+      child: Column(
         children: [
-          // Home team
-          Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              teamFlag(bet.homeTeam.flagUrl),
-              teamName(bet.homeTeam.name, bet.homeTeam.tooltip),
+              // Home team
+              Column(
+                children: [
+                  teamFlag(bet.homeTeam.flagUrl),
+                  teamName(bet.homeTeam.name, bet.homeTeam.tooltip),
+                ],
+              ),
+
+              betField(homeScoreTextFieldController, homeGoalsChanged, true),
+              matchScoreAndBet(bet.homeTeam),
+
+              // Middle
+              Column(
+                children: [
+                  betScoredPoints(),
+                  versusText(),
+                  dateText(bet.date),
+                ],
+              ),
+
+              betField(awayScoreTextFieldController, awayGoalsChanged, false),
+              matchScoreAndBet(bet.awayTeam),
+
+              // Away team
+              Column(
+                children: [
+                  teamFlag(bet.awayTeam.flagUrl),
+                  teamName(bet.awayTeam.name, bet.awayTeam.tooltip),
+                ],
+              ),
             ],
           ),
-
-          betField(homeScoreTextFieldController, homeGoalsChanged, true),
-          matchScoreAndBet(bet.homeTeam),
-
-          // Middle
-          Column(
-            children: [
-              betScoredPoints(),
-              versusText(),
-              dateText(bet.date),
-            ],
-          ),
-
-          betField(awayScoreTextFieldController, awayGoalsChanged, false),
-          matchScoreAndBet(bet.awayTeam),
-
-          // Away team
-          Column(
-            children: [
-              teamFlag(bet.awayTeam.flagUrl),
-              teamName(bet.awayTeam.name, bet.awayTeam.tooltip),
-            ],
-          ),
+          if (isAdmin && bet.model.match != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: TextButton.icon(
+                onPressed: () {
+                  if (onResultSaved != null) {
+                    showMatchResultDialog(context, bet.model.match!, onResultSaved!);
+                  }
+                },
+                icon: const Icon(Icons.analytics_outlined, color: BolixoColors.accentGreen, size: 16),
+                label: const Text(
+                  "Inserir Resultado (Admin)",
+                  style: TextStyle(color: BolixoColors.accentGreen, fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -177,8 +203,9 @@ class BetItemView extends StatelessWidget {
           border: Border.all(color: BolixoColors.white10, width: 1.5),
         ),
         child: CircleAvatar(
-          backgroundImage: AssetImage(flagUrl),
+          backgroundImage: flagUrl.isNotEmpty ? AssetImage(flagUrl) : null,
           backgroundColor: BolixoColors.surfaceCard,
+          child: flagUrl.isEmpty ? const Icon(Icons.sports_soccer, color: Colors.white24) : null,
         ),
       ),
     );

@@ -102,6 +102,7 @@ class BetsWidgetState extends State<BetsWidget> {
                           viewController.onGoalsTeam1Changed(index, goals),
                       awayGoalsChanged: (goals) =>
                           viewController.onGoalsTeam2Changed(index, goals),
+                      onResultSaved: () => viewController.onInit(this, competitionId: widget.competitionId),
                     ),
                   );
                 },

@@ -3,6 +3,7 @@ import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:bolixo/ui/shared/app_bottom_nav.dart';
 import 'package:bolixo/ui/shared/app_drawer.dart';
+import 'package:bolixo/ui/shared/rules_dialog.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +88,12 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
           icon: const Icon(Icons.menu, color: Colors.white),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => showRulesDialog(context),
+            icon: const Icon(Icons.rule_outlined, color: Colors.white),
+          ),
+        ],
       ),
       drawer: const AppDrawer(),
       body: _isLoading
@@ -198,6 +205,12 @@ class CompetitionBetsDetailView extends StatelessWidget {
               onPressed: () => scaffoldKey.currentState?.openDrawer(),
             )
           : null,
+        actions: [
+          IconButton(
+            onPressed: () => showRulesDialog(context),
+            icon: const Icon(Icons.rule_outlined, color: Colors.white),
+          ),
+        ],
       ),
       drawer: showDrawer ? const AppDrawer() : null,
       body: BetsWidget(competitionId: competitionId),
