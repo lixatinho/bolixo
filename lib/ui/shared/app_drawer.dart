@@ -43,14 +43,16 @@ class AppDrawer extends StatelessWidget {
                       AuthService().repository.getUsername(),
                       style: BolixoTypography.titleLarge,
                     ),
+                    Text(
+                      role.toString().split('.').last,
+                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentGreenLight),
+                    ),
                   ],
                 ),
               ),
             ),
-            // _buildDrawerItem(context, Icons.edit, 'Palpites', 0),
-            // _buildDrawerItem(context, Icons.leaderboard, 'Ranking', 1),
 
-            _buildDrawerAction(context, Icons.sports_soccer, 'Palpites (Comp)', () {
+            _buildDrawerAction(context, Icons.sports_soccer, 'Palpites', () {
               Navigator.pop(context);
               if (ModalRoute.of(context)?.settings.name != '/competitions_bets') {
                 Navigator.pushReplacement(
@@ -82,6 +84,12 @@ class AppDrawer extends StatelessWidget {
               }),
 
             const Divider(color: BolixoColors.white6),
+
+//             _buildDrawerItem(context, Icons.edit, 'Palpites por Bolão (old)', 0),
+//             _buildDrawerItem(context, Icons.leaderboard, 'Ranking (old)', 1),
+
+            const Divider(color: BolixoColors.white6),
+
             _buildDrawerAction(context, Icons.vpn_key, 'Trocar Senha', () {
               Navigator.pop(context);
               Navigator.push(
@@ -97,14 +105,17 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _buildDrawerItem(BuildContext context, IconData icon, String label, int index) {
+    bool isSelected = selectedIndex == index;
     return ListTile(
-      leading: Icon(icon, color: BolixoColors.textPrimary),
-      title: Text(label, style: BolixoTypography.bodyLarge),
+      leading: Icon(icon, color: isSelected ? BolixoColors.accentGreen : BolixoColors.textPrimary),
+      title: Text(label, style: BolixoTypography.bodyLarge.copyWith(color: isSelected ? BolixoColors.accentGreen : null)),
       onTap: () {
         Navigator.pop(context);
         if (onItemSelected != null) {
           onItemSelected!(index);
         } else {
+          // No caso de estar em outra tela e clicar em um item da Home
+          // Poderia redirecionar para a Home primeiro se necessário
           Navigator.of(context).popUntil((route) => route.isFirst);
         }
       },

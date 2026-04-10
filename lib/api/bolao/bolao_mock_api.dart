@@ -38,4 +38,9 @@ class BolaoMockApi extends BolaoApi {
   Future createBolao(String name, int competitionId, bool isGlobal) {
     return Future.value();
   }
+
+  @override
+  Future deleteBolao(int bolaoId) {
+    return Future.value();
+  }
 }

@@ -49,7 +49,7 @@ class BetItemView extends StatelessWidget {
               // Home team
               Column(
                 children: [
-                  teamFlag(bet.homeTeam.flagUrl),
+                  teamFlag(bet.homeTeam.flagUrl, bet.homeTeam.tooltip),
                   teamName(bet.homeTeam.name, bet.homeTeam.tooltip),
                 ],
               ),
@@ -72,7 +72,7 @@ class BetItemView extends StatelessWidget {
               // Away team
               Column(
                 children: [
-                  teamFlag(bet.awayTeam.flagUrl),
+                  teamFlag(bet.awayTeam.flagUrl, bet.awayTeam.tooltip),
                   teamName(bet.awayTeam.name, bet.awayTeam.tooltip),
                 ],
               ),
@@ -89,7 +89,7 @@ class BetItemView extends StatelessWidget {
                 },
                 icon: const Icon(Icons.analytics_outlined, color: BolixoColors.accentGreen, size: 16),
                 label: const Text(
-                  "Inserir Resultado (Admin)",
+                  "Inserir Resultado",
                   style: TextStyle(color: BolixoColors.accentGreen, fontSize: 12, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -192,20 +192,23 @@ class BetItemView extends StatelessWidget {
     );
   }
 
-  Widget teamFlag(String flagUrl) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: BolixoColors.white10, width: 1.5),
-        ),
-        child: CircleAvatar(
-          backgroundImage: flagUrl.isNotEmpty ? AssetImage(flagUrl) : null,
-          backgroundColor: BolixoColors.surfaceCard,
-          child: flagUrl.isEmpty ? const Icon(Icons.sports_soccer, color: Colors.white24) : null,
+  Widget teamFlag(String flagUrl, String tooltip) {
+    return Tooltip(
+      message: tooltip,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: BolixoColors.white10, width: 1.5),
+          ),
+          child: CircleAvatar(
+            backgroundImage: flagUrl.isNotEmpty ? AssetImage(flagUrl) : null,
+            backgroundColor: BolixoColors.surfaceCard,
+            child: flagUrl.isEmpty ? const Icon(Icons.sports_soccer, color: Colors.white24) : null,
+          ),
         ),
       ),
     );

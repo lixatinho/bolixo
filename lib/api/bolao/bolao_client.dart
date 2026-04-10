@@ -86,4 +86,18 @@ class BolaoClient implements BolaoApi {
       return Future.error(e);
     }
   }
+
+  @override
+  Future deleteBolao(int bolaoId) async {
+    try {
+      var response = await dio.delete("$baseUrl/$createBolaoPath/$bolaoId");
+      if (response.statusCode == 200) {
+        return Future.value();
+      } else {
+        return Future.error(response.statusCode ?? 500);
+      }
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
 }

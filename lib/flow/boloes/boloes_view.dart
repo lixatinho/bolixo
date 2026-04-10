@@ -88,6 +88,46 @@ class _BoloesViewState extends State<BoloesView> {
     );
   }
 
+  void _confirmDeleteBolao(BolaoModel bolao) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: BolixoColors.surfaceElevated,
+        title: const Text("Excluir Bolão", style: TextStyle(color: Colors.white)),
+        content: Text("Tem certeza que deseja excluir o bolão '${bolao.name}'? Esta ação não pode ser desfeita.",
+            style: const TextStyle(color: Colors.white70)),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancelar")),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              if (bolao.bolaoId != null) {
+                _deleteBolao(bolao.bolaoId!);
+              }
+            },
+            child: const Text("Excluir", style: TextStyle(color: Colors.redAccent))
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _deleteBolao(int id) async {
+    setState(() => _isLoading = true);
+    try {
+      await _api.deleteBolao(id);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Bolão excluído com sucesso")),
+      );
+      _fetchData();
+    } catch (e) {
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Erro ao excluir bolão")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -225,7 +265,17 @@ class _BoloesViewState extends State<BoloesView> {
               )
           ],
         ),
-        trailing: const Icon(Icons.chevron_right, color: Colors.white24),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isCreator)
+              IconButton(
+                icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                onPressed: () => _confirmDeleteBolao(bolao),
+              ),
+            const Icon(Icons.chevron_right, color: Colors.white24),
+          ],
+        ),
         onTap: () {
           if (bolao.bolaoId != null) {
             Navigator.push(
