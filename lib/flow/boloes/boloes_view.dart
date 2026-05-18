@@ -38,14 +38,33 @@ class _BoloesViewState extends State<BoloesView> {
 
   Future<void> _fetchData() async {
     setState(() => _isLoading = true);
+    await _auth.initialize();
     await _api.initialize();
     try {
-      final all = await _api.getBoloes();
-      setState(() {
-        _myBoloes = all;
-        if (_userRole != UserRole.USER) {
-          _createdBoloes = all.where((b) => b.bolaoId != null && b.bolaoId! % 2 == 0).toList();
+      final currentUserId = _auth.getUserId();
+
+      // Busca bolões que o usuário participa (via ranking)
+      final List<BolaoModel> participatingRaw = await _api.getBoloes();
+
+      // Busca todos os bolões do sistema para filtrar os criados
+      List<BolaoModel> createdFiltered = [];
+      if (_userRole != UserRole.USER) {
+        final List<BolaoModel> allBoloes = await _api.getAllBoloes();
+        createdFiltered = allBoloes.where((b) => b.idUser != null && b.idUser == currentUserId).toList();
+      }
+
+      // Remove duplicatas da lista de participação (caso o ranking traga o mesmo bolão várias vezes)
+      final participatingUnique = participatingRaw.fold<List<BolaoModel>>([], (list, element) {
+        if (!list.any((b) => b.bolaoId == element.bolaoId)) {
+          list.add(element);
         }
+        return list;
+      });
+
+      setState(() {
+        _myBoloes = participatingUnique;
+        _createdBoloes = createdFiltered;
+        _userRole = _auth.getRole();
         _isLoading = false;
       });
     } catch (e) {
@@ -76,16 +95,33 @@ class _BoloesViewState extends State<BoloesView> {
           TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancelar")),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Tentando entrar no bolão ${controller.text}...")),
-              );
+              final code = controller.text.trim();
+              if (code.isNotEmpty) {
+                Navigator.pop(context);
+                _joinBolao(code);
+              }
             },
             child: const Text("Entrar", style: TextStyle(color: BolixoColors.accentGreen))
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _joinBolao(String code) async {
+    setState(() => _isLoading = true);
+    try {
+      await _api.joinBolao(code);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Você entrou no bolão com sucesso!")),
+      );
+      _fetchData();
+    } catch (e) {
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Erro ao entrar no bolão. Verifique o código.")),
+      );
+    }
   }
 
   void _confirmDeleteBolao(BolaoModel bolao) {
@@ -291,5 +327,10 @@ class _BoloesViewState extends State<BoloesView> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

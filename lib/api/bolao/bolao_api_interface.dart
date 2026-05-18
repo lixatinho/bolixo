@@ -10,8 +10,10 @@ abstract class BolaoApi {
   /// Exposed methods
   Future initialize();
   Future<List<BolaoModel>> getBoloes();
+  Future<List<BolaoModel>> getAllBoloes();
   Future<List<CompetitionModel>> getActiveCompetitions();
   Future createBolao(String name, int competitionId, bool isGlobal);
+  Future joinBolao(String inviteCode);
   Future deleteBolao(int bolaoId);
 
   /// Injection turnaround

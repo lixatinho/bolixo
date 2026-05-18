@@ -49,6 +49,23 @@ class BolaoClient implements BolaoApi {
   }
 
   @override
+  Future<List<BolaoModel>> getAllBoloes() async {
+    try {
+      var response = await dio.get("$baseUrl/$createBolaoPath");
+
+      if (response.statusCode == 200) {
+        return List<BolaoModel>.from(
+            response.data.map((model) => BolaoModel.fromJson(model))
+        );
+      } else {
+        return Future.error(response.statusCode ?? 500);
+      }
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  @override
   Future<List<CompetitionModel>> getActiveCompetitions() async {
     try {
       var response = await dio.get("$baseUrl/$getCompetitionsPath");
@@ -77,6 +94,20 @@ class BolaoClient implements BolaoApi {
             }
           })
       );
+      if (response.statusCode == 200) {
+        return Future.value();
+      } else {
+        return Future.error(response.statusCode ?? 500);
+      }
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
+
+  @override
+  Future joinBolao(String inviteCode) async {
+    try {
+      var response = await dio.post("$baseUrl/$createBolaoPath/join/$inviteCode");
       if (response.statusCode == 200) {
         return Future.value();
       } else {

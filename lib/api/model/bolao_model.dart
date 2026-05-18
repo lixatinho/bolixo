@@ -5,7 +5,7 @@ class BolaoModel {
   int? bolaoId;
   bool isGlobal;
   String? inviteCode;
-  String? creatorUsername;
+  int? idUser;
   CompetitionModel? competition;
 
   BolaoModel({
@@ -13,7 +13,7 @@ class BolaoModel {
     this.bolaoId,
     this.isGlobal = false,
     this.inviteCode,
-    this.creatorUsername,
+    this.idUser,
     this.competition,
   });
 
@@ -21,7 +21,7 @@ class BolaoModel {
     name = json['name'];
     bolaoId = json['idBolao'];
     inviteCode = json['inviteCode'];
-    creatorUsername = json['creatorUsername'];
+    idUser = json['idUser'];
     competition = json['competition'] != null ? CompetitionModel.fromJson(json['competition']) : null;
   }
 
@@ -31,7 +31,7 @@ class BolaoModel {
     data['name'] = name;
     data['isGlobal'] = isGlobal;
     data['inviteCode'] = inviteCode;
-    data['creatorUsername'] = creatorUsername;
+    data['idUser'] = idUser;
     if (competition != null) {
       data['competition'] = competition!.toJson();
     }

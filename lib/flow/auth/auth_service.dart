@@ -31,6 +31,7 @@ class AuthService {
     repository.removeToken();
     repository.removeAvatarUrl();
     repository.removeUsername();
+    repository.removeUserId();
     repository.removeRole();
     repository.removeEasterEggCompleted();
   }
@@ -44,6 +45,9 @@ class AuthService {
       }
       if (response.username != null) {
         await repository.saveUsername(response.username!);
+      }
+      if (response.idUser != null) {
+        await repository.saveUserId(response.idUser!);
       }
       if (response.role != null) {
         await repository.saveRole(response.role!);

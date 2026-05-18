@@ -20,10 +20,16 @@ class BolaoMockApi extends BolaoApi {
       return BolaoModel(
           bolaoId: index,
           name: "Bolao $index",
-          isGlobal: index % 3 == 0
+          isGlobal: index % 3 == 0,
+          idUser: index % 2 == 0 ? 3 : 1
       );
     });
     return Future.value(ranking);
+  }
+
+  @override
+  Future<List<BolaoModel>> getAllBoloes() {
+    return getBoloes();
   }
 
   @override
@@ -36,6 +42,11 @@ class BolaoMockApi extends BolaoApi {
 
   @override
   Future createBolao(String name, int competitionId, bool isGlobal) {
+    return Future.value();
+  }
+
+  @override
+  Future joinBolao(String inviteCode) {
     return Future.value();
   }
 

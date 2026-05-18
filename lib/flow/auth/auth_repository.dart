@@ -8,6 +8,7 @@ class AuthRepository {
   final String avatarUrlKey = "avatarUrl";
   final String easterEggCompletedKey = "easterEggCompleted";
   final String usernameKey = "username";
+  final String userIdKey = "userId";
   final String roleKey = "userRole";
 
   _AuthInitStatus _initStatus = _AuthInitStatus.notStarted;
@@ -46,6 +47,8 @@ class AuthRepository {
 
   String getUsername() => prefs.getString(usernameKey) ?? "";
 
+  int getUserId() => prefs.getInt(userIdKey) ?? -1;
+
   UserRole getRole() {
     String? roleStr = prefs.getString(roleKey);
     if (roleStr != null) {
@@ -59,12 +62,14 @@ class AuthRepository {
   void removeToken() => prefs.remove(tokenKey);
   void removeAvatarUrl() => prefs.remove(avatarUrlKey);
   void removeUsername() => prefs.remove(usernameKey);
+  void removeUserId() => prefs.remove(userIdKey);
   void removeRole() => prefs.remove(roleKey);
   void removeEasterEggCompleted() => prefs.remove(easterEggCompletedKey);
 
   Future saveToken(String token) => prefs.setString(tokenKey, token);
   Future saveAvatarUrl(String url) => prefs.setString(avatarUrlKey, url);
   Future saveUsername(String name) => prefs.setString(usernameKey, name);
+  Future saveUserId(int id) => prefs.setInt(userIdKey, id);
   Future saveRole(UserRole role) => prefs.setString(roleKey, role.toString().split('.').last);
   Future saveEasterEggCompleted(bool completed) => prefs.setBool(easterEggCompletedKey, completed);
 }

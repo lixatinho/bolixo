@@ -104,7 +104,7 @@ class _AdminBoloesViewState extends State<AdminBoloesView> {
                               ],
                             ),
                             const SizedBox(height: 8),
-                            Text("Criador: ${bolao.creatorUsername ?? 'Desconhecido'}", style: BolixoTypography.bodySmall),
+                            Text("Criador (ID): ${bolao.idUser ?? 'Desconhecido'}", style: BolixoTypography.bodySmall),
                             Text("Código: ${bolao.inviteCode ?? 'N/A'}", style: BolixoTypography.bodySmall),
                             const Divider(color: Colors.white12),
                             Row(

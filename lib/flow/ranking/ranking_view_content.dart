@@ -102,7 +102,7 @@ class RankingItemViewContent {
     if (rankingItem.avatarUrl != null && rankingItem.avatarUrl!.isNotEmpty) {
       avatar = "assets/images/avatars/${rankingItem.avatarUrl}.png";
     } else {
-      avatar = "assets/images/spiderman.gif"; // Placeholder
+      avatar = "assets/images/avatars/BRA.png"; // Placeholder
     }
 
     return RankingItemViewContent(
