@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/api/model/bolao_model.dart';
 import 'package:bolixo/api/model/user_model.dart';
@@ -25,6 +26,7 @@ class _BoloesViewState extends State<BoloesView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<BolaoModel> _myBoloes = [];
+  List<BolaoModel> _finishedBoloes = [];
   List<BolaoModel> _createdBoloes = [];
   bool _isLoading = true;
   late UserRole _userRole;
@@ -53,7 +55,7 @@ class _BoloesViewState extends State<BoloesView> {
         createdFiltered = allBoloes.where((b) => b.idUser != null && b.idUser == currentUserId).toList();
       }
 
-      // Remove duplicatas da lista de participação (caso o ranking traga o mesmo bolão várias vezes)
+      // Remove duplicatas da lista de participação
       final participatingUnique = participatingRaw.fold<List<BolaoModel>>([], (list, element) {
         if (!list.any((b) => b.bolaoId == element.bolaoId)) {
           list.add(element);
@@ -61,8 +63,26 @@ class _BoloesViewState extends State<BoloesView> {
         return list;
       });
 
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+
+      final activeBoloes = participatingUnique.where((b) {
+        final endDate = b.competition?.endDate;
+        if (endDate == null) return true;
+        final compEndDate = DateTime(endDate.year, endDate.month, endDate.day);
+        return !compEndDate.isBefore(today);
+      }).toList();
+
+      final finishedBoloes = participatingUnique.where((b) {
+        final endDate = b.competition?.endDate;
+        if (endDate == null) return false;
+        final compEndDate = DateTime(endDate.year, endDate.month, endDate.day);
+        return compEndDate.isBefore(today);
+      }).toList();
+
       setState(() {
-        _myBoloes = participatingUnique;
+        _myBoloes = activeBoloes;
+        _finishedBoloes = finishedBoloes;
         _createdBoloes = createdFiltered;
         _userRole = _auth.getRole();
         _isLoading = false;
@@ -197,19 +217,30 @@ class _BoloesViewState extends State<BoloesView> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                _buildSectionTitle("Participando"),
-                if (_myBoloes.isEmpty)
-                  _buildEmptyState("Você não participa de nenhum bolão.")
-                else
-                  ..._myBoloes.map((b) => _buildBolaoCard(b, false)),
-
+                _buildExpandableSection(
+                  title: "Meus Bolões",
+                  initiallyExpanded: true,
+                  items: _myBoloes,
+                  emptyMessage: "Você não participa de nenhum bolão ativo.",
+                  isCreator: false,
+                ),
+                const SizedBox(height: 8),
+                _buildExpandableSection(
+                  title: "Bolões Encerrados",
+                  initiallyExpanded: false,
+                  items: _finishedBoloes,
+                  emptyMessage: "Nenhum bolão encerrado.",
+                  isCreator: false,
+                ),
                 if (_userRole != UserRole.USER) ...[
-                  const SizedBox(height: 24),
-                  _buildSectionTitle("Meus Bolões Criados"),
-                  if (_createdBoloes.isEmpty)
-                    _buildEmptyState("Você ainda não criou nenhum bolão.")
-                  else
-                    ..._createdBoloes.map((b) => _buildBolaoCard(b, true)),
+                  const SizedBox(height: 8),
+                  _buildExpandableSection(
+                    title: "Meus Bolões Criados",
+                    initiallyExpanded: false,
+                    items: _createdBoloes,
+                    emptyMessage: "Você ainda não criou nenhum bolão.",
+                    isCreator: true,
+                  ),
                 ],
                 const SizedBox(height: 80),
               ],
@@ -248,15 +279,34 @@ class _BoloesViewState extends State<BoloesView> {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Text(title, style: BolixoTypography.titleMedium.copyWith(color: BolixoColors.accentCyan)),
+  Widget _buildExpandableSection({
+    required String title,
+    required bool initiallyExpanded,
+    required List<BolaoModel> items,
+    required String emptyMessage,
+    required bool isCreator,
+  }) {
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        title: Text(title, style: BolixoTypography.titleMedium.copyWith(color: BolixoColors.accentCyan)),
+        initiallyExpanded: initiallyExpanded,
+        iconColor: BolixoColors.accentCyan,
+        collapsedIconColor: BolixoColors.accentCyan,
+        tilePadding: EdgeInsets.zero,
+        children: [
+          if (items.isEmpty)
+            _buildEmptyState(emptyMessage)
+          else
+            ...items.map((b) => _buildBolaoCard(b, isCreator)),
+        ],
+      ),
     );
   }
 
   Widget _buildEmptyState(String message) {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: BolixoColors.surfaceElevated,
@@ -327,10 +377,5 @@ class _BoloesViewState extends State<BoloesView> {
         },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

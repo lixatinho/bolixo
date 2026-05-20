@@ -218,16 +218,16 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
       ),
     ];
 
-    if (viewContent.type == AuthFormType.signIn) {
-      buttons.add(
-        AppTextButton(
-          onPressedCallback: () {
-            authViewController.goToRecoverPassword();
-          },
-          text: "Esqueci minha senha",
-        ),
-      );
-    }
+    // if (viewContent.type == AuthFormType.signIn) {
+    //   buttons.add(
+    //     AppTextButton(
+    //       onPressedCallback: () {
+    //         authViewController.goToRecoverPassword();
+    //       },
+    //       text: "Esqueci minha senha",
+    //     ),
+    //   );
+    // }
 
     return buttons;
   }
