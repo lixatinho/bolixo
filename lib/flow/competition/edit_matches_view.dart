@@ -25,10 +25,22 @@ class _EditMatchesViewState extends State<EditMatchesView> {
 
   int? _matchIndexToResult;
 
+  // Filtros
+  TeamModel? _selectedFilterTeam;
+  int? _selectedFilterType;
+  DateTime? _selectedFilterDate;
+  final TextEditingController _typeFilterController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     _fetchData();
+  }
+
+  @override
+  void dispose() {
+    _typeFilterController.dispose();
+    super.dispose();
   }
 
   void _fetchData() async {
@@ -46,13 +58,40 @@ class _EditMatchesViewState extends State<EditMatchesView> {
     });
   }
 
+  List<MatchModel> get _filteredMatches {
+    return _matches.where((match) {
+      final teamMatch = _selectedFilterTeam == null ||
+          match.home?.id == _selectedFilterTeam?.id ||
+          match.away?.id == _selectedFilterTeam?.id;
+
+      final typeMatch = _selectedFilterType == null || match.type == _selectedFilterType;
+
+      final dateMatch = _selectedFilterDate == null ||
+          (match.matchDate.year == _selectedFilterDate!.year &&
+           match.matchDate.month == _selectedFilterDate!.month &&
+           match.matchDate.day == _selectedFilterDate!.day);
+
+      return teamMatch && typeMatch && dateMatch;
+    }).toList();
+  }
+
   void _addMatch() {
     setState(() {
+      _clearFilters();
       _matches.insert(0, MatchModel(
         matchDate: DateTime.now(),
         type: 1,
       ));
       _matchIndexToResult = null;
+    });
+  }
+
+  void _clearFilters() {
+    setState(() {
+      _selectedFilterTeam = null;
+      _selectedFilterType = null;
+      _selectedFilterDate = null;
+      _typeFilterController.clear();
     });
   }
 
@@ -90,6 +129,8 @@ class _EditMatchesViewState extends State<EditMatchesView> {
 
   @override
   Widget build(BuildContext context) {
+    final displayMatches = _filteredMatches;
+
     return Scaffold(
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
@@ -101,14 +142,30 @@ class _EditMatchesViewState extends State<EditMatchesView> {
           ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
           : Column(
               children: [
+                // Nova Área de Filtros mais visível
+                Theme(
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    initiallyExpanded: true,
+                    title: const Text("Filtros de Busca", style: TextStyle(color: BolixoColors.accentGreen, fontSize: 14, fontWeight: FontWeight.bold)),
+                    leading: const Icon(Icons.filter_alt, color: BolixoColors.accentGreen),
+                    collapsedBackgroundColor: BolixoColors.surfaceElevated,
+                    backgroundColor: BolixoColors.surfaceElevated,
+                    children: [
+                      _buildFilterContent(),
+                    ],
+                  ),
+                ),
                 _buildTeamsRow(),
                 const Divider(color: BolixoColors.white6, height: 1),
                 Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _matches.length,
-                    itemBuilder: (context, index) => _buildMatchItem(index),
-                  ),
+                  child: displayMatches.isEmpty
+                    ? _buildEmptyState()
+                    : ListView.builder(
+                        padding: const EdgeInsets.all(16),
+                        itemCount: displayMatches.length,
+                        itemBuilder: (context, index) => _buildMatchItem(displayMatches[index]),
+                      ),
                 ),
               ],
             ),
@@ -142,11 +199,177 @@ class _EditMatchesViewState extends State<EditMatchesView> {
     );
   }
 
+  Widget _buildFilterContent() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              // Filtro de Time
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("TIME", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 4),
+                    _buildFilterDropdown<TeamModel>(
+                      value: _selectedFilterTeam,
+                      hint: "Selecionar Time",
+                      items: _competitionTeams.map((t) => DropdownMenuItem(
+                        value: t,
+                        child: Text(t.name ?? "", style: const TextStyle(fontSize: 12, color: Colors.white))
+                      )).toList(),
+                      onChanged: (v) => setState(() => _selectedFilterTeam = v),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Filtro de Tipo/Fase
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("FASE", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 4),
+                    TextField(
+                      controller: _typeFilterController,
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: "Ex: 1",
+                        hintStyle: const TextStyle(color: Colors.white24),
+                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                        enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.white30), borderRadius: BorderRadius.circular(8)),
+                        focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: BolixoColors.accentGreen), borderRadius: BorderRadius.circular(8)),
+                      ),
+                      onChanged: (v) => setState(() => _selectedFilterType = int.tryParse(v)),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              // Filtro de Data
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("DATA", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 4),
+                    InkWell(
+                      onTap: _pickFilterDate,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: _selectedFilterDate != null ? BolixoColors.accentGreen : Colors.white30),
+                          borderRadius: BorderRadius.circular(8)
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.calendar_month, size: 16, color: BolixoColors.accentGreen),
+                            const SizedBox(width: 8),
+                            Text(
+                              _selectedFilterDate == null ? "Filtrar por dia" : DateFormat('dd/MM/yyyy').format(_selectedFilterDate!),
+                              style: TextStyle(color: _selectedFilterDate == null ? Colors.white38 : Colors.white, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (_hasActiveFilters) ...[
+                const SizedBox(width: 12),
+                Padding(
+                  padding: const EdgeInsets.only(top: 18),
+                  child: TextButton.icon(
+                    onPressed: _clearFilters,
+                    icon: const Icon(Icons.clear_all, color: Colors.redAccent, size: 18),
+                    label: const Text("LIMPAR", style: TextStyle(color: Colors.redAccent, fontSize: 12, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+              ]
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  void _pickFilterDate() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: _selectedFilterDate ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: BolixoColors.accentGreen,
+              onPrimary: Colors.black,
+              surface: BolixoColors.surfaceElevated,
+              onSurface: Colors.white,
+            ),
+          ),
+          child: child!,
+        );
+      }
+    );
+    if (date != null) setState(() => _selectedFilterDate = date);
+  }
+
+  bool get _hasActiveFilters => _selectedFilterTeam != null || _selectedFilterType != null || _selectedFilterDate != null;
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.search_off, size: 48, color: Colors.white24),
+          const SizedBox(height: 16),
+          Text("Nenhum jogo encontrado com estes filtros.", style: TextStyle(color: Colors.white.withOpacity(0.5))),
+          TextButton(onPressed: _clearFilters, child: const Text("Ver todos os jogos", style: TextStyle(color: BolixoColors.accentGreen))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterDropdown<T>({required T? value, required String hint, required List<DropdownMenuItem<T>> items, required Function(T?) onChanged}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: value != null ? BolixoColors.accentGreen : Colors.white30),
+        borderRadius: BorderRadius.circular(8)
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<T>(
+          value: value,
+          hint: Text(hint, style: const TextStyle(color: Colors.white24, fontSize: 12)),
+          dropdownColor: BolixoColors.surfaceElevated,
+          items: items,
+          onChanged: onChanged,
+          isExpanded: true,
+          icon: const Icon(Icons.keyboard_arrow_down, color: BolixoColors.accentGreen, size: 20),
+          style: const TextStyle(color: Colors.white, fontSize: 12),
+        ),
+      ),
+    );
+  }
+
   Widget _buildTeamsRow() {
     return Container(
-      height: 100,
+      height: 90,
       padding: const EdgeInsets.symmetric(vertical: 8),
-      color: BolixoColors.surfaceElevated,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -163,7 +386,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                 children: [
                   _buildTeamAvatar(team),
                   const SizedBox(height: 4),
-                  Text(team.abbreviation ?? "", style: BolixoTypography.bodySmall),
+                  Text(team.abbreviation ?? "", style: const TextStyle(color: Colors.white70, fontSize: 10)),
                 ],
               ),
             ),
@@ -173,10 +396,10 @@ class _EditMatchesViewState extends State<EditMatchesView> {
     );
   }
 
-  Widget _buildMatchItem(int index) {
-    final match = _matches[index];
+  Widget _buildMatchItem(MatchModel match) {
+    final int originalIndex = _matches.indexOf(match);
     final df = DateFormat('dd/MM HH:mm');
-    bool isEditingResult = _matchIndexToResult == index;
+    bool isEditingResult = _matchIndexToResult == originalIndex;
     bool hasResult = match.homeScore != null && match.awayScore != null;
 
     return Card(
@@ -267,11 +490,11 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.analytics_outlined, color: BolixoColors.accentGreen, size: 22),
-                    onPressed: () => setState(() => _matchIndexToResult = index),
+                    onPressed: () => setState(() => _matchIndexToResult = originalIndex),
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete, color: Colors.redAccent, size: 22),
-                    onPressed: () => setState(() => _matches.removeAt(index)),
+                    onPressed: () => setState(() => _matches.remove(match)),
                   )
                 ],
               ),
