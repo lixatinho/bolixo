@@ -3,6 +3,7 @@ import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/api/model/match_model.dart';
 import 'package:bolixo/api/model/team_model.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
+import 'package:bolixo/ui/shared/loading_widget.dart';
 import 'package:bolixo/ui/shared/score_stepper.dart';
 import 'package:bolixo/ui/shared/team_flag.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
@@ -141,7 +142,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
+          ? const Center(child: BolixoLoadingBall())
           : Column(
               children: [
                 // Nova Área de Filtros mais visível
@@ -189,7 +190,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
               ),
               const SizedBox(height: 12),
               _isSaving
-                ? const CircularProgressIndicator(color: BolixoColors.accentGreen)
+                ? const BolixoLoadingBall(size: 32)
                 : SizedBox(
                     width: double.infinity,
                     child: AppElevatedButton(onPressedCallback: _saveAllMatches, text: "Salvar Estrutura de Partidas"),

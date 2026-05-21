@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/bolixo_colors.dart';
 import '../theme/bolixo_gradients.dart';
+import '../theme/bolixo_typography.dart';
 
+/// Full-screen loading overlay with gradient background and bouncing ball.
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({Key? key}) : super(key: key);
 
@@ -14,35 +16,53 @@ class LoadingWidget extends StatelessWidget {
       decoration: const BoxDecoration(
         gradient: BolixoGradients.primary,
       ),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              'assets/images/copa_ball.png',
-              width: 100,
-              height: 100,
-              fit: BoxFit.contain,
-            )
-                .animate(onPlay: (c) => c.repeat())
-                .moveY(begin: 0, end: -14, duration: 500.ms, curve: Curves.easeOut)
-                .then()
-                .moveY(begin: -14, end: 0, duration: 500.ms, curve: Curves.easeIn)
-                .then()
-                .scaleY(begin: 1.0, end: 0.95, duration: 120.ms)
-                .then()
-                .scaleY(begin: 0.95, end: 1.0, duration: 120.ms),
-            const SizedBox(height: 20),
-            const Text(
-              'Carregando...',
-              style: TextStyle(
-                color: BolixoColors.textSecondary,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
+      child: const Center(
+        child: BolixoLoadingBall(size: 100, showLabel: true),
       ),
+    );
+  }
+}
+
+/// Inline bouncing ball loading indicator. Use instead of CircularProgressIndicator.
+class BolixoLoadingBall extends StatelessWidget {
+  final double size;
+  final bool showLabel;
+
+  const BolixoLoadingBall({
+    super.key,
+    this.size = 40,
+    this.showLabel = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset(
+          'assets/images/copa_ball.png',
+          width: size,
+          height: size,
+          fit: BoxFit.contain,
+        )
+            .animate(onPlay: (c) => c.repeat())
+            .moveY(begin: 0, end: -size * 0.14, duration: 500.ms, curve: Curves.easeOut)
+            .then()
+            .moveY(begin: -size * 0.14, end: 0, duration: 500.ms, curve: Curves.easeIn)
+            .then()
+            .scaleY(begin: 1.0, end: 0.95, duration: 120.ms)
+            .then()
+            .scaleY(begin: 0.95, end: 1.0, duration: 120.ms),
+        if (showLabel) ...[
+          const SizedBox(height: 20),
+          Text(
+            'Carregando...',
+            style: BolixoTypography.bodyMedium.copyWith(
+              color: BolixoColors.textSecondary,
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

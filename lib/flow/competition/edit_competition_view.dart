@@ -2,6 +2,7 @@ import 'package:bolixo/api/competition/competition_api_interface.dart';
 import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/api/model/team_model.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
+import 'package:bolixo/ui/shared/loading_widget.dart';
 import 'package:bolixo/ui/shared/team_flag.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_decorations.dart';
@@ -175,7 +176,7 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: _isFetchingTeams
-          ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
+          ? const Center(child: BolixoLoadingBall())
           : SafeArea(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24.0),
@@ -213,7 +214,7 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
                     _buildQuickCreateTeam(),
                     const SizedBox(height: 48),
                     _isLoading
-                        ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
+                        ? const Center(child: BolixoLoadingBall(size: 32))
                         : SizedBox(
                             width: double.infinity,
                             child: AppElevatedButton(onPressedCallback: _save, text: "Salvar Competição"),
@@ -301,7 +302,7 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
                 ),
                 const SizedBox(width: 12),
                 _isCreatingTeam
-                  ? const SizedBox(width: 40, height: 40, child: CircularProgressIndicator(strokeWidth: 2))
+                  ? const SizedBox(width: 40, height: 40, child: BolixoLoadingBall(size: 24))
                   : IconButton(
                       icon: const Icon(Icons.check_circle, color: BolixoColors.accentGreen, size: 32),
                       onPressed: _addNewTeam,
