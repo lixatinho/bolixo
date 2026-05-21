@@ -1,11 +1,10 @@
 import 'package:bolixo/api/model/user_model.dart';
 import 'package:bolixo/flow/auth/auth_service.dart';
 import 'package:bolixo/flow/competition/match_result_dialog.dart';
+import 'package:bolixo/ui/shared/score_stepper.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
-import 'package:bolixo/ui/theme/bolixo_decorations.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'bet_view_content.dart';
@@ -16,18 +15,13 @@ class BetItemView extends StatelessWidget {
   final Function awayGoalsChanged;
   final VoidCallback? onResultSaved;
 
-  final TextEditingController homeScoreTextFieldController;
-  final TextEditingController awayScoreTextFieldController;
-
-  BetItemView({
+  const BetItemView({
     Key? key,
     required this.bet,
     required this.homeGoalsChanged,
     required this.awayGoalsChanged,
     this.onResultSaved,
-  })  : homeScoreTextFieldController = TextEditingController(text: bet.homeTeam.scoreBet),
-        awayScoreTextFieldController = TextEditingController(text: bet.awayTeam.scoreBet),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +48,7 @@ class BetItemView extends StatelessWidget {
                 ],
               ),
 
-              betField(homeScoreTextFieldController, homeGoalsChanged, true),
+              betStepper(bet.homeTeam, homeGoalsChanged, true),
               matchScoreAndBet(bet.homeTeam),
 
               // Middle
@@ -66,7 +60,7 @@ class BetItemView extends StatelessWidget {
                 ],
               ),
 
-              betField(awayScoreTextFieldController, awayGoalsChanged, false),
+              betStepper(bet.awayTeam, awayGoalsChanged, false),
               matchScoreAndBet(bet.awayTeam),
 
               // Away team
@@ -99,38 +93,24 @@ class BetItemView extends StatelessWidget {
     );
   }
 
-  Widget betField(
-    TextEditingController controller,
+  Widget betStepper(
+    TeamViewContent team,
     Function callback,
     bool isHomeTeam,
   ) {
-    double spaceBetweenTeams = 24;
-    double space = 16;
-    double marginLeft = isHomeTeam ? space : spaceBetweenTeams;
-    double marginRight = !isHomeTeam ? space : spaceBetweenTeams;
+    final initialValue = int.tryParse(team.scoreBet) ?? 0;
     return Visibility(
       visible: bet.isBetEnabled,
       child: Tooltip(
         message: bet.betFieldTooltip,
-        padding: EdgeInsets.only(left: marginLeft, right: marginRight),
-        child: SizedBox(
-          width: 48,
-          height: 48,
-          child: TextField(
-            keyboardType: TextInputType.number,
-            decoration: BolixoDecorations.betInputDecoration,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            maxLength: 3,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: BolixoColors.textPrimary,
-            ),
-            controller: controller,
-            onChanged: (goals) => callback(controller.text),
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: isHomeTeam ? 16 : 24,
+            right: !isHomeTeam ? 16 : 24,
+          ),
+          child: ScoreStepper(
+            value: initialValue,
+            onChanged: (v) => callback(v.toString()),
             enabled: bet.isBetEnabled,
           ),
         ),

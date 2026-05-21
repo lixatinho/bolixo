@@ -1,5 +1,6 @@
 import 'package:bolixo/api/competition/competition_api_interface.dart';
 import 'package:bolixo/api/model/match_model.dart';
+import 'package:bolixo/ui/shared/score_stepper.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -20,29 +21,22 @@ class MatchResultDialog extends StatefulWidget {
 
 class _MatchResultDialogState extends State<MatchResultDialog> {
   final CompetitionApi _api = CompetitionApi.getInstance();
-  late TextEditingController _homeController;
-  late TextEditingController _awayController;
+  late int _homeScore;
+  late int _awayScore;
   bool _isSaving = false;
 
   @override
   void initState() {
     super.initState();
-    _homeController = TextEditingController(text: widget.match.homeScore?.toString() ?? "");
-    _awayController = TextEditingController(text: widget.match.awayScore?.toString() ?? "");
-  }
-
-  @override
-  void dispose() {
-    _homeController.dispose();
-    _awayController.dispose();
-    super.dispose();
+    _homeScore = widget.match.homeScore ?? 0;
+    _awayScore = widget.match.awayScore ?? 0;
   }
 
   void _save() async {
     setState(() => _isSaving = true);
 
-    widget.match.homeScore = int.tryParse(_homeController.text);
-    widget.match.awayScore = int.tryParse(_awayController.text);
+    widget.match.homeScore = _homeScore;
+    widget.match.awayScore = _awayScore;
 
     try {
       await _api.initialize();
@@ -76,12 +70,12 @@ class _MatchResultDialogState extends State<MatchResultDialog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildTeamCol(widget.match.home?.abbreviation ?? "Casa", _homeController),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text("x", style: TextStyle(color: Colors.white, fontSize: 24)),
+              _buildTeamCol(widget.match.home?.abbreviation ?? "Casa", _homeScore, (v) => setState(() => _homeScore = v)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text("x", style: BolixoTypography.headlineMedium.copyWith(color: BolixoColors.textTertiary)),
               ),
-              _buildTeamCol(widget.match.away?.abbreviation ?? "Fora", _awayController),
+              _buildTeamCol(widget.match.away?.abbreviation ?? "Fora", _awayScore, (v) => setState(() => _awayScore = v)),
             ],
           ),
         ],
@@ -89,38 +83,25 @@ class _MatchResultDialogState extends State<MatchResultDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text("Cancelar", style: TextStyle(color: Colors.grey)),
+          child: Text("Cancelar", style: BolixoTypography.bodyMedium.copyWith(color: BolixoColors.textTertiary)),
         ),
         _isSaving
-            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: BolixoColors.accentGreen))
             : ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: BolixoColors.accentGreen),
                 onPressed: _save,
-                child: const Text("Salvar", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                child: Text("Salvar", style: BolixoTypography.labelLarge.copyWith(color: Colors.black)),
               ),
       ],
     );
   }
 
-  Widget _buildTeamCol(String name, TextEditingController controller) {
+  Widget _buildTeamCol(String name, int score, ValueChanged<int> onChanged) {
     return Column(
       children: [
         Text(name, style: BolixoTypography.bodySmall),
         const SizedBox(height: 8),
-        SizedBox(
-          width: 60,
-          child: TextField(
-            controller: controller,
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-            decoration: const InputDecoration(
-              hintText: "0",
-              hintStyle: TextStyle(color: Colors.white24),
-              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BolixoColors.accentGreen)),
-            ),
-          ),
-        ),
+        ScoreStepper(value: score, onChanged: onChanged),
       ],
     );
   }

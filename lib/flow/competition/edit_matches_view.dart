@@ -3,6 +3,7 @@ import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/api/model/match_model.dart';
 import 'package:bolixo/api/model/team_model.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
+import 'package:bolixo/ui/shared/score_stepper.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -504,12 +505,18 @@ class _EditMatchesViewState extends State<EditMatchesView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildScoreField(match.homeScore, (v) => match.homeScore = int.tryParse(v)),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text("x", style: TextStyle(color: Colors.white, fontSize: 20)),
+                  ScoreStepper(
+                    value: match.homeScore ?? 0,
+                    onChanged: (v) => setState(() => match.homeScore = v),
                   ),
-                  _buildScoreField(match.awayScore, (v) => match.awayScore = int.tryParse(v)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Text("x", style: BolixoTypography.headlineMedium.copyWith(color: BolixoColors.textTertiary)),
+                  ),
+                  ScoreStepper(
+                    value: match.awayScore ?? 0,
+                    onChanged: (v) => setState(() => match.awayScore = v),
+                  ),
                 ],
               ),
               const SizedBox(height: 12),
@@ -534,23 +541,6 @@ class _EditMatchesViewState extends State<EditMatchesView> {
     );
   }
 
-  Widget _buildScoreField(int? initialValue, Function(String) onChanged) {
-    return SizedBox(
-      width: 60,
-      child: TextField(
-        keyboardType: TextInputType.number,
-        textAlign: TextAlign.center,
-        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-        decoration: InputDecoration(
-          hintText: "0",
-          hintStyle: const TextStyle(color: Colors.grey),
-          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BolixoColors.accentGreen.withOpacity(0.5))),
-        ),
-        controller: TextEditingController(text: initialValue?.toString() ?? ""),
-        onChanged: onChanged,
-      ),
-    );
-  }
 
   void _editMatchDate(MatchModel match) async {
     final date = await showDatePicker(context: context, initialDate: match.matchDate, firstDate: DateTime(2020), lastDate: DateTime(2030));
