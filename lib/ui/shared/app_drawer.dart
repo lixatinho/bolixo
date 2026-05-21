@@ -53,12 +53,12 @@ class AppDrawer extends StatelessWidget {
 
             _buildDrawerAction(context, Icons.sports_soccer, 'Palpites', () {
               Navigator.pop(context);
-              MainShell.navigate(context, tab: 0);
+              _switchToTab(context, 0);
             }),
 
             _buildDrawerAction(context, Icons.groups, 'Bolões', () {
               Navigator.pop(context);
-              MainShell.navigate(context, tab: 1);
+              _switchToTab(context, 1);
             }),
 
             if (role == UserRole.ADMIN)
@@ -117,6 +117,15 @@ class AppDrawer extends StatelessWidget {
       title: Text(label, style: BolixoTypography.bodyLarge),
       onTap: onTap,
     );
+  }
+
+  void _switchToTab(BuildContext context, int tab) {
+    final shell = context.findAncestorStateOfType<MainShellState>();
+    if (shell != null) {
+      shell.switchTab(tab);
+    } else {
+      MainShell.navigate(context, tab: tab);
+    }
   }
 
   Widget _build_logout_action(BuildContext context) {
