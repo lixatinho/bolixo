@@ -137,7 +137,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
     return Scaffold(
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: Text("Partidas: ${widget.competition.name}", style: const BolixoTypography.titleMedium),
+        title: Text("Partidas: ${widget.competition.name}", style: BolixoTypography.titleMedium),
         backgroundColor: BolixoColors.deepPlum,
         iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
       ),

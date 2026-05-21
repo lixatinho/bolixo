@@ -98,7 +98,7 @@ class _AdminBoloesViewState extends State<AdminBoloesView> {
                                   child: Text(bolao.name ?? "Sem nome", style: BolixoTypography.titleMedium),
                                 ),
                                 if (bolao.isGlobal)
-                                  const Chip(
+                                  Chip(
                                     label: Text("GLOBAL", style: BolixoTypography.labelSmall.copyWith(color: BolixoColors.textPrimary)),
                                     backgroundColor: BolixoColors.electricViolet,
                                   ),
