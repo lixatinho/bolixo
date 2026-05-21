@@ -2,6 +2,7 @@ import 'package:bolixo/api/competition/competition_api_interface.dart';
 import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/api/model/team_model.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
+import 'package:bolixo/ui/shared/team_flag.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_decorations.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -348,17 +349,7 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
   }
 
   Widget _buildTeamFlag(TeamModel team) {
-    String assetPath = "assets/images/teams/${team.abbreviation}.png";
-    return CircleAvatar(
-      radius: 14,
-      backgroundColor: BolixoColors.backgroundPrimary,
-      child: ClipOval(
-        child: Image.asset(
-          assetPath,
-          errorBuilder: (context, error, stackTrace) => const Icon(Icons.sports_soccer, size: 16, color: Colors.grey),
-        ),
-      ),
-    );
+    return TeamFlag(abbreviation: team.abbreviation, radius: 14);
   }
 
   @override

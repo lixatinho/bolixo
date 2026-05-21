@@ -4,6 +4,7 @@ import 'package:bolixo/api/model/match_model.dart';
 import 'package:bolixo/api/model/team_model.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
 import 'package:bolixo/ui/shared/score_stepper.dart';
+import 'package:bolixo/ui/shared/team_flag.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -623,15 +624,10 @@ class _EditMatchesViewState extends State<EditMatchesView> {
       child: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: isDragging ? BolixoColors.accentGreen.withOpacity(0.5) : Colors.transparent,
+          color: isDragging ? BolixoColors.accentGreen.withValues(alpha: 0.5) : Colors.transparent,
           shape: BoxShape.circle,
         ),
-        child: CircleAvatar(
-          radius: 18,
-          backgroundColor: BolixoColors.backgroundSecondary,
-          backgroundImage: team.abbreviation != null ? AssetImage("assets/images/teams/${team.abbreviation}.png") : null,
-          child: team.abbreviation == null ? const Icon(Icons.sports_soccer, color: Colors.white24) : null,
-        ),
+        child: TeamFlag(abbreviation: team.abbreviation, radius: 18),
       ),
     );
   }
@@ -687,11 +683,7 @@ class TeamSearchDelegate extends SearchDelegate<TeamModel?> {
         itemBuilder: (context, index) {
           final team = filtered[index];
           return ListTile(
-            leading: CircleAvatar(
-              radius: 15,
-              backgroundImage: team.abbreviation != null ? AssetImage("assets/images/teams/${team.abbreviation}.png") : null,
-              backgroundColor: BolixoColors.backgroundSecondary,
-            ),
+            leading: TeamFlag(abbreviation: team.abbreviation, radius: 15),
             title: Text(team.name ?? "", style: const TextStyle(color: Colors.white)),
             subtitle: Text(team.abbreviation ?? "", style: const TextStyle(color: Colors.grey)),
             onTap: () => close(context, team),

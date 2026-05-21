@@ -2,6 +2,7 @@ import 'package:bolixo/api/model/user_model.dart';
 import 'package:bolixo/flow/auth/auth_service.dart';
 import 'package:bolixo/flow/competition/match_result_dialog.dart';
 import 'package:bolixo/ui/shared/score_stepper.dart';
+import 'package:bolixo/ui/shared/team_flag.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -177,19 +178,7 @@ class BetItemView extends StatelessWidget {
       message: tooltip,
       child: Padding(
         padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: BolixoColors.white10, width: 1.5),
-          ),
-          child: CircleAvatar(
-            backgroundImage: flagUrl.isNotEmpty ? AssetImage(flagUrl) : null,
-            backgroundColor: BolixoColors.surfaceCard,
-            child: flagUrl.isEmpty ? const Icon(Icons.sports_soccer, color: Colors.white24) : null,
-          ),
-        ),
+        child: TeamFlag(flagUrl: flagUrl, radius: 20),
       ),
     );
   }

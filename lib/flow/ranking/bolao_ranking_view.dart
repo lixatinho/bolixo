@@ -162,17 +162,18 @@ class BolaoRankingViewState extends State<BolaoRankingView> implements RankingVi
         child: Container(
           height: 36,
           width: 36,
-          alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(
-              color: borderColor,
-              width: 2.0,
-            ),
+            color: BolixoColors.surfaceCard,
+            border: Border.all(color: borderColor, width: 2.0),
           ),
-          child: CircleAvatar(
-            backgroundImage: AssetImage(url),
-            backgroundColor: BolixoColors.surfaceCard,
+          clipBehavior: Clip.antiAlias,
+          child: Image.asset(
+            url,
+            width: 36,
+            height: 36,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => const Icon(Icons.person, color: Colors.white24, size: 18),
           ),
         ),
       ),
