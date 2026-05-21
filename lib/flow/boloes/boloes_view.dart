@@ -276,7 +276,6 @@ class _BoloesViewState extends State<BoloesView> {
           ),
         ],
       ),
-      bottomNavigationBar: const AppBottomNav(selectedIndex: 1),
     );
   }
 

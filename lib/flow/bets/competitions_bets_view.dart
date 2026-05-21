@@ -108,7 +108,6 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
                       },
                     ),
             ),
-      bottomNavigationBar: const AppBottomNav(selectedIndex: 0),
     );
   }
 
@@ -212,7 +211,6 @@ class CompetitionBetsDetailView extends StatelessWidget {
       ),
       drawer: showDrawer ? const AppDrawer() : null,
       body: BetsWidget(competitionId: competitionId),
-      bottomNavigationBar: const AppBottomNav(selectedIndex: 0),
     );
   }
 }
