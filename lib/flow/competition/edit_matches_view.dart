@@ -137,9 +137,9 @@ class _EditMatchesViewState extends State<EditMatchesView> {
     return Scaffold(
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: Text("Partidas: ${widget.competition.name}", style: const TextStyle(color: Colors.white, fontSize: 16)),
+        title: Text("Partidas: ${widget.competition.name}", style: const BolixoTypography.titleMedium),
         backgroundColor: BolixoColors.deepPlum,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
       ),
       body: _isLoading
           ? const Center(child: BolixoLoadingBall())
@@ -215,14 +215,14 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("TIME", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                    Text("TIME", style: BolixoTypography.labelSmall.copyWith(color: BolixoColors.textTertiary, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 4),
                     _buildFilterDropdown<TeamModel>(
                       value: _selectedFilterTeam,
                       hint: "Selecionar Time",
                       items: _competitionTeams.map((t) => DropdownMenuItem(
                         value: t,
-                        child: Text(t.name ?? "", style: const TextStyle(fontSize: 12, color: Colors.white))
+                        child: Text(t.name ?? "", style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textPrimary))
                       )).toList(),
                       onChanged: (v) => setState(() => _selectedFilterTeam = v),
                     ),
@@ -236,18 +236,18 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("FASE", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                    Text("FASE", style: BolixoTypography.labelSmall.copyWith(color: BolixoColors.textTertiary, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 4),
                     TextField(
                       controller: _typeFilterController,
-                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textPrimary),
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         hintText: "Ex: 1",
-                        hintStyle: const TextStyle(color: Colors.white24),
+                        hintStyle: const TextStyle(color: BolixoColors.textTertiary),
                         isDense: true,
                         contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                        enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.white30), borderRadius: BorderRadius.circular(8)),
+                        enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: BolixoColors.white10), borderRadius: BorderRadius.circular(8)),
                         focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: BolixoColors.accentGreen), borderRadius: BorderRadius.circular(8)),
                       ),
                       onChanged: (v) => setState(() => _selectedFilterType = int.tryParse(v)),
@@ -265,14 +265,14 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("DATA", style: TextStyle(color: Colors.white54, fontSize: 10, fontWeight: FontWeight.bold)),
+                    Text("DATA", style: BolixoTypography.labelSmall.copyWith(color: BolixoColors.textTertiary, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 4),
                     InkWell(
                       onTap: _pickFilterDate,
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                         decoration: BoxDecoration(
-                          border: Border.all(color: _selectedFilterDate != null ? BolixoColors.accentGreen : Colors.white30),
+                          border: Border.all(color: _selectedFilterDate != null ? BolixoColors.accentGreen : BolixoColors.white10),
                           borderRadius: BorderRadius.circular(8)
                         ),
                         child: Row(
@@ -281,7 +281,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                             const SizedBox(width: 8),
                             Text(
                               _selectedFilterDate == null ? "Filtrar por dia" : DateFormat('dd/MM/yyyy').format(_selectedFilterDate!),
-                              style: TextStyle(color: _selectedFilterDate == null ? Colors.white38 : Colors.white, fontSize: 12),
+                              style: TextStyle(color: _selectedFilterDate == null ? BolixoColors.textTertiary : BolixoColors.textPrimary, fontSize: 12),
                             ),
                           ],
                         ),
@@ -296,8 +296,8 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                   padding: const EdgeInsets.only(top: 18),
                   child: TextButton.icon(
                     onPressed: _clearFilters,
-                    icon: const Icon(Icons.clear_all, color: Colors.redAccent, size: 18),
-                    label: const Text("LIMPAR", style: TextStyle(color: Colors.redAccent, fontSize: 12, fontWeight: FontWeight.bold)),
+                    icon: const Icon(Icons.clear_all, color: BolixoColors.error, size: 18),
+                    label: const Text("LIMPAR", style: TextStyle(color: BolixoColors.error, fontSize: 12, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ]
@@ -321,7 +321,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
               primary: BolixoColors.accentGreen,
               onPrimary: Colors.black,
               surface: BolixoColors.surfaceElevated,
-              onSurface: Colors.white,
+              onSurface: BolixoColors.textPrimary,
             ),
           ),
           child: child!,
@@ -338,9 +338,9 @@ class _EditMatchesViewState extends State<EditMatchesView> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.search_off, size: 48, color: Colors.white24),
+          const Icon(Icons.search_off, size: 48, color: BolixoColors.textTertiary),
           const SizedBox(height: 16),
-          Text("Nenhum jogo encontrado com estes filtros.", style: TextStyle(color: Colors.white.withOpacity(0.5))),
+          Text("Nenhum jogo encontrado com estes filtros.", style: TextStyle(color: BolixoColors.textSecondary)),
           TextButton(onPressed: _clearFilters, child: const Text("Ver todos os jogos", style: TextStyle(color: BolixoColors.accentGreen))),
         ],
       ),
@@ -351,19 +351,19 @@ class _EditMatchesViewState extends State<EditMatchesView> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: value != null ? BolixoColors.accentGreen : Colors.white30),
+        border: Border.all(color: value != null ? BolixoColors.accentGreen : BolixoColors.white10),
         borderRadius: BorderRadius.circular(8)
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<T>(
           value: value,
-          hint: Text(hint, style: const TextStyle(color: Colors.white24, fontSize: 12)),
+          hint: Text(hint, style: const TextStyle(color: BolixoColors.textTertiary, fontSize: 12)),
           dropdownColor: BolixoColors.surfaceElevated,
           items: items,
           onChanged: onChanged,
           isExpanded: true,
           icon: const Icon(Icons.keyboard_arrow_down, color: BolixoColors.accentGreen, size: 20),
-          style: const TextStyle(color: Colors.white, fontSize: 12),
+          style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textPrimary),
         ),
       ),
     );
@@ -389,7 +389,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                 children: [
                   _buildTeamAvatar(team),
                   const SizedBox(height: 4),
-                  Text(team.abbreviation ?? "", style: const TextStyle(color: Colors.white70, fontSize: 10)),
+                  Text(team.abbreviation ?? "", style: const TextStyle(color: BolixoColors.textSecondary, fontSize: 10)),
                 ],
               ),
             ),
@@ -424,7 +424,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                         Text(
                           match.homeScore?.toString() ?? "-",
                           style: TextStyle(
-                            color: hasResult ? BolixoColors.accentGreen : Colors.white38,
+                            color: hasResult ? BolixoColors.accentGreen : BolixoColors.textTertiary,
                             fontSize: 24,
                             fontWeight: FontWeight.bold
                           ),
@@ -436,7 +436,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Column(
                     children: [
-                      Text("VS", style: TextStyle(fontWeight: FontWeight.bold, color: hasResult ? BolixoColors.accentGreen : Colors.white, fontSize: 16)),
+                      Text("VS", style: TextStyle(fontWeight: FontWeight.bold, color: hasResult ? BolixoColors.accentGreen : BolixoColors.textPrimary, fontSize: 16)),
                       const SizedBox(height: 12),
                     ],
                   ),
@@ -450,7 +450,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                         Text(
                           match.awayScore?.toString() ?? "-",
                           style: TextStyle(
-                            color: hasResult ? BolixoColors.accentGreen : Colors.white38,
+                            color: hasResult ? BolixoColors.accentGreen : BolixoColors.textTertiary,
                             fontSize: 24,
                             fontWeight: FontWeight.bold
                           ),
@@ -469,9 +469,9 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                     flex: 2,
                     child: TextField(
                       controller: TextEditingController(text: match.type?.toString() ?? "")..selection = TextSelection.fromPosition(TextPosition(offset: (match.type?.toString() ?? "").length)),
-                      style: const TextStyle(color: Colors.white, fontSize: 13),
+                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textPrimary),
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: "Fase (Tipo)", labelStyle: TextStyle(color: Colors.grey, fontSize: 12)),
+                      decoration: const InputDecoration(labelText: "Fase (Tipo)", labelStyle: TextStyle(color: BolixoColors.textTertiary, fontSize: 12)),
                       onChanged: (v) => match.type = int.tryParse(v),
                     ),
                   ),
@@ -483,9 +483,9 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Data/Hora", style: TextStyle(color: Colors.grey, fontSize: 10)),
+                          const Text("Data/Hora", style: TextStyle(color: BolixoColors.textTertiary, fontSize: 10)),
                           const SizedBox(height: 4),
-                          Text(df.format(match.matchDate), style: const TextStyle(color: Colors.white, fontSize: 13)),
+                          Text(df.format(match.matchDate), style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textPrimary)),
                           const SizedBox(height: 8),
                         ],
                       ),
@@ -496,7 +496,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                     onPressed: () => setState(() => _matchIndexToResult = originalIndex),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.redAccent, size: 22),
+                    icon: const Icon(Icons.delete, color: BolixoColors.error, size: 22),
                     onPressed: () => setState(() => _matches.remove(match)),
                   )
                 ],
@@ -527,12 +527,12 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                 children: [
                   TextButton(
                     onPressed: () => setState(() => _matchIndexToResult = null),
-                    child: const Text("Cancelar", style: TextStyle(color: Colors.grey)),
+                    child: const Text("Cancelar", style: TextStyle(color: BolixoColors.textTertiary)),
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: BolixoColors.accentGreen),
                     onPressed: () => _saveMatchResult(match),
-                    child: const Text("Salvar e Calcular", style: TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold)),
+                    child: const Text("Salvar e Calcular", style: TextStyle(color: BolixoColors.backgroundPrimary, fontSize: 12, fontWeight: FontWeight.bold)),
                   ),
                 ],
               )
@@ -593,12 +593,12 @@ class _EditMatchesViewState extends State<EditMatchesView> {
             height: 80,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: candidateData.isNotEmpty ? BolixoColors.accentGreen.withOpacity(0.2) : Colors.transparent,
+              color: candidateData.isNotEmpty ? BolixoColors.accentGreen.withValues(alpha:0.2) : Colors.transparent,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: candidateData.isNotEmpty ? BolixoColors.accentGreen : Colors.white12),
+              border: Border.all(color: candidateData.isNotEmpty ? BolixoColors.accentGreen : BolixoColors.white6),
             ),
             child: selectedTeam == null
-                ? const Icon(Icons.add_circle_outline, color: Colors.white24)
+                ? const Icon(Icons.add_circle_outline, color: BolixoColors.textTertiary)
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -643,10 +643,10 @@ class TeamSearchDelegate extends SearchDelegate<TeamModel?> {
     return Theme.of(context).copyWith(
       appBarTheme: const AppBarTheme(backgroundColor: BolixoColors.deepPlum),
       inputDecorationTheme: const InputDecorationTheme(
-        hintStyle: TextStyle(color: Colors.white54),
+        hintStyle: TextStyle(color: BolixoColors.textTertiary),
         border: InputBorder.none,
       ),
-      textTheme: const TextTheme(titleLarge: TextStyle(color: Colors.white)),
+      textTheme: const TextTheme(titleLarge: TextStyle(color: BolixoColors.textPrimary)),
     );
   }
 
@@ -685,8 +685,8 @@ class TeamSearchDelegate extends SearchDelegate<TeamModel?> {
           final team = filtered[index];
           return ListTile(
             leading: TeamFlag(abbreviation: team.abbreviation, radius: 15),
-            title: Text(team.name ?? "", style: const TextStyle(color: Colors.white)),
-            subtitle: Text(team.abbreviation ?? "", style: const TextStyle(color: Colors.grey)),
+            title: Text(team.name ?? "", style: const TextStyle(color: BolixoColors.textPrimary)),
+            subtitle: Text(team.abbreviation ?? "", style: const TextStyle(color: BolixoColors.textTertiary)),
             onTap: () => close(context, team),
           );
         },

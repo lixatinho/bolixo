@@ -37,7 +37,7 @@ class BoloesWidgetState extends State<BoloesWidget> {
           child: Center(
             child: Text(
               "Nenhum bolão disponível.",
-              style: BolixoTypography.bodyLarge.copyWith(color: Colors.white70),
+              style: BolixoTypography.bodyLarge.copyWith(color: BolixoColors.textSecondary),
             ),
           ),
         );
@@ -54,7 +54,7 @@ class BoloesWidgetState extends State<BoloesWidget> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: ListTile(
               title: Text(bolao.name, style: BolixoTypography.bodyLarge),
-              trailing: const Icon(Icons.check_circle_outline, color: Colors.white24),
+              trailing: const Icon(Icons.check_circle_outline, color: BolixoColors.textTertiary),
               onTap: () {
                 viewController.onBolaoSelected(bolao.id, bolao.name);
                 Navigator.pop(context);

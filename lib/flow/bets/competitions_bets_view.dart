@@ -80,16 +80,16 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
       key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Palpites", style: TextStyle(color: Colors.white)),
+        title: const Text("Palpites", style: TextStyle(color: BolixoColors.textPrimary)),
         backgroundColor: BolixoColors.deepPlum,
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
+          icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
         ),
         actions: [
           IconButton(
             onPressed: () => showRulesDialog(context),
-            icon: const Icon(Icons.rule_outlined, color: Colors.white),
+            icon: const Icon(Icons.rule_outlined, color: BolixoColors.textPrimary),
           ),
         ],
       ),
@@ -116,11 +116,11 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.event_busy, size: 64, color: Colors.white38),
+          const Icon(Icons.event_busy, size: 64, color: BolixoColors.textTertiary),
           const SizedBox(height: 16),
           Text(
             "Nenhuma competição ativa no momento.",
-            style: BolixoTypography.bodyLarge.copyWith(color: Colors.white70),
+            style: BolixoTypography.bodyLarge.copyWith(color: BolixoColors.textSecondary),
           ),
         ],
       ),
@@ -159,7 +159,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
                     const SizedBox(height: 8),
                     Text(
                       "Período: ${comp.startDate != null ? df.format(comp.startDate!) : '-'} até ${comp.endDate != null ? df.format(comp.endDate!) : '-'}",
-                      style: BolixoTypography.bodySmall.copyWith(color: Colors.white70),
+                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textSecondary),
                     ),
                   ],
                 ),
@@ -193,19 +193,19 @@ class CompetitionBetsDetailView extends StatelessWidget {
       key: scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: Text(competitionName, style: const TextStyle(color: Colors.white)),
+        title: Text(competitionName, style: const TextStyle(color: BolixoColors.textPrimary)),
         backgroundColor: BolixoColors.deepPlum,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
         leading: showDrawer
           ? IconButton(
-              icon: const Icon(Icons.menu, color: Colors.white),
+              icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
               onPressed: () => scaffoldKey.currentState?.openDrawer(),
             )
           : null,
         actions: [
           IconButton(
             onPressed: () => showRulesDialog(context),
-            icon: const Icon(Icons.rule_outlined, color: Colors.white),
+            icon: const Icon(Icons.rule_outlined, color: BolixoColors.textPrimary),
           ),
         ],
       ),

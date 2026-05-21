@@ -70,14 +70,14 @@ class _AdminBoloesViewState extends State<AdminBoloesView> {
     return Scaffold(
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Gerenciar Bolões", style: TextStyle(color: Colors.white)),
+        title: const Text("Gerenciar Bolões", style: TextStyle(color: BolixoColors.textPrimary)),
         backgroundColor: BolixoColors.deepPlum,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
       ),
       body: _isLoading
           ? const Center(child: BolixoLoadingBall())
           : _allBoloes.isEmpty
-              ? const Center(child: Text("Nenhum bolão encontrado no sistema.", style: TextStyle(color: Colors.white54)))
+              ? const Center(child: Text("Nenhum bolão encontrado no sistema.", style: TextStyle(color: BolixoColors.textTertiary)))
               : ListView.builder(
                   padding: const EdgeInsets.all(16),
                   itemCount: _allBoloes.length,
@@ -99,7 +99,7 @@ class _AdminBoloesViewState extends State<AdminBoloesView> {
                                 ),
                                 if (bolao.isGlobal)
                                   const Chip(
-                                    label: Text("GLOBAL", style: TextStyle(fontSize: 10, color: Colors.white)),
+                                    label: Text("GLOBAL", style: BolixoTypography.labelSmall.copyWith(color: BolixoColors.textPrimary)),
                                     backgroundColor: BolixoColors.electricViolet,
                                   ),
                               ],
@@ -107,7 +107,7 @@ class _AdminBoloesViewState extends State<AdminBoloesView> {
                             const SizedBox(height: 8),
                             Text("Criador (ID): ${bolao.idUser ?? 'Desconhecido'}", style: BolixoTypography.bodySmall),
                             Text("Código: ${bolao.inviteCode ?? 'N/A'}", style: BolixoTypography.bodySmall),
-                            const Divider(color: Colors.white12),
+                            const Divider(color: BolixoColors.white6),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [

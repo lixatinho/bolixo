@@ -103,10 +103,10 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
       key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Competições", style: TextStyle(color: Colors.white)),
+        title: const Text("Competições", style: TextStyle(color: BolixoColors.textPrimary)),
         backgroundColor: BolixoColors.deepPlum,
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
+          icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
         ),
       ),
@@ -123,7 +123,7 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
             ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: BolixoColors.accentGreen,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: BolixoColors.textPrimary),
         onPressed: () async {
           final result = await Navigator.push(
             context,
@@ -162,7 +162,7 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
             ),
             Text(
               "Partidas cadastradas: $matchCount",
-              style: BolixoTypography.bodySmall.copyWith(color: Colors.white70),
+              style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textSecondary),
             ),
             const SizedBox(height: 16),
             Wrap(

@@ -105,10 +105,10 @@ class _BoloesViewState extends State<BoloesView> {
         title: Text("Entrar em Bolão", style: BolixoTypography.titleMedium),
         content: TextField(
           controller: controller,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: BolixoColors.textPrimary),
           decoration: const InputDecoration(
             hintText: "Código do Bolão",
-            hintStyle: TextStyle(color: Colors.white54),
+            hintStyle: TextStyle(color: BolixoColors.textTertiary),
             enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BolixoColors.accentGreen)),
           ),
         ),
@@ -150,9 +150,9 @@ class _BoloesViewState extends State<BoloesView> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: BolixoColors.surfaceElevated,
-        title: const Text("Excluir Bolão", style: TextStyle(color: Colors.white)),
+        title: const Text("Excluir Bolão", style: TextStyle(color: BolixoColors.textPrimary)),
         content: Text("Tem certeza que deseja excluir o bolão '${bolao.name}'? Esta ação não pode ser desfeita.",
-            style: const TextStyle(color: Colors.white70)),
+            style: const TextStyle(color: BolixoColors.textSecondary)),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancelar")),
           TextButton(
@@ -191,10 +191,10 @@ class _BoloesViewState extends State<BoloesView> {
       key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Meus Bolões", style: TextStyle(color: Colors.white)),
+        title: const Text("Meus Bolões", style: TextStyle(color: BolixoColors.textPrimary)),
         backgroundColor: BolixoColors.deepPlum,
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
+          icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
         ),
         actions: [
@@ -312,7 +312,7 @@ class _BoloesViewState extends State<BoloesView> {
         color: BolixoColors.surfaceElevated,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Text(message, style: const TextStyle(color: Colors.white70, fontStyle: FontStyle.italic)),
+      child: Text(message, style: const TextStyle(color: BolixoColors.textSecondary, fontStyle: FontStyle.italic)),
     );
   }
 
@@ -337,7 +337,7 @@ class _BoloesViewState extends State<BoloesView> {
             if (isCreator && bolao.inviteCode != null)
               Row(
                 children: [
-                  Text("Código: ${bolao.inviteCode}", style: const TextStyle(color: Colors.white70)),
+                  Text("Código: ${bolao.inviteCode}", style: const TextStyle(color: BolixoColors.textSecondary)),
                   IconButton(
                     icon: const Icon(Icons.copy, size: 16, color: BolixoColors.accentGreen),
                     onPressed: () {
@@ -359,7 +359,7 @@ class _BoloesViewState extends State<BoloesView> {
                 icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
                 onPressed: () => _confirmDeleteBolao(bolao),
               ),
-            const Icon(Icons.chevron_right, color: Colors.white24),
+            const Icon(Icons.chevron_right, color: BolixoColors.textTertiary),
           ],
         ),
         onTap: () {

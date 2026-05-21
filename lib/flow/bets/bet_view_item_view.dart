@@ -199,7 +199,7 @@ class BetViewItemView extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: vPadding, horizontal: hPadding),
           decoration: BoxDecoration(
-            color: bet.score.color.withOpacity(0.15),
+            color: bet.score.color.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(

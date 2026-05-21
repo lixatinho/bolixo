@@ -44,16 +44,16 @@ class BetsWidgetState extends State<BetsWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.sentiment_dissatisfied, size: 64, color: Colors.white70),
+              const Icon(Icons.sentiment_dissatisfied, size: 64, color: BolixoColors.textSecondary),
               const SizedBox(height: 16),
               Text(
                 "Nenhum jogo disponível.",
-                style: BolixoTypography.titleMedium.copyWith(color: Colors.white),
+                style: BolixoTypography.titleMedium.copyWith(color: BolixoColors.textPrimary),
               ),
               const SizedBox(height: 8),
               Text(
                 "Aguarde o administrador cadastrar as partidas.",
-                style: BolixoTypography.bodyMedium.copyWith(color: Colors.white70),
+                style: BolixoTypography.bodyMedium.copyWith(color: BolixoColors.textSecondary),
               ),
             ],
           ),

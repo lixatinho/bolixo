@@ -82,9 +82,9 @@ class _CreateBolaoViewState extends State<CreateBolaoView> {
     return Scaffold(
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Criar Novo Bolão", style: TextStyle(color: Colors.white)),
+        title: const Text("Criar Novo Bolão", style: TextStyle(color: BolixoColors.textPrimary)),
         backgroundColor: BolixoColors.deepPlum,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
       ),
       body: _isFetchingCompetitions
         ? const Center(child: BolixoLoadingBall())
@@ -139,17 +139,17 @@ class _CreateBolaoViewState extends State<CreateBolaoView> {
                   if (_userRole == UserRole.ADMIN)
                     Theme(
                       data: Theme.of(context).copyWith(
-                        unselectedWidgetColor: Colors.white70,
+                        unselectedWidgetColor: BolixoColors.textSecondary,
                       ),
                       child: CheckboxListTile(
                         title: Text("Bolão Global", style: BolixoTypography.bodyLarge),
                         subtitle: const Text(
                           "Se marcado, qualquer usuário poderá visualizar e participar deste bolão.",
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                          style: TextStyle(color: BolixoColors.textSecondary, fontSize: 12),
                         ),
                         value: _isGlobal,
                         activeColor: BolixoColors.accentGreen,
-                        checkColor: Colors.white,
+                        checkColor: BolixoColors.textPrimary,
                         contentPadding: EdgeInsets.zero,
                         onChanged: (bool? value) {
                           setState(() {

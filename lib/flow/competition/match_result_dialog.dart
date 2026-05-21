@@ -91,7 +91,7 @@ class _MatchResultDialogState extends State<MatchResultDialog> {
             : ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: BolixoColors.accentGreen),
                 onPressed: _save,
-                child: Text("Salvar", style: BolixoTypography.labelLarge.copyWith(color: Colors.black)),
+                child: Text("Salvar", style: BolixoTypography.labelLarge.copyWith(color: BolixoColors.backgroundPrimary)),
               ),
       ],
     );
