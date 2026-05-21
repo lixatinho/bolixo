@@ -626,7 +626,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: isDragging ? BolixoColors.accentGreen.withValues(alpha: 0.5) : Colors.transparent,
-          shape: BoxShape.circle,
+          borderRadius: BorderRadius.circular(10),
         ),
         child: TeamFlag(abbreviation: team.abbreviation, radius: 18),
       ),

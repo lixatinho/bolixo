@@ -4,8 +4,8 @@ import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Main shell that wraps Palpites and Bolões tabs in an IndexedStack,
-/// keeping both alive for instant tab switching without reload.
+/// Main shell that wraps Palpites and Bolões tabs with lazy IndexedStack.
+/// Only builds a tab when first visited; keeps it alive after that.
 class MainShell extends StatefulWidget {
   final int initialIndex;
 
@@ -14,15 +14,11 @@ class MainShell extends StatefulWidget {
   @override
   State<MainShell> createState() => MainShellState();
 
-  /// Navigate to MainShell from anywhere, optionally picking a tab.
   static void navigate(BuildContext context, {int tab = 0}) {
     Navigator.of(context).pushAndRemoveUntil(
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => MainShell(initialIndex: tab),
-        transitionDuration: const Duration(milliseconds: 200),
-        transitionsBuilder: (_, animation, __, child) {
-          return FadeTransition(opacity: animation, child: child);
-        },
+        transitionDuration: Duration.zero,
         settings: const RouteSettings(name: '/main'),
       ),
       (route) => false,
@@ -32,15 +28,18 @@ class MainShell extends StatefulWidget {
 
 class MainShellState extends State<MainShell> {
   late int _currentIndex;
+  final Set<int> _loaded = {};
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
+    _loaded.add(_currentIndex);
   }
 
   void switchTab(int index) {
     if (index != _currentIndex) {
+      _loaded.add(index);
       setState(() => _currentIndex = index);
     }
   }
@@ -50,9 +49,15 @@ class MainShellState extends State<MainShell> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: const [
-          CompetitionsBetsView(),
-          BoloesView(),
+        children: [
+          if (_loaded.contains(0))
+            const CompetitionsBetsView()
+          else
+            const SizedBox.shrink(),
+          if (_loaded.contains(1))
+            const BoloesView()
+          else
+            const SizedBox.shrink(),
         ],
       ),
       bottomNavigationBar: _buildBottomNav(),

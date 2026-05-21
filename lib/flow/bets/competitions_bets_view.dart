@@ -22,7 +22,8 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CompetitionModel> _competitions = [];
   bool _isLoading = true;
-  bool _isRedirecting = false;
+  int? _singleCompetitionId;
+  String? _singleCompetitionName;
 
   @override
   void initState() {
@@ -39,26 +40,11 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
         setState(() {
           _competitions = list;
           _isLoading = false;
+          if (_competitions.length == 1) {
+            _singleCompetitionId = _competitions[0].id;
+            _singleCompetitionName = _competitions[0].name ?? "Palpites";
+          }
         });
-
-        if (_competitions.length == 1 && !_isRedirecting) {
-          _isRedirecting = true;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CompetitionBetsDetailView(
-                    competitionId: _competitions[0].id!,
-                    competitionName: _competitions[0].name ?? "Palpites",
-                    showDrawer: true,
-                  ),
-                  settings: const RouteSettings(name: '/competition_detail'),
-                ),
-              );
-            }
-          });
-        }
       }
     } catch (e) {
       if (mounted) {
@@ -72,8 +58,28 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isRedirecting) {
-      return const LoadingWidget();
+    // Single competition: render bets inline (no navigation needed)
+    if (_singleCompetitionId != null) {
+      return Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: BolixoColors.backgroundPrimary,
+        appBar: AppBar(
+          title: Text(_singleCompetitionName!, style: const TextStyle(color: BolixoColors.textPrimary)),
+          backgroundColor: BolixoColors.deepPlum,
+          leading: IconButton(
+            icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () => showRulesDialog(context),
+              icon: const Icon(Icons.rule_outlined, color: BolixoColors.textPrimary),
+            ),
+          ],
+        ),
+        drawer: const AppDrawer(),
+        body: BetsWidget(competitionId: _singleCompetitionId!),
+      );
     }
 
     return Scaffold(

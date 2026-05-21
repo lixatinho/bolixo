@@ -165,7 +165,7 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
           height: 36,
           width: 36,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(10),
             color: BolixoColors.surfaceCard,
             border: Border.all(color: borderColor, width: 2.0),
           ),

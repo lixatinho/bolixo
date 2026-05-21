@@ -21,38 +21,31 @@ class SelectDateWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: BolixoColors.deepPlum,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 12),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 16),
-              child: Text(
-                viewContent.selectedDate().fullDate,
-                style: BolixoTypography.headlineMedium,
-              ),
+      padding: const EdgeInsets.only(top: 12, bottom: 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            viewContent.selectedDate().fullDate,
+            style: BolixoTypography.headlineMedium,
+          ),
+          const SizedBox(height: 12),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (int index = 0;
+                    index < viewContent.dates.length;
+                    index++) ...[
+                  if (index > 0) const SizedBox(width: 8),
+                  _buildDateChip(index),
+                ],
+              ],
             ),
-            Expanded(
-              child: Center(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      for (int index = 0;
-                          index < viewContent.dates.length;
-                          index++) ...[
-                        if (index > 0) const SizedBox(width: 8),
-                        _buildDateChip(index),
-                      ],
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

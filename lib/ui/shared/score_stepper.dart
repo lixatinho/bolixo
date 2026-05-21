@@ -87,21 +87,17 @@ class _ScoreStepperState extends State<ScoreStepper> {
             enabled: widget.enabled && _value < widget.maxValue,
           ),
           const SizedBox(height: 2),
-          Container(
+          SizedBox(
             width: 48,
             height: 44,
-            decoration: BoxDecoration(
-              color: BolixoColors.white8,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: BolixoColors.white15, width: 1),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              '$_value',
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: BolixoColors.textPrimary,
+            child: Center(
+              child: Text(
+                '$_value',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: BolixoColors.textPrimary,
+                ),
               ),
             ),
           ),
@@ -128,13 +124,9 @@ class _ScoreStepperState extends State<ScoreStepper> {
       onLongPressStart: enabled ? (_) => onLongStart() : null,
       onLongPressEnd: enabled ? (_) => _stopRepeat() : null,
       onLongPressCancel: enabled ? _stopRepeat : null,
-      child: Container(
+      child: SizedBox(
         width: 48,
         height: 28,
-        decoration: BoxDecoration(
-          color: enabled ? BolixoColors.white6 : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
-        ),
         child: Icon(
           icon,
           size: 22,

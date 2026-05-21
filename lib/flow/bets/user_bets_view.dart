@@ -78,13 +78,10 @@ class UserBetsWidgetState extends State<UserBetsWidget> {
 
     return Column(children: [
       // Date selector
-      SizedBox(
-        height: 120,
-        child: SelectDateWidget(
-          viewContent: DateSelectionViewContent.from(
-              betsByDay.map((e) => e.date).toList(), dateIndex),
-          onTapCallback: (int index) => viewController.onDateChanged(index),
-        ),
+      SelectDateWidget(
+        viewContent: DateSelectionViewContent.from(
+            betsByDay.map((e) => e.date).toList(), dateIndex),
+        onTapCallback: (int index) => viewController.onDateChanged(index),
       ),
       // Bet cards list
       Expanded(

@@ -65,13 +65,10 @@ class BetsWidgetState extends State<BetsWidget> {
       color: BolixoColors.backgroundPrimary,
       child: Column(children: [
         // Date selector
-        SizedBox(
-          height: 120,
-          child: SelectDateWidget(
-            viewContent: DateSelectionViewContent.from(
-                betsByDay.map((e) => e.date).toList(), dateIndex),
-            onTapCallback: (int index) => viewController.onDateChanged(index),
-          ),
+        SelectDateWidget(
+          viewContent: DateSelectionViewContent.from(
+              betsByDay.map((e) => e.date).toList(), dateIndex),
+          onTapCallback: (int index) => viewController.onDateChanged(index),
         ),
         // Score overview bar
         scoreOverview(),

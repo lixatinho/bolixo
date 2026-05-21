@@ -26,17 +26,18 @@ class TeamFlag extends StatelessWidget {
   Widget build(BuildContext context) {
     final path = _assetPath;
     final size = radius * 2;
+    final borderRadius = BorderRadius.circular(radius * 0.35);
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
+        borderRadius: borderRadius,
         color: BolixoColors.surfaceCard,
         border: Border.all(color: BolixoColors.white10, width: 1.5),
       ),
       clipBehavior: Clip.antiAlias,
       child: path.isEmpty
-          ? Icon(Icons.sports_soccer, color: Colors.white24, size: radius)
+          ? Icon(Icons.sports_soccer, color: BolixoColors.textTertiary, size: radius)
           : Image.asset(
               path,
               width: size,
@@ -44,7 +45,7 @@ class TeamFlag extends StatelessWidget {
               fit: BoxFit.cover,
               errorBuilder: (_, __, ___) => Icon(
                 Icons.sports_soccer,
-                color: Colors.white24,
+                color: BolixoColors.textTertiary,
                 size: radius,
               ),
             ),
