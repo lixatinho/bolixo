@@ -21,7 +21,7 @@ class SelectDateWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: BolixoColors.deepPlum,
-      padding: const EdgeInsets.only(top: 12, bottom: 8),
+      padding: const EdgeInsets.only(top: 20, bottom: 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -29,7 +29,7 @@ class SelectDateWidget extends StatelessWidget {
             viewContent.selectedDate().fullDate,
             style: BolixoTypography.headlineMedium,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -39,7 +39,7 @@ class SelectDateWidget extends StatelessWidget {
                 for (int index = 0;
                     index < viewContent.dates.length;
                     index++) ...[
-                  if (index > 0) const SizedBox(width: 8),
+                  if (index > 0) const SizedBox(width: 10),
                   _buildDateChip(index),
                 ],
               ],
