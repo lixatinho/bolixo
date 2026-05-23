@@ -1,6 +1,6 @@
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/api/model/bolao_model.dart';
-import 'package:bolixo/ui/shared/loading_widget.dart';
+import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +75,7 @@ class _AdminBoloesViewState extends State<AdminBoloesView> {
         iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
       ),
       body: _isLoading
-          ? const Center(child: BolixoLoadingBall())
+          ? const SkeletonLoading()
           : _allBoloes.isEmpty
               ? const Center(child: Text("Nenhum bolão encontrado no sistema.", style: TextStyle(color: BolixoColors.textTertiary)))
               : ListView.builder(

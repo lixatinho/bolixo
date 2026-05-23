@@ -3,7 +3,7 @@ import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:bolixo/ui/shared/app_bottom_nav.dart';
 import 'package:bolixo/ui/shared/app_drawer.dart';
-import 'package:bolixo/ui/shared/loading_widget.dart';
+import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/shared/rules_dialog.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -101,7 +101,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
       ),
       drawer: const AppDrawer(),
       body: _isLoading
-          ? const Center(child: BolixoLoadingBall())
+          ? const SkeletonLoading()
           : RefreshIndicator(
               onRefresh: _fetchCompetitions,
               child: _competitions.isEmpty

@@ -3,7 +3,7 @@ import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/flow/competition/edit_competition_view.dart';
 import 'package:bolixo/flow/competition/edit_matches_view.dart';
 import 'package:bolixo/ui/shared/app_drawer.dart';
-import 'package:bolixo/ui/shared/loading_widget.dart';
+import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -112,7 +112,7 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
       ),
       drawer: const AppDrawer(),
       body: _isLoading
-          ? const Center(child: BolixoLoadingBall())
+          ? const SkeletonLoading()
           : ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: _competitions.length,

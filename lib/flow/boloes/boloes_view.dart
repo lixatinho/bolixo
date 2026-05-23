@@ -8,7 +8,7 @@ import 'package:bolixo/flow/boloes/create_bolao_view.dart';
 import 'package:bolixo/flow/ranking/ranking_view.dart';
 import 'package:bolixo/ui/shared/app_bottom_nav.dart';
 import 'package:bolixo/ui/shared/app_drawer.dart';
-import 'package:bolixo/ui/shared/loading_widget.dart';
+import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -212,7 +212,7 @@ class _BoloesViewState extends State<BoloesView> {
       ),
       drawer: const AppDrawer(),
       body: _isLoading
-        ? const Center(child: BolixoLoadingBall())
+        ? const SkeletonLoading()
         : RefreshIndicator(
             onRefresh: _fetchData,
             child: ListView(

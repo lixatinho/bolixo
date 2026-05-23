@@ -3,7 +3,7 @@ import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/api/model/user_model.dart';
 import 'package:bolixo/flow/auth/auth_repository.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
-import 'package:bolixo/ui/shared/loading_widget.dart';
+import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_decorations.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -87,7 +87,7 @@ class _CreateBolaoViewState extends State<CreateBolaoView> {
         iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
       ),
       body: _isFetchingCompetitions
-        ? const Center(child: BolixoLoadingBall())
+        ? const SkeletonLoading()
         : SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
             child: Form(
@@ -161,7 +161,7 @@ class _CreateBolaoViewState extends State<CreateBolaoView> {
                     ),
                   const SizedBox(height: 48),
                   _isLoading
-                    ? const Center(child: BolixoLoadingBall(size: 32))
+                    ? const SkeletonLoading(type: SkeletonType.buttonInline)
                     : SizedBox(
                         width: double.infinity,
                         child: AppElevatedButton(

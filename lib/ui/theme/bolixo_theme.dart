@@ -71,6 +71,17 @@ class BolixoTheme {
       ),
       behavior: SnackBarBehavior.floating,
     ),
+    tooltipTheme: TooltipThemeData(
+      decoration: BoxDecoration(
+        color: BolixoColors.surfaceElevated,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: BolixoColors.white10, width: 1),
+      ),
+      textStyle: const TextStyle(
+        color: BolixoColors.textPrimary,
+        fontSize: 12,
+      ),
+    ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: BolixoColors.electricViolet,
     ),

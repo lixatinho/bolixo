@@ -1,6 +1,6 @@
 import 'package:bolixo/api/competition/competition_api_interface.dart';
 import 'package:bolixo/api/model/match_model.dart';
-import 'package:bolixo/ui/shared/loading_widget.dart';
+import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/shared/score_stepper.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -87,7 +87,7 @@ class _MatchResultDialogState extends State<MatchResultDialog> {
           child: Text("Cancelar", style: BolixoTypography.bodyMedium.copyWith(color: BolixoColors.textTertiary)),
         ),
         _isSaving
-            ? const SizedBox(width: 24, height: 24, child: BolixoLoadingBall(size: 20))
+            ? const SizedBox(width: 24, height: 24, child: SkeletonLoading(type: SkeletonType.buttonInline))
             : ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: BolixoColors.accentGreen),
                 onPressed: _save,
