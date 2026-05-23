@@ -76,35 +76,34 @@ class BetsWidgetState extends State<BetsWidget> {
         Expanded(
           child: Stack(
             children: [
-              ListView.separated(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
-                itemCount: betsByDay[dateIndex].betList.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (betsByDay[dateIndex]
-                              .betList[index]
-                              .model
-                              .match
-                              ?.matchDate
-                              .isBefore(DateTime.now().toUtc()) ==
-                          true) {
-                        viewController.getBetsByBolaoAndMatch(
-                            betsByDay[dateIndex].betList[index].model.match?.id);
-                      }
-                    },
-                    child: BetItemView(
-                      bet: betsByDay[dateIndex].betList[index],
-                      homeGoalsChanged: (goals) =>
-                          viewController.onGoalsTeam1Changed(index, goals),
-                      awayGoalsChanged: (goals) =>
-                          viewController.onGoalsTeam2Changed(index, goals),
-                      onResultSaved: () => viewController.onInit(this, competitionId: widget.competitionId),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final bets = betsByDay[dateIndex].betList;
+                  const double minCardWidth = 340;
+                  const double spacing = 12;
+                  final columns = (constraints.maxWidth / (minCardWidth + spacing)).floor().clamp(1, 4);
+
+                  if (columns <= 1) {
+                    return ListView.separated(
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
+                      itemCount: bets.length,
+                      itemBuilder: (context, index) => _buildBetCard(index),
+                      separatorBuilder: (_, __) => const SizedBox(height: spacing),
+                    );
+                  }
+
+                  return GridView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: columns,
+                      crossAxisSpacing: spacing,
+                      mainAxisSpacing: spacing,
+                      childAspectRatio: 1.6,
                     ),
+                    itemCount: bets.length,
+                    itemBuilder: (context, index) => _buildBetCard(index),
                   );
                 },
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 12),
               ),
               // Save button - solid green at bottom
               Positioned(
@@ -147,6 +146,31 @@ class BetsWidgetState extends State<BetsWidget> {
           ),
         ),
       ]),
+    );
+  }
+
+  Widget _buildBetCard(int index) {
+    return GestureDetector(
+      onTap: () {
+        if (betsByDay[dateIndex]
+                .betList[index]
+                .model
+                .match
+                ?.matchDate
+                .isBefore(DateTime.now().toUtc()) ==
+            true) {
+          viewController.getBetsByBolaoAndMatch(
+              betsByDay[dateIndex].betList[index].model.match?.id);
+        }
+      },
+      child: BetItemView(
+        bet: betsByDay[dateIndex].betList[index],
+        homeGoalsChanged: (goals) =>
+            viewController.onGoalsTeam1Changed(index, goals),
+        awayGoalsChanged: (goals) =>
+            viewController.onGoalsTeam2Changed(index, goals),
+        onResultSaved: () => viewController.onInit(this, competitionId: widget.competitionId),
+      ),
     );
   }
 
