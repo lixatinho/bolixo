@@ -29,55 +29,57 @@ class BetItemView extends StatelessWidget {
     final isAdmin = AuthService().repository.getRole() == UserRole.ADMIN;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
         color: BolixoColors.surfaceCard,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: BolixoColors.white6, width: 1),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Home team
-              teamColumn(bet.homeTeam),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Home team
+                teamColumn(bet.homeTeam),
 
-              betStepper(bet.homeTeam, homeGoalsChanged, true),
-              matchScoreAndBet(bet.homeTeam),
+                betStepper(bet.homeTeam, homeGoalsChanged, true),
+                matchScoreAndBet(bet.homeTeam),
 
-              // Middle
-              Column(
-                children: [
-                  betScoredPoints(),
-                  versusText(),
-                  dateText(bet.date),
-                ],
-              ),
+                // Middle
+                Column(
+                  children: [
+                    betScoredPoints(),
+                    versusText(),
+                    dateText(bet.date),
+                  ],
+                ),
 
-              betStepper(bet.awayTeam, awayGoalsChanged, false),
-              matchScoreAndBet(bet.awayTeam),
+                betStepper(bet.awayTeam, awayGoalsChanged, false),
+                matchScoreAndBet(bet.awayTeam),
 
-              // Away team
-              teamColumn(bet.awayTeam),
-            ],
+                // Away team
+                teamColumn(bet.awayTeam),
+              ],
+            ),
           ),
           if (isAdmin && bet.model.match != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: TextButton.icon(
-                onPressed: () {
-                  if (onResultSaved != null) {
-                    showMatchResultDialog(context, bet.model.match!, onResultSaved!);
-                  }
-                },
-                icon: const Icon(Icons.save, color: BolixoColors.accentGreen, size: 16),
-                label: const Text(
-                  "Salvar",
-                  style: TextStyle(color: BolixoColors.accentGreen, fontSize: 12, fontWeight: FontWeight.bold),
-                ),
+            TextButton.icon(
+              onPressed: () {
+                if (onResultSaved != null) {
+                  showMatchResultDialog(context, bet.model.match!, onResultSaved!);
+                }
+              },
+              icon: const Icon(Icons.save, color: BolixoColors.accentGreen, size: 16),
+              label: const Text(
+                "Salvar",
+                style: TextStyle(color: BolixoColors.accentGreen, fontSize: 12, fontWeight: FontWeight.bold),
               ),
+              style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(0, 32)),
             ),
         ],
       ),
