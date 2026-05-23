@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:bolixo/flow/ranking/ranking_view_content.dart';
 import 'package:bolixo/flow/ranking/ranking_view_interface.dart';
 import 'package:bolixo/flow/ranking/ranking_viewcontroller.dart';
+import 'package:bolixo/ui/shared/gold_title.dart';
 import 'package:bolixo/ui/shared/loading_widget.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -46,8 +47,9 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
       return Scaffold(
         backgroundColor: BolixoColors.backgroundPrimary,
         appBar: AppBar(
-          title: Text(widget.bolaoName!, style: BolixoTypography.titleLarge),
+          title: GoldTitle(widget.bolaoName!),
           backgroundColor: BolixoColors.deepPlum,
+          surfaceTintColor: Colors.transparent,
           iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
         ),
         body: SafeArea(child: content),
@@ -76,9 +78,16 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
             Padding(
               padding: EdgeInsets.symmetric(horizontal: viewContent.padding),
               child: Row(
-                children: viewContent.infoHeaders.values.map((header) {
-                  return tableHeader(header.id, header.widthWeight, header.name, header.textColor);
-                }).toList(),
+                children: [
+                  _headerCell('Pos', RankingViewContent.positionHeaderId, width: 40),
+                  const SizedBox(width: 12),
+                  _headerCell('', -1, width: 40), // avatar spacer
+                  const SizedBox(width: 12),
+                  Expanded(child: _headerCell('Nome', RankingViewContent.nameHeaderId)),
+                  _headerCell('Mitada', RankingViewContent.fliesHeaderId, width: 60),
+                  _headerCell('Pts', RankingViewContent.pointsHeaderId, width: 50),
+                  const SizedBox(width: 48), // detail icon spacer
+                ],
               ),
             ),
             const SizedBox(height: 8),
@@ -89,6 +98,7 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
                 padding: const EdgeInsets.only(bottom: 24),
                 itemBuilder: (context, index) {
                   final item = viewContent.rankingItems[index];
+                  final pos = int.tryParse(item.position) ?? 0;
                   return Container(
                     color: item.backgroundColor,
                     height: 60,
@@ -97,34 +107,65 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
                       alignment: Alignment.center,
                       transform: Matrix4.rotationX(item.rotationAngle),
                       child: GestureDetector(
-                        onDoubleTap: () {
-                          viewController.onRankingItemTap(item.position);
-                        },
-                        onTap: () {
-                          viewController.onUserTap(item.userId, item.name);
-                        },
+                        onDoubleTap: () => viewController.onRankingItemTap(item.position),
                         child: Row(
-                          children: <Widget>[
+                          children: [
                             // Position
-                            Expanded(
-                              flex: 1,
+                            SizedBox(
+                              width: 40,
                               child: Text(
                                 item.position,
                                 style: GoogleFonts.poppins(
-                                  color: BolixoColors.textPrimary,
+                                  color: pos <= 3 ? BolixoColors.gold : BolixoColors.textPrimary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ),
+                            const SizedBox(width: 12),
                             // Avatar
-                            imageCell(2, item.avatarUrl, item.borderColor),
+                            _avatarCell(item.avatarUrl, item.borderColor),
+                            const SizedBox(width: 12),
                             // Name
-                            textCell(6, item.name),
+                            Expanded(
+                              child: Text(
+                                item.name,
+                                style: GoogleFonts.inter(
+                                  color: BolixoColors.textPrimary,
+                                  fontSize: 14,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
                             // Flies
-                            textCell(3, item.flies),
+                            SizedBox(
+                              width: 60,
+                              child: Text(
+                                item.flies,
+                                style: GoogleFonts.inter(color: BolixoColors.textPrimary, fontSize: 14),
+                              ),
+                            ),
                             // Points
-                            textCell(3, item.points),
+                            SizedBox(
+                              width: 50,
+                              child: Text(
+                                item.points,
+                                style: GoogleFonts.inter(
+                                  color: BolixoColors.textPrimary,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            // Detail icon
+                            SizedBox(
+                              width: 48,
+                              height: 48,
+                              child: IconButton(
+                                icon: const Icon(Icons.chevron_right, color: BolixoColors.textTertiary, size: 22),
+                                onPressed: () => viewController.onUserTap(item.userId, item.name),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -139,84 +180,54 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
     }
   }
 
-  Widget textCell(int widthWeight, String text) {
-    return Expanded(
-      flex: widthWeight,
-      child: Container(
-        height: 50,
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: GoogleFonts.inter(
-            color: BolixoColors.textPrimary,
-            fontSize: 14,
+  Widget _headerCell(String text, int headerId, {double? width}) {
+    final isSelected = viewContent.selectedSort == headerId;
+    final child = InkWell(
+      onTap: headerId >= 0 ? () => viewController.onSortSelected(headerId) : null,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            text,
+            style: GoogleFonts.inter(
+              color: isSelected ? BolixoColors.textLink : BolixoColors.textTertiary,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget imageCell(int widthWeight, String url, Color borderColor) {
-    return Expanded(
-      flex: widthWeight,
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-          height: 36,
-          width: 36,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: BolixoColors.surfaceCard,
-            border: Border.all(color: borderColor, width: 2.0),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: Image.asset(
-            url,
-            width: 36,
-            height: 36,
-            fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => const Icon(Icons.person, color: BolixoColors.textTertiary, size: 18),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget tableHeader(int id, int widthWeight, String text, Color textColor) {
-    final isSelected = viewContent.selectedSort == id;
-    return Expanded(
-      flex: widthWeight,
-      child: InkWell(
-        onTap: () {
-          viewController.onSortSelected(id);
-        },
-        child: Container(
-          height: 40,
-          alignment: Alignment.centerLeft,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                text,
-                style: GoogleFonts.inter(
-                  color: textColor,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                ),
+          if (isSelected)
+            Container(
+              margin: const EdgeInsets.only(top: 2),
+              height: 2,
+              width: 20,
+              decoration: BoxDecoration(
+                color: BolixoColors.textLink,
+                borderRadius: BorderRadius.circular(1),
               ),
-              if (isSelected)
-                Container(
-                  margin: const EdgeInsets.only(top: 2),
-                  height: 2,
-                  width: 20,
-                  decoration: BoxDecoration(
-                    color: BolixoColors.textLink,
-                    borderRadius: BorderRadius.circular(1),
-                  ),
-                ),
-            ],
+            ),
+        ],
+      ),
+    );
+    if (width != null) return SizedBox(width: width, height: 40, child: child);
+    return SizedBox(height: 40, child: child);
+  }
+
+  Widget _avatarCell(String url, Color borderColor) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Image.asset(
+        url,
+        width: 36,
+        height: 36,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => Container(
+          width: 36, height: 36,
+          decoration: BoxDecoration(
+            color: BolixoColors.surfaceCard,
+            borderRadius: BorderRadius.circular(10),
           ),
+          child: const Icon(Icons.person, color: BolixoColors.textTertiary, size: 18),
         ),
       ),
     );
@@ -242,10 +253,7 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
     if (loserPlayer.state == PlayerState.playing) {
       await loserPlayer.stop();
     } else {
-      await loserPlayer.play(
-        AssetSource('audio/darkness.mp3'),
-        volume: 1.0,
-      );
+      await loserPlayer.play(AssetSource('audio/darkness.mp3'), volume: 1.0);
     }
   }
 
@@ -255,10 +263,7 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
     if (winnerPlayer.state == PlayerState.playing) {
       await winnerPlayer.stop();
     } else {
-      await winnerPlayer.play(
-        AssetSource('audio/champ.mp3'),
-        volume: 1.0,
-      );
+      await winnerPlayer.play(AssetSource('audio/champ.mp3'), volume: 1.0);
     }
   }
 

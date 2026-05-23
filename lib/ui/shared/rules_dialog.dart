@@ -14,7 +14,7 @@ void showRulesDialog(BuildContext context) {
         title: Text('Regras da pontuação', style: BolixoTypography.headlineMedium),
         content: SingleChildScrollView(
           child: Text(
-            "Mitou: acertou na mosca, 10 pontos.\n\n"
+            "Mitada: acertou na mosca, 10 pontos.\n\n"
             "Acertar resultado: 5 pontos.\n\n"
             "Acertar quantidade de gols de um time: 1 ponto.\n\n"
             "Cada fase possui um peso, que pode multiplicar os valores anteriores.\n"
