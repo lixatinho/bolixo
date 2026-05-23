@@ -9,5 +9,5 @@ Color shadeByIndex(MaterialColor color, int index) {
 
 /// Returns alternating dark row colors for ranking
 Color rankingRowColor(int index) {
-  return index.isEven ? BolixoColors.backgroundSecondary : const Color(0xFF07160F);
+  return index.isEven ? BolixoColors.backgroundSecondary : const Color(0xFF080F0B);
 }

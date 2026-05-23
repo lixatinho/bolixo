@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class BolixoColors {
   BolixoColors._();
 
-  // ── Deep green backgrounds (dark → light) ──
-  static const deepPlum = Color(0xFF061A12);          // deepest bg (app bar, loading)
-  static const royalPurple = Color(0xFF0C2218);        // secondary green
-  static const backgroundPrimary = Color(0xFF05130E);  // main scaffold bg
-  static const backgroundSecondary = Color(0xFF0A1C14); // alternating rows
-  static const surfaceCard = Color(0xFF122E22);         // card surfaces
-  static const surfaceElevated = Color(0xFF1A3D2E);     // dialogs, sheets, elevated
+  // ── Deep green backgrounds (almost black with green undertone) ──
+  static const deepPlum = Color(0xFF070E0B);          // deepest bg (app bar, loading)
+  static const royalPurple = Color(0xFF0A1310);        // secondary
+  static const backgroundPrimary = Color(0xFF060C09);  // main scaffold bg
+  static const backgroundSecondary = Color(0xFF0B1510); // alternating rows
+  static const surfaceCard = Color(0xFF101E17);         // card surfaces
+  static const surfaceElevated = Color(0xFF162A20);     // dialogs, sheets, elevated
 
   // ── Gold accent (titles, highlights, premium) ──
   static const gold = Color(0xFFD4A843);
