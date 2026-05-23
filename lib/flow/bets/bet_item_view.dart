@@ -74,9 +74,9 @@ class BetItemView extends StatelessWidget {
                   showMatchResultDialog(context, bet.model.match!, onResultSaved!);
                 }
               },
-              icon: const Icon(Icons.save, color: BolixoColors.textSecondary, size: 16),
+              icon: const Icon(Icons.edit_note, color: BolixoColors.textSecondary, size: 16),
               label: const Text(
-                "Salvar",
+                "Incluir Resultado",
                 style: TextStyle(color: BolixoColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold),
               ),
               style: TextButton.styleFrom(
