@@ -38,13 +38,13 @@ class _TrophyPainter extends CustomPainter {
 
     // ── Outer green glow ──
     final glowPaint = Paint()
-      ..color = BolixoColors.accentGreenLight.withValues(alpha: 0.10)
+      ..color = BolixoColors.goldLight.withValues(alpha: 0.10)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 24);
     canvas.drawCircle(Offset(cx, h * 0.42), w * 0.40, glowPaint);
 
     // Second softer, wider glow layer
     final glowPaint2 = Paint()
-      ..color = BolixoColors.accentGreenLight.withValues(alpha: 0.05)
+      ..color = BolixoColors.goldLight.withValues(alpha: 0.05)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 40);
     canvas.drawCircle(Offset(cx, h * 0.42), w * 0.55, glowPaint2);
 

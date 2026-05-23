@@ -68,7 +68,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
           backgroundColor: BolixoColors.deepPlum,
           bottom: const PreferredSize(
             preferredSize: Size.fromHeight(1),
-            child: Divider(height: 1, thickness: 1, color: BolixoColors.goldDark),
+            child: Divider(height: 1, thickness: 1, color: Color(0x40B08A30)),
           ),
           leading: IconButton(
             icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
@@ -94,7 +94,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
         backgroundColor: BolixoColors.deepPlum,
         bottom: const PreferredSize(
           preferredSize: Size.fromHeight(1),
-          child: Divider(height: 1, thickness: 1, color: BolixoColors.goldDark),
+          child: Divider(height: 1, thickness: 1, color: Color(0x40B08A30)),
         ),
         leading: IconButton(
           icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
@@ -178,7 +178,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: BolixoColors.accentGreen),
+              const Icon(Icons.chevron_right, color: BolixoColors.gold),
             ],
           ),
         ),

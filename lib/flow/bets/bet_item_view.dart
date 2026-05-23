@@ -74,12 +74,15 @@ class BetItemView extends StatelessWidget {
                   showMatchResultDialog(context, bet.model.match!, onResultSaved!);
                 }
               },
-              icon: const Icon(Icons.save, color: BolixoColors.accentGreen, size: 16),
+              icon: const Icon(Icons.save, color: BolixoColors.gold, size: 16),
               label: const Text(
                 "Salvar",
-                style: TextStyle(color: BolixoColors.accentGreen, fontSize: 12, fontWeight: FontWeight.bold),
+                style: TextStyle(color: BolixoColors.gold, fontSize: 12, fontWeight: FontWeight.bold),
               ),
-              style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(0, 32)),
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                minimumSize: const Size(0, 32),
+              ),
             ),
         ],
       ),

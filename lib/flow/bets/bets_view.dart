@@ -113,7 +113,7 @@ class BetsWidgetState extends State<BetsWidget> {
                 child: Container(
                   height: 52,
                   decoration: BoxDecoration(
-                    color: BolixoColors.accentGreen,
+                    color: BolixoColors.gold,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Material(
@@ -125,14 +125,14 @@ class BetsWidgetState extends State<BetsWidget> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.save, color: BolixoColors.textOnAccent, size: 20),
+                            const Icon(Icons.save, color: BolixoColors.backgroundPrimary, size: 20),
                             const SizedBox(width: 8),
                             Text(
                               'Salvar Palpites',
                               style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: BolixoColors.textOnAccent,
+                                color: BolixoColors.backgroundPrimary,
                               ),
                             ),
                           ],
@@ -240,7 +240,7 @@ class BetsWidgetState extends State<BetsWidget> {
                   child: LinearProgressIndicator(
                     value: currentDay.accuracy,
                     backgroundColor: BolixoColors.white8,
-                    valueColor: const AlwaysStoppedAnimation<Color>(BolixoColors.accentCyan),
+                    valueColor: const AlwaysStoppedAnimation<Color>(BolixoColors.gold),
                     minHeight: 6,
                   ),
                 ),

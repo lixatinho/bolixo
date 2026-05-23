@@ -99,7 +99,7 @@ class MainShellState extends State<MainShell> {
           children: [
             Icon(
               icon,
-              color: isActive ? BolixoColors.accentGreenLight : BolixoColors.textTertiary,
+              color: isActive ? BolixoColors.goldLight : BolixoColors.textTertiary,
               size: 24,
             ),
             const SizedBox(height: 4),
@@ -108,7 +108,7 @@ class MainShellState extends State<MainShell> {
               style: GoogleFonts.inter(
                 fontSize: 10,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                color: isActive ? BolixoColors.accentGreenLight : BolixoColors.textTertiary,
+                color: isActive ? BolixoColors.goldLight : BolixoColors.textTertiary,
               ),
             ),
             const SizedBox(height: 4),
@@ -117,7 +117,7 @@ class MainShellState extends State<MainShell> {
               height: 3,
               width: isActive ? 20 : 0,
               decoration: BoxDecoration(
-                color: BolixoColors.accentGreen,
+                color: BolixoColors.gold,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),

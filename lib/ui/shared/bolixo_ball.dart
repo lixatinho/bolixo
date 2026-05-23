@@ -29,7 +29,7 @@ class _Copa2026BallPainter extends CustomPainter {
 
     // Soft glow behind ball
     final glowPaint = Paint()
-      ..color = BolixoColors.accentGreenLight.withValues(alpha: 0.12)
+      ..color = BolixoColors.goldLight.withValues(alpha: 0.12)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 16);
     canvas.drawCircle(center, r, glowPaint);
 
@@ -50,11 +50,11 @@ class _Copa2026BallPainter extends CustomPainter {
     // 6 triangular panels radiating from center with alternating colors
     final colors = [
       BolixoColors.surfaceElevated,    // navy
-      BolixoColors.accentGreen,         // green
       BolixoColors.gold,                // gold
+      BolixoColors.goldDark,            // dark gold
       BolixoColors.surfaceElevated,    // navy
-      BolixoColors.accentGreen,         // green
       BolixoColors.gold,                // gold
+      BolixoColors.goldDark,            // dark gold
     ];
 
     for (int i = 0; i < 6; i++) {

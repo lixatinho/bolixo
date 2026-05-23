@@ -11,7 +11,7 @@ class BolixoTheme {
     primaryColor: BolixoColors.gold,
     colorScheme: const ColorScheme.dark(
       primary: BolixoColors.gold,
-      secondary: BolixoColors.accentGreen,
+      secondary: BolixoColors.gold,
       surface: BolixoColors.surfaceCard,
       error: BolixoColors.error,
       onPrimary: BolixoColors.backgroundPrimary,

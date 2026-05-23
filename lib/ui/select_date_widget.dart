@@ -27,9 +27,7 @@ class SelectDateWidget extends StatelessWidget {
         children: [
           Text(
             viewContent.selectedDate().fullDate,
-            style: BolixoTypography.headlineMedium.copyWith(
-              color: BolixoColors.goldLight,
-            ),
+            style: BolixoTypography.headlineMedium,
           ),
           const SizedBox(height: 14),
           SingleChildScrollView(
@@ -58,7 +56,7 @@ class SelectDateWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: isSelected
-            ? BolixoColors.accentGreen
+            ? BolixoColors.gold
             : BolixoColors.surfaceCard,
         borderRadius: BorderRadius.circular(16),
         border: isSelected
