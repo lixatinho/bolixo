@@ -13,11 +13,11 @@ class GoldTitle extends StatelessWidget {
     return ShaderMask(
       shaderCallback: (bounds) => const LinearGradient(
         colors: [
-          BolixoColors.goldLight,
           BolixoColors.gold,
           BolixoColors.goldLight,
+          BolixoColors.gold,
         ],
-        stops: [0.0, 0.5, 1.0],
+        stops: [0.0, 0.45, 1.0],
       ).createShader(bounds),
       child: Text(
         text,

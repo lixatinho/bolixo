@@ -30,7 +30,7 @@ class BolixoColors {
 
   // Gold (titles, trophies, premium accents)
   static const gold = Color(0xFFD4A843);
-  static const goldLight = Color(0xFFF0D68A);
+  static const goldLight = Color(0xFFE2C36B);
   static const goldDark = Color(0xFFB8860B);
 
   // Semantic
