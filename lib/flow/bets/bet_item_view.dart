@@ -42,12 +42,7 @@ class BetItemView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Home team
-              Column(
-                children: [
-                  teamFlag(bet.homeTeam.flagUrl, bet.homeTeam.tooltip),
-                  teamName(bet.homeTeam.name, bet.homeTeam.tooltip),
-                ],
-              ),
+              teamColumn(bet.homeTeam),
 
               betStepper(bet.homeTeam, homeGoalsChanged, true),
               matchScoreAndBet(bet.homeTeam),
@@ -65,12 +60,7 @@ class BetItemView extends StatelessWidget {
               matchScoreAndBet(bet.awayTeam),
 
               // Away team
-              Column(
-                children: [
-                  teamFlag(bet.awayTeam.flagUrl, bet.awayTeam.tooltip),
-                  teamName(bet.awayTeam.name, bet.awayTeam.tooltip),
-                ],
-              ),
+              teamColumn(bet.awayTeam),
             ],
           ),
           if (isAdmin && bet.model.match != null)
@@ -170,25 +160,25 @@ class BetItemView extends StatelessWidget {
     );
   }
 
-  Widget teamFlag(String flagUrl, String tooltip) {
+  Widget teamColumn(TeamViewContent team) {
     return Tooltip(
-      message: tooltip,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
-        child: TeamFlag(flagUrl: flagUrl, radius: 20),
-      ),
-    );
-  }
-
-  Widget teamName(String name, String tooltip) {
-    return Tooltip(
-      padding: const EdgeInsets.only(top: 6),
-      message: tooltip,
-      child: Text(
-        name,
-        style: BolixoTypography.bodySmall.copyWith(
-          color: BolixoColors.textSecondary,
-        ),
+      message: team.tooltip,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
+            child: TeamFlag(flagUrl: team.flagUrl, radius: 20),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(
+              team.name,
+              style: BolixoTypography.bodySmall.copyWith(
+                color: BolixoColors.textSecondary,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
