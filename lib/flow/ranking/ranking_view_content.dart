@@ -32,7 +32,7 @@ class RankingViewContent {
   void generateInfoHeaders() {
     infoHeaders.putIfAbsent(positionHeaderId, () => RankingInfoHeader(id: 1, name: 'Posição', widthWeight: 3));
     infoHeaders.putIfAbsent(nameHeaderId, () => RankingInfoHeader(id: 2, name: 'Nome', widthWeight: 6));
-    infoHeaders.putIfAbsent(fliesHeaderId, () => RankingInfoHeader(id: 3, name: 'Mitou', widthWeight: 3));
+    infoHeaders.putIfAbsent(fliesHeaderId, () => RankingInfoHeader(id: 3, name: 'Mitada', widthWeight: 3));
     infoHeaders.putIfAbsent(pointsHeaderId, () => RankingInfoHeader(id: 4, name: 'Pontos', widthWeight: 3));
   }
 

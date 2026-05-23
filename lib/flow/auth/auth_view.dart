@@ -59,25 +59,27 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF0E1B2E),
-              Color(0xFF121F35),
+              Color(0xFF0A1225),
+              Color(0xFF0D1830),
             ],
           ),
         ),
         child: SafeArea(
           child: Stack(
             children: [
-              SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height -
-                        MediaQuery.of(context).padding.top -
-                        MediaQuery.of(context).padding.bottom,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+              Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: 400,
+                      minHeight: MediaQuery.of(context).size.height -
+                          MediaQuery.of(context).padding.top -
+                          MediaQuery.of(context).padding.bottom,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                       const SizedBox(height: 32),
                       // Floating trophy
                       AnimatedBuilder(
@@ -140,6 +142,7 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
                     ],
                   ),
                 ),
+              ),
               ),
               if (viewContent.isLoading)
                 const LoadingWidget(),

@@ -1,10 +1,11 @@
 import 'package:bolixo/flow/bets/bet_item_view.dart';
 import 'package:bolixo/flow/bets/bet_view_content.dart';
 import 'package:bolixo/flow/bets/user_bets_viewcontroller.dart';
+import 'package:bolixo/ui/shared/gold_title.dart';
 import 'package:bolixo/ui/shared/loading_widget.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
+import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../ui/select_date_widget.dart';
 
@@ -35,20 +36,10 @@ class UserBetsWidgetState extends State<UserBetsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Palpites de ${widget.userName}",
-          style: GoogleFonts.inter(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: BolixoColors.textPrimary,
-          ),
-        ),
-        backgroundColor: BolixoColors.backgroundSecondary,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: BolixoColors.textPrimary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        title: GoldTitle("Palpites de ${widget.userName}"),
+        backgroundColor: BolixoColors.deepPlum,
+        surfaceTintColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
       ),
       backgroundColor: BolixoColors.backgroundPrimary,
       body: SafeArea(child: _buildBody()),
@@ -67,41 +58,60 @@ class UserBetsWidgetState extends State<UserBetsWidget> {
           child: Text(
             "Nada para ver aqui...",
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-              color: BolixoColors.textSecondary,
-              fontSize: 16,
-            ),
+            style: BolixoTypography.bodyLarge.copyWith(color: BolixoColors.textSecondary),
           ),
         ),
       );
     }
 
     return Column(children: [
-      // Date selector
       SelectDateWidget(
         viewContent: DateSelectionViewContent.from(
             betsByDay.map((e) => e.date).toList(), dateIndex),
         onTapCallback: (int index) => viewController.onDateChanged(index),
       ),
-      // Bet cards list
       Expanded(
-        child: ListView.separated(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 40),
-          itemCount: betsByDay[dateIndex].betList.length,
-          itemBuilder: (context, index) {
-            final bet = betsByDay[dateIndex].betList[index];
-            // Force bet to be disabled as it's viewing someone else's bets
-            bet.isBetEnabled = false;
-            return BetItemView(
-              bet: bet,
-              homeGoalsChanged: (goals) {},
-              awayGoalsChanged: (goals) {},
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final bets = betsByDay[dateIndex].betList;
+            const double minCardWidth = 340;
+            const double spacing = 12;
+            final columns = (constraints.maxWidth / (minCardWidth + spacing)).floor().clamp(1, 4);
+
+            if (columns <= 1) {
+              return ListView.separated(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 40),
+                itemCount: bets.length,
+                itemBuilder: (context, index) => _buildBetCard(index),
+                separatorBuilder: (_, __) => const SizedBox(height: spacing),
+              );
+            }
+
+            return GridView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 40),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: columns,
+                crossAxisSpacing: spacing,
+                mainAxisSpacing: spacing,
+                childAspectRatio: 1.85,
+              ),
+              itemCount: bets.length,
+              itemBuilder: (context, index) => Center(child: _buildBetCard(index)),
             );
           },
-          separatorBuilder: (context, index) => const SizedBox(height: 12),
         ),
       ),
     ]);
+  }
+
+  Widget _buildBetCard(int index) {
+    final bet = betsByDay[dateIndex].betList[index];
+    bet.isBetEnabled = false;
+    return BetItemView(
+      bet: bet,
+      homeGoalsChanged: (goals) {},
+      awayGoalsChanged: (goals) {},
+    );
   }
 
   @override
