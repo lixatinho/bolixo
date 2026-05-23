@@ -3,35 +3,35 @@ import 'package:flutter/material.dart';
 class BolixoColors {
   BolixoColors._();
 
-  // ── Deep emerald backgrounds (almost black, cool green undertone) ──
-  static const deepPlum = Color(0xFF050D0A);          // deepest bg (app bar, loading)
-  static const royalPurple = Color(0xFF08120E);        // secondary
-  static const backgroundPrimary = Color(0xFF040B08);  // main scaffold bg
-  static const backgroundSecondary = Color(0xFF091410); // alternating rows
-  static const surfaceCard = Color(0xFF0D1D16);         // card surfaces
-  static const surfaceElevated = Color(0xFF132B21);     // dialogs, sheets, elevated
+  // ── Navy backgrounds (dark → light) ──
+  static const deepPlum = Color(0xFF060D18);       // deepest bg (app bar, loading)
+  static const royalPurple = Color(0xFF0C1826);     // secondary navy
+  static const backgroundPrimary = Color(0xFF080E1A);  // main scaffold bg
+  static const backgroundSecondary = Color(0xFF0E1726); // alternating rows
+  static const surfaceCard = Color(0xFF121F35);      // card surfaces
+  static const surfaceElevated = Color(0xFF1A2A45);  // dialogs, sheets, elevated
 
   // ── Gold accent (titles, highlights, premium) ──
   static const gold = Color(0xFFD4A843);
   static const goldLight = Color(0xFFDEBE6A);
   static const goldDark = Color(0xFFB08A30);
 
-  // ── Legacy green accent (kept for semantic success only) ──
+  // ── Green accent (buttons, active states, CTAs) ──
   static const accentGreen = Color(0xFF059669);
   static const accentGreenLight = Color(0xFF34D399);
 
-  // ── Legacy cyan (unused in UI, kept for compatibility) ──
+  // ── Cyan accent (links, progress, secondary highlights) ──
   static const accentCyan = Color(0xFF06B6D4);
 
   // ── Focus / interactive accent ──
-  static const electricViolet = Color(0xFFD4A843);     // gold for focus borders
+  static const electricViolet = Color(0xFFD4A843);   // gold for focus borders
 
   // ── Text ──
   static const textPrimary = Color(0xFFFFFFFF);
-  static const textSecondary = Color(0xFF88A99C);      // cool green-grey
-  static const textTertiary = Color(0xFF587E6E);       // darker cool green-grey
+  static const textSecondary = Color(0xFF8B9BB5);    // muted blue-grey
+  static const textTertiary = Color(0xFF5E7191);     // darker blue-grey
   static const textOnAccent = Color(0xFFFFFFFF);
-  static const textLink = Color(0xFFD4A843);           // gold links
+  static const textLink = Color(0xFFD4A843);         // gold links
 
   // ── Semantic ──
   static const success = Color(0xFF34D399);
