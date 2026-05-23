@@ -29,7 +29,7 @@ class BetItemView extends StatelessWidget {
     final isAdmin = AuthService().repository.getRole() == UserRole.ADMIN;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
         color: BolixoColors.surfaceCard,
         borderRadius: BorderRadius.circular(20),
