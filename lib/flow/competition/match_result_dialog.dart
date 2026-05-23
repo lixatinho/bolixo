@@ -89,9 +89,9 @@ class _MatchResultDialogState extends State<MatchResultDialog> {
         _isSaving
             ? const SizedBox(width: 24, height: 24, child: SkeletonLoading(type: SkeletonType.buttonInline))
             : ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: BolixoColors.gold),
+                style: ElevatedButton.styleFrom(backgroundColor: BolixoColors.surfaceElevated),
                 onPressed: _save,
-                child: Text("Salvar", style: BolixoTypography.labelLarge.copyWith(color: BolixoColors.backgroundPrimary)),
+                child: Text("Salvar", style: BolixoTypography.labelLarge),
               ),
       ],
     );

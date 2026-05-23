@@ -148,7 +148,7 @@ class _CreateBolaoViewState extends State<CreateBolaoView> {
                           style: TextStyle(color: BolixoColors.textSecondary, fontSize: 12),
                         ),
                         value: _isGlobal,
-                        activeColor: BolixoColors.gold,
+                        activeColor: BolixoColors.accentBlue,
                         checkColor: BolixoColors.textPrimary,
                         contentPadding: EdgeInsets.zero,
                         onChanged: (bool? value) {

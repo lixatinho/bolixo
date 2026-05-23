@@ -44,7 +44,7 @@ class AppDrawer extends StatelessWidget {
                     ),
                     Text(
                       role.toString().split('.').last,
-                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.goldLight),
+                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentBlueLight),
                     ),
                   ],
                 ),
@@ -96,8 +96,8 @@ class AppDrawer extends StatelessWidget {
   Widget _buildDrawerItem(BuildContext context, IconData icon, String label, int index) {
     bool isSelected = selectedIndex == index;
     return ListTile(
-      leading: Icon(icon, color: isSelected ? BolixoColors.gold : BolixoColors.textPrimary),
-      title: Text(label, style: BolixoTypography.bodyLarge.copyWith(color: isSelected ? BolixoColors.gold : null)),
+      leading: Icon(icon, color: isSelected ? BolixoColors.accentBlue : BolixoColors.textPrimary),
+      title: Text(label, style: BolixoTypography.bodyLarge.copyWith(color: isSelected ? BolixoColors.accentBlue : null)),
       onTap: () {
         Navigator.pop(context);
         if (onItemSelected != null) {

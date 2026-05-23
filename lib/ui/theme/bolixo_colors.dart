@@ -4,34 +4,36 @@ class BolixoColors {
   BolixoColors._();
 
   // ── Navy backgrounds (dark → light) ──
-  static const deepPlum = Color(0xFF060D18);       // deepest bg (app bar, loading)
-  static const royalPurple = Color(0xFF0C1826);     // secondary navy
-  static const backgroundPrimary = Color(0xFF080E1A);  // main scaffold bg
-  static const backgroundSecondary = Color(0xFF0E1726); // alternating rows
-  static const surfaceCard = Color(0xFF121F35);      // card surfaces
-  static const surfaceElevated = Color(0xFF1A2A45);  // dialogs, sheets, elevated
+  static const deepPlum = Color(0xFF060D18);
+  static const royalPurple = Color(0xFF0C1826);
+  static const backgroundPrimary = Color(0xFF080E1A);
+  static const backgroundSecondary = Color(0xFF0E1726);
+  static const surfaceCard = Color(0xFF121F35);
+  static const surfaceElevated = Color(0xFF1A2A45);
 
-  // ── Gold accent (titles, highlights, premium) ──
+  // ── Gold (rare: titles, prestige accents) ──
   static const gold = Color(0xFFD4A843);
   static const goldLight = Color(0xFFDEBE6A);
   static const goldDark = Color(0xFFB08A30);
 
-  // ── Green accent (buttons, active states, CTAs) ──
+  // ── Interactive accent (gold for small elements) ──
+  static const accentBlue = Color(0xFFD4A843);
+  static const accentBlueLight = Color(0xFFDEBE6A);
+
+  // ── Legacy (kept for compatibility) ──
   static const accentGreen = Color(0xFF059669);
   static const accentGreenLight = Color(0xFF34D399);
-
-  // ── Cyan accent (links, progress, secondary highlights) ──
   static const accentCyan = Color(0xFF06B6D4);
 
-  // ── Focus / interactive accent ──
-  static const electricViolet = Color(0xFFD4A843);   // gold for focus borders
+  // ── Focus borders ──
+  static const electricViolet = Color(0xFFD4A843);
 
   // ── Text ──
   static const textPrimary = Color(0xFFFFFFFF);
-  static const textSecondary = Color(0xFF8B9BB5);    // muted blue-grey
-  static const textTertiary = Color(0xFF5E7191);     // darker blue-grey
+  static const textSecondary = Color(0xFF8B9BB5);
+  static const textTertiary = Color(0xFF5E7191);
   static const textOnAccent = Color(0xFFFFFFFF);
-  static const textLink = Color(0xFFD4A843);         // gold links
+  static const textLink = Color(0xFFD4A843);
 
   // ── Semantic ──
   static const success = Color(0xFF34D399);

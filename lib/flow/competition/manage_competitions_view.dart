@@ -122,7 +122,7 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
               },
             ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: BolixoColors.gold,
+        backgroundColor: BolixoColors.accentBlue,
         child: const Icon(Icons.add, color: BolixoColors.textPrimary),
         onPressed: () async {
           final result = await Navigator.push(
@@ -178,8 +178,8 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
                     );
                     if (result == true) _fetchCompetitions();
                   },
-                  icon: const Icon(Icons.edit, color: BolixoColors.gold),
-                  label: const Text("Editar", style: TextStyle(color: BolixoColors.gold)),
+                  icon: const Icon(Icons.edit, color: BolixoColors.accentBlue),
+                  label: const Text("Editar", style: TextStyle(color: BolixoColors.accentBlue)),
                 ),
                 TextButton.icon(
                   onPressed: () {
@@ -188,8 +188,8 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
                       MaterialPageRoute(builder: (context) => EditMatchesView(competition: comp)),
                     );
                   },
-                  icon: const Icon(Icons.sports_soccer, color: BolixoColors.gold),
-                  label: const Text("Partidas", style: TextStyle(color: BolixoColors.gold)),
+                  icon: const Icon(Icons.sports_soccer, color: BolixoColors.accentBlue),
+                  label: const Text("Partidas", style: TextStyle(color: BolixoColors.accentBlue)),
                 ),
                 if (canDelete && comp.id != null)
                   TextButton.icon(

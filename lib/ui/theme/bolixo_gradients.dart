@@ -19,8 +19,8 @@ class BolixoGradients {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      BolixoColors.gold,
-      BolixoColors.goldLight,
+      BolixoColors.accentBlue,
+      BolixoColors.accentBlueLight,
     ],
   );
 }

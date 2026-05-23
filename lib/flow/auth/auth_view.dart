@@ -55,7 +55,14 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          gradient: BolixoGradients.primary,
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF0E1B2E),
+              Color(0xFF121F35),
+            ],
+          ),
         ),
         child: SafeArea(
           child: Stack(
@@ -89,7 +96,7 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
                       const SizedBox(height: 20),
                       // App name
                       Text(
-                        'Bolão dos Lixos',
+                        'Bolão da Copa',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -122,21 +129,11 @@ class AuthViewState extends State<AuthView> with SingleTickerProviderStateMixin 
                         ),
                       ),
                       const SizedBox(height: 32),
-                      // Glassmorphism form container
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(24),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: Container(
-                            padding: const EdgeInsets.all(24),
-                            decoration: BolixoDecorations.glass(radius: 24),
-                            child: Form(
-                              key: formKey,
-                              child: Column(
-                                children: buildInputs() + buildButtons(),
-                              ),
-                            ),
-                          ),
+                      // Form
+                      Form(
+                        key: formKey,
+                        child: Column(
+                          children: buildInputs() + buildButtons(),
                         ),
                       ),
                       const SizedBox(height: 48),

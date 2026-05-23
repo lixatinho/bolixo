@@ -133,7 +133,7 @@ class _ScoreStepperState extends State<ScoreStepper> {
             icon,
             size: 22,
             color: enabled
-                ? BolixoColors.gold
+                ? BolixoColors.textSecondary
                 : BolixoColors.textTertiary.withValues(alpha: 0.3),
           ),
         ),

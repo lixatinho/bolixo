@@ -8,10 +8,10 @@ class BolixoTheme {
   static ThemeData get dark => ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: BolixoColors.backgroundPrimary,
-    primaryColor: BolixoColors.gold,
+    primaryColor: BolixoColors.accentBlue,
     colorScheme: const ColorScheme.dark(
-      primary: BolixoColors.gold,
-      secondary: BolixoColors.gold,
+      primary: BolixoColors.accentBlue,
+      secondary: BolixoColors.accentBlue,
       surface: BolixoColors.surfaceCard,
       error: BolixoColors.error,
       onPrimary: BolixoColors.backgroundPrimary,
@@ -83,7 +83,7 @@ class BolixoTheme {
       behavior: SnackBarBehavior.floating,
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: BolixoColors.gold,
+      color: BolixoColors.accentBlue,
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -98,7 +98,7 @@ class BolixoTheme {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: BolixoColors.gold, width: 1.5),
+        borderSide: const BorderSide(color: BolixoColors.accentBlue, width: 1.5),
       ),
     ),
   );

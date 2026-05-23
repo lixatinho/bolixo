@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:shimmer/shimmer.dart';
 import 'theme/bolixo_colors.dart';
 import 'theme/bolixo_typography.dart';
 
 class SelectDateWidget extends StatelessWidget {
   final DateSelectionViewContent viewContent;
   final Function onTapCallback;
+  final bool isLoading;
 
   const SelectDateWidget({
     super.key,
     required this.viewContent,
     required this.onTapCallback,
+    this.isLoading = false,
   });
 
   @override
@@ -22,31 +25,72 @@ class SelectDateWidget extends StatelessWidget {
       width: double.infinity,
       color: BolixoColors.deepPlum,
       padding: const EdgeInsets.only(top: 20, bottom: 16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
+      child: isLoading
+          ? IgnorePointer(child: _buildShimmerContent())
+          : _buildContent(),
+    );
+  }
+
+  Widget _buildContent() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          viewContent.selectedDate().fullDate,
+          style: BolixoTypography.headlineMedium,
+        ),
+        const SizedBox(height: 14),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (int index = 0;
+                  index < viewContent.dates.length;
+                  index++) ...[
+                if (index > 0) const SizedBox(width: 10),
+                _buildDateChip(index),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildShimmerContent() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Same title but shimmer
+        Shimmer.fromColors(
+          baseColor: BolixoColors.surfaceCard,
+          highlightColor: BolixoColors.surfaceElevated,
+          child: Text(
             viewContent.selectedDate().fullDate,
             style: BolixoTypography.headlineMedium,
           ),
-          const SizedBox(height: 14),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (int index = 0;
-                    index < viewContent.dates.length;
-                    index++) ...[
-                  if (index > 0) const SizedBox(width: 10),
-                  _buildDateChip(index),
-                ],
+        ),
+        const SizedBox(height: 14),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (int index = 0; index < viewContent.dates.length; index++) ...[
+                if (index > 0) const SizedBox(width: 10),
+                Shimmer.fromColors(
+                  baseColor: BolixoColors.surfaceCard,
+                  highlightColor: BolixoColors.surfaceElevated,
+                  child: _buildDateChip(index),
+                ),
               ],
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -56,7 +100,7 @@ class SelectDateWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: isSelected
-            ? BolixoColors.gold
+            ? BolixoColors.accentBlue
             : BolixoColors.surfaceCard,
         borderRadius: BorderRadius.circular(16),
         border: isSelected

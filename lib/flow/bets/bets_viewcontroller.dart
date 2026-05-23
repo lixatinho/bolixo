@@ -79,11 +79,12 @@ class BetsViewController {
         .expand((betsByDay) => betsByDay.betList.map((bet) => bet.toApiModel()))
         .toList()
         .cast();
-    view!.updateIsLoading(true);
+    view!.updateIsSaving(true);
     api.saveUserBets(betList).then((empty) {
-      view!.showMessage("Aposta salva com sucesso.");
-      view!.updateIsLoading(false);
+      view!.updateIsSaving(false);
+      view!.showMessage("Palpite salvo com sucesso!");
     }, onError: (error) {
+      view!.updateIsSaving(false);
       view!.showMessage("Erro ao salvar aposta");
       if (kDebugMode) {
         print(error);

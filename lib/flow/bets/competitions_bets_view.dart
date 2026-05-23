@@ -178,7 +178,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: BolixoColors.gold),
+              const Icon(Icons.chevron_right, color: BolixoColors.accentBlue),
             ],
           ),
         ),

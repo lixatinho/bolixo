@@ -1,3 +1,4 @@
+import 'package:shimmer/shimmer.dart';
 import 'package:bolixo/api/model/user_model.dart';
 import 'package:bolixo/flow/auth/auth_service.dart';
 import 'package:bolixo/flow/competition/match_result_dialog.dart';
@@ -74,10 +75,10 @@ class BetItemView extends StatelessWidget {
                   showMatchResultDialog(context, bet.model.match!, onResultSaved!);
                 }
               },
-              icon: const Icon(Icons.save, color: BolixoColors.gold, size: 16),
+              icon: const Icon(Icons.save, color: BolixoColors.textSecondary, size: 16),
               label: const Text(
                 "Salvar",
-                style: TextStyle(color: BolixoColors.gold, fontSize: 12, fontWeight: FontWeight.bold),
+                style: TextStyle(color: BolixoColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold),
               ),
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -194,7 +195,7 @@ class BetItemView extends StatelessWidget {
       child: Text(
         'X',
         style: GoogleFonts.inter(
-          color: BolixoColors.goldDark,
+          color: BolixoColors.textTertiary,
           fontSize: 14,
           fontWeight: FontWeight.w600,
         ),
@@ -235,6 +236,80 @@ class BetItemView extends StatelessWidget {
               fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Shimmer skeleton that mirrors BetItemView layout exactly.
+class BetItemSkeleton extends StatelessWidget {
+  const BetItemSkeleton({super.key});
+
+  Widget _box(double w, double h, {double r = 8}) => Container(
+    width: w, height: h,
+    decoration: BoxDecoration(color: BolixoColors.surfaceCard, borderRadius: BorderRadius.circular(r)),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: BolixoColors.surfaceCard,
+      highlightColor: BolixoColors.surfaceElevated,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          color: BolixoColors.surfaceCard,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: BolixoColors.white6, width: 1),
+        ),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Home team
+              Column(children: [
+                _box(40, 40, r: 10),
+                const SizedBox(height: 6),
+                _box(30, 10),
+              ]),
+              // Home stepper
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 24),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  _box(48, 14, r: 4),
+                  const SizedBox(height: 4),
+                  _box(48, 28, r: 6),
+                  const SizedBox(height: 4),
+                  _box(48, 14, r: 4),
+                ]),
+              ),
+              // Middle
+              Column(children: [
+                _box(14, 14, r: 4),
+                const SizedBox(height: 8),
+                _box(36, 10),
+              ]),
+              // Away stepper
+              Padding(
+                padding: const EdgeInsets.only(left: 24, right: 16),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  _box(48, 14, r: 4),
+                  const SizedBox(height: 4),
+                  _box(48, 28, r: 6),
+                  const SizedBox(height: 4),
+                  _box(48, 14, r: 4),
+                ]),
+              ),
+              // Away team
+              Column(children: [
+                _box(40, 40, r: 10),
+                const SizedBox(height: 6),
+                _box(30, 10),
+              ]),
+            ],
           ),
         ),
       ),

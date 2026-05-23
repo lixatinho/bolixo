@@ -109,7 +109,7 @@ class _BoloesViewState extends State<BoloesView> {
           decoration: const InputDecoration(
             hintText: "Código do Bolão",
             hintStyle: TextStyle(color: BolixoColors.textTertiary),
-            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BolixoColors.gold)),
+            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BolixoColors.accentBlue)),
           ),
         ),
         actions: [
@@ -122,7 +122,7 @@ class _BoloesViewState extends State<BoloesView> {
                 _joinBolao(code);
               }
             },
-            child: const Text("Entrar", style: TextStyle(color: BolixoColors.gold))
+            child: const Text("Entrar", style: TextStyle(color: BolixoColors.accentBlue))
           ),
         ],
       ),
@@ -266,17 +266,17 @@ class _BoloesViewState extends State<BoloesView> {
                 );
                 if (result == true) _fetchData();
               },
-              label: const Text("Criar Bolão"),
-              icon: const Icon(Icons.add),
-              backgroundColor: BolixoColors.gold,
+              label: const Text("Criar Bolão", style: TextStyle(color: BolixoColors.gold)),
+              icon: const Icon(Icons.add, color: BolixoColors.gold),
+              backgroundColor: BolixoColors.surfaceElevated,
             ),
           const SizedBox(height: 12),
           FloatingActionButton.extended(
             heroTag: "join",
             onPressed: _showJoinBolaoDialog,
-            label: const Text("Entrar em Bolão"),
-            icon: const Icon(Icons.group_add),
-            backgroundColor: BolixoColors.electricViolet,
+            label: const Text("Entrar em Bolão", style: TextStyle(color: BolixoColors.gold)),
+            icon: const Icon(Icons.group_add, color: BolixoColors.gold),
+            backgroundColor: BolixoColors.surfaceElevated,
           ),
         ],
       ),
@@ -293,10 +293,10 @@ class _BoloesViewState extends State<BoloesView> {
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
-        title: Text(title, style: BolixoTypography.titleMedium.copyWith(color: BolixoColors.gold)),
+        title: Text(title, style: BolixoTypography.titleMedium),
         initiallyExpanded: initiallyExpanded,
-        iconColor: BolixoColors.gold,
-        collapsedIconColor: BolixoColors.gold,
+        iconColor: BolixoColors.textPrimary,
+        collapsedIconColor: BolixoColors.textPrimary,
         tilePadding: EdgeInsets.zero,
         children: [
           if (items.isEmpty)
@@ -335,7 +335,7 @@ class _BoloesViewState extends State<BoloesView> {
                 padding: const EdgeInsets.only(top: 4, bottom: 4),
                 child: Text(
                   bolao.competition!.name!,
-                  style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.gold),
+                  style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textSecondary),
                 ),
               ),
             if (isCreator && bolao.inviteCode != null)
@@ -343,7 +343,7 @@ class _BoloesViewState extends State<BoloesView> {
                 children: [
                   Text("Código: ${bolao.inviteCode}", style: const TextStyle(color: BolixoColors.textSecondary)),
                   IconButton(
-                    icon: const Icon(Icons.copy, size: 16, color: BolixoColors.gold),
+                    icon: const Icon(Icons.copy, size: 16, color: BolixoColors.textTertiary),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: bolao.inviteCode!));
                       ScaffoldMessenger.of(context).showSnackBar(

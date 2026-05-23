@@ -115,8 +115,8 @@ class _AdminBoloesViewState extends State<AdminBoloesView> {
                                   onPressed: () {
                                     // Lógica para editar bolão (Admin)
                                   },
-                                  icon: const Icon(Icons.edit, size: 18, color: BolixoColors.gold),
-                                  label: const Text("Editar", style: TextStyle(color: BolixoColors.gold)),
+                                  icon: const Icon(Icons.edit, size: 18, color: BolixoColors.accentBlue),
+                                  label: const Text("Editar", style: TextStyle(color: BolixoColors.accentBlue)),
                                 ),
                                 TextButton.icon(
                                   onPressed: () => _confirmDelete(bolao),

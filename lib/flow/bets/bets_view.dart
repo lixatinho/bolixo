@@ -2,6 +2,7 @@ import 'package:bolixo/flow/bets/bet_item_view.dart';
 import 'package:bolixo/flow/bets/bet_view_content.dart';
 import 'package:bolixo/flow/bets/bets_viewcontroller.dart';
 import 'package:bolixo/ui/shared/loading_widget.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class BetsWidgetState extends State<BetsWidget> {
   List<BetsByBolaoAndMatchViewContent> betsByBolaoAndMatch = [];
   int dateIndex = 0;
   bool isLoading = true;
+  bool isSaving = false;
   BetsViewController viewController = BetsViewController();
 
   @override
@@ -61,14 +63,13 @@ class BetsWidgetState extends State<BetsWidget> {
       );
     }
 
-    return Container(
-      color: BolixoColors.backgroundPrimary,
-      child: Column(children: [
+    final content = Column(children: [
         // Date selector
         SelectDateWidget(
           viewContent: DateSelectionViewContent.from(
               betsByDay.map((e) => e.date).toList(), dateIndex),
           onTapCallback: (int index) => viewController.onDateChanged(index),
+          isLoading: isSaving,
         ),
         // Score overview bar
         scoreOverview(),
@@ -87,7 +88,7 @@ class BetsWidgetState extends State<BetsWidget> {
                     return ListView.separated(
                       padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
                       itemCount: bets.length,
-                      itemBuilder: (context, index) => _buildBetCard(index),
+                      itemBuilder: (context, index) => _wrapShimmer(_buildBetCard(index)),
                       separatorBuilder: (_, __) => const SizedBox(height: spacing),
                     );
                   }
@@ -101,36 +102,32 @@ class BetsWidgetState extends State<BetsWidget> {
                       childAspectRatio: 1.85,
                     ),
                     itemCount: bets.length,
-                    itemBuilder: (context, index) => Center(child: _buildBetCard(index)),
+                    itemBuilder: (context, index) => Center(child: _wrapShimmer(_buildBetCard(index))),
                   );
                 },
               ),
-              // Save button - solid green at bottom
-              Positioned(
-                left: 16,
-                right: 16,
-                bottom: 16,
-                child: Container(
-                  height: 52,
-                  decoration: BoxDecoration(
-                    color: BolixoColors.gold,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+              if (!isSaving)
+                Positioned(
+                  right: 16,
+                  bottom: 16,
                   child: Material(
-                    color: Colors.transparent,
+                    color: BolixoColors.gold,
+                    borderRadius: BorderRadius.circular(14),
+                    elevation: 4,
                     child: InkWell(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(14),
                       onTap: () => viewController.saveBets(),
-                      child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.save, color: BolixoColors.backgroundPrimary, size: 20),
+                            const Icon(Icons.save, color: BolixoColors.backgroundPrimary, size: 18),
                             const SizedBox(width: 8),
                             Text(
                               'Salvar Palpites',
                               style: GoogleFonts.inter(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: BolixoColors.backgroundPrimary,
                               ),
@@ -141,11 +138,24 @@ class BetsWidgetState extends State<BetsWidget> {
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
-      ]),
+      ]);
+
+    return Container(
+      color: BolixoColors.backgroundPrimary,
+      child: isSaving ? IgnorePointer(child: content) : content,
+    );
+  }
+
+
+  Widget _wrapShimmer(Widget child) {
+    if (!isSaving) return child;
+    return Shimmer.fromColors(
+      baseColor: BolixoColors.surfaceCard,
+      highlightColor: BolixoColors.surfaceElevated,
+      child: child,
     );
   }
 
@@ -240,7 +250,7 @@ class BetsWidgetState extends State<BetsWidget> {
                   child: LinearProgressIndicator(
                     value: currentDay.accuracy,
                     backgroundColor: BolixoColors.white8,
-                    valueColor: const AlwaysStoppedAnimation<Color>(BolixoColors.gold),
+                    valueColor: const AlwaysStoppedAnimation<Color>(BolixoColors.accentBlue),
                     minHeight: 6,
                   ),
                 ),
@@ -264,9 +274,28 @@ class BetsWidgetState extends State<BetsWidget> {
     });
   }
 
+  void updateIsSaving(bool value) {
+    setState(() {
+      isSaving = value;
+    });
+  }
+
   void showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
+      content: Text(
+        message,
+        style: const TextStyle(color: BolixoColors.gold, fontWeight: FontWeight.w600),
+        textAlign: TextAlign.center,
+      ),
+      backgroundColor: BolixoColors.backgroundPrimary,
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(
+        bottom: MediaQuery.of(context).size.height * 0.4,
+        left: 40,
+        right: 40,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      duration: const Duration(seconds: 2),
     ));
   }
 

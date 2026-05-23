@@ -150,8 +150,8 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                   data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
                     initiallyExpanded: true,
-                    title: const Text("Filtros de Busca", style: TextStyle(color: BolixoColors.gold, fontSize: 14, fontWeight: FontWeight.bold)),
-                    leading: const Icon(Icons.filter_alt, color: BolixoColors.gold),
+                    title: const Text("Filtros de Busca", style: TextStyle(color: BolixoColors.accentBlue, fontSize: 14, fontWeight: FontWeight.bold)),
+                    leading: const Icon(Icons.filter_alt, color: BolixoColors.accentBlue),
                     collapsedBackgroundColor: BolixoColors.surfaceElevated,
                     backgroundColor: BolixoColors.surfaceElevated,
                     children: [
@@ -183,9 +183,9 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                 width: double.infinity,
                 child: OutlinedButton.icon(
                   onPressed: _addMatch,
-                  icon: const Icon(Icons.add, color: BolixoColors.gold),
-                  label: const Text("Nova Partida", style: TextStyle(color: BolixoColors.gold)),
-                  style: OutlinedButton.styleFrom(side: const BorderSide(color: BolixoColors.gold)),
+                  icon: const Icon(Icons.add, color: BolixoColors.accentBlue),
+                  label: const Text("Nova Partida", style: TextStyle(color: BolixoColors.accentBlue)),
+                  style: OutlinedButton.styleFrom(side: const BorderSide(color: BolixoColors.accentBlue)),
                 ),
               ),
               const SizedBox(height: 12),
@@ -248,7 +248,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                         isDense: true,
                         contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                         enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: BolixoColors.white10), borderRadius: BorderRadius.circular(8)),
-                        focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: BolixoColors.gold), borderRadius: BorderRadius.circular(8)),
+                        focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: BolixoColors.accentBlue), borderRadius: BorderRadius.circular(8)),
                       ),
                       onChanged: (v) => setState(() => _selectedFilterType = int.tryParse(v)),
                     ),
@@ -272,12 +272,12 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                         decoration: BoxDecoration(
-                          border: Border.all(color: _selectedFilterDate != null ? BolixoColors.gold : BolixoColors.white10),
+                          border: Border.all(color: _selectedFilterDate != null ? BolixoColors.accentBlue : BolixoColors.white10),
                           borderRadius: BorderRadius.circular(8)
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.calendar_month, size: 16, color: BolixoColors.gold),
+                            const Icon(Icons.calendar_month, size: 16, color: BolixoColors.accentBlue),
                             const SizedBox(width: 8),
                             Text(
                               _selectedFilterDate == null ? "Filtrar por dia" : DateFormat('dd/MM/yyyy').format(_selectedFilterDate!),
@@ -318,7 +318,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.dark(
-              primary: BolixoColors.gold,
+              primary: BolixoColors.accentBlue,
               onPrimary: Colors.black,
               surface: BolixoColors.surfaceElevated,
               onSurface: BolixoColors.textPrimary,
@@ -341,7 +341,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
           const Icon(Icons.search_off, size: 48, color: BolixoColors.textTertiary),
           const SizedBox(height: 16),
           Text("Nenhum jogo encontrado com estes filtros.", style: TextStyle(color: BolixoColors.textSecondary)),
-          TextButton(onPressed: _clearFilters, child: const Text("Ver todos os jogos", style: TextStyle(color: BolixoColors.gold))),
+          TextButton(onPressed: _clearFilters, child: const Text("Ver todos os jogos", style: TextStyle(color: BolixoColors.accentBlue))),
         ],
       ),
     );
@@ -351,7 +351,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: value != null ? BolixoColors.gold : BolixoColors.white10),
+        border: Border.all(color: value != null ? BolixoColors.accentBlue : BolixoColors.white10),
         borderRadius: BorderRadius.circular(8)
       ),
       child: DropdownButtonHideUnderline(
@@ -362,7 +362,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
           items: items,
           onChanged: onChanged,
           isExpanded: true,
-          icon: const Icon(Icons.keyboard_arrow_down, color: BolixoColors.gold, size: 20),
+          icon: const Icon(Icons.keyboard_arrow_down, color: BolixoColors.accentBlue, size: 20),
           style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textPrimary),
         ),
       ),
@@ -424,7 +424,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                         Text(
                           match.homeScore?.toString() ?? "-",
                           style: TextStyle(
-                            color: hasResult ? BolixoColors.gold : BolixoColors.textTertiary,
+                            color: hasResult ? BolixoColors.accentBlue : BolixoColors.textTertiary,
                             fontSize: 24,
                             fontWeight: FontWeight.bold
                           ),
@@ -436,7 +436,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Column(
                     children: [
-                      Text("VS", style: TextStyle(fontWeight: FontWeight.bold, color: hasResult ? BolixoColors.gold : BolixoColors.textPrimary, fontSize: 16)),
+                      Text("VS", style: TextStyle(fontWeight: FontWeight.bold, color: hasResult ? BolixoColors.accentBlue : BolixoColors.textPrimary, fontSize: 16)),
                       const SizedBox(height: 12),
                     ],
                   ),
@@ -450,7 +450,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                         Text(
                           match.awayScore?.toString() ?? "-",
                           style: TextStyle(
-                            color: hasResult ? BolixoColors.gold : BolixoColors.textTertiary,
+                            color: hasResult ? BolixoColors.accentBlue : BolixoColors.textTertiary,
                             fontSize: 24,
                             fontWeight: FontWeight.bold
                           ),
@@ -492,7 +492,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.analytics_outlined, color: BolixoColors.gold, size: 22),
+                    icon: const Icon(Icons.analytics_outlined, color: BolixoColors.accentBlue, size: 22),
                     onPressed: () => setState(() => _matchIndexToResult = originalIndex),
                   ),
                   IconButton(
@@ -502,7 +502,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                 ],
               ),
             ] else ...[
-              const Text("Cadastrar Placar Final", style: TextStyle(color: BolixoColors.gold, fontSize: 12, fontWeight: FontWeight.bold)),
+              const Text("Cadastrar Placar Final", style: TextStyle(color: BolixoColors.accentBlue, fontSize: 12, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -530,9 +530,9 @@ class _EditMatchesViewState extends State<EditMatchesView> {
                     child: const Text("Cancelar", style: TextStyle(color: BolixoColors.textTertiary)),
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: BolixoColors.gold),
+                    style: ElevatedButton.styleFrom(backgroundColor: BolixoColors.surfaceElevated),
                     onPressed: () => _saveMatchResult(match),
-                    child: const Text("Salvar e Calcular", style: TextStyle(color: BolixoColors.backgroundPrimary, fontSize: 12, fontWeight: FontWeight.bold)),
+                    child: const Text("Salvar e Calcular", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
                   ),
                 ],
               )
@@ -593,9 +593,9 @@ class _EditMatchesViewState extends State<EditMatchesView> {
             height: 80,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: candidateData.isNotEmpty ? BolixoColors.gold.withValues(alpha:0.2) : Colors.transparent,
+              color: candidateData.isNotEmpty ? BolixoColors.accentBlue.withValues(alpha:0.2) : Colors.transparent,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: candidateData.isNotEmpty ? BolixoColors.gold : BolixoColors.white6),
+              border: Border.all(color: candidateData.isNotEmpty ? BolixoColors.accentBlue : BolixoColors.white6),
             ),
             child: selectedTeam == null
                 ? const Icon(Icons.add_circle_outline, color: BolixoColors.textTertiary)
@@ -625,7 +625,7 @@ class _EditMatchesViewState extends State<EditMatchesView> {
       child: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: isDragging ? BolixoColors.gold.withValues(alpha: 0.5) : Colors.transparent,
+          color: isDragging ? BolixoColors.accentBlue.withValues(alpha: 0.5) : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
         ),
         child: TeamFlag(abbreviation: team.abbreviation, radius: 18),

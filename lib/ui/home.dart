@@ -157,7 +157,7 @@ class HomeState extends State<Home> {
                     ),
                     Text(
                       role.toString().split('.').last,
-                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.goldLight),
+                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentBlueLight),
                     ),
                   ],
                 ),
@@ -271,7 +271,7 @@ class HomeState extends State<Home> {
           children: [
             Icon(
               icon,
-              color: isActive ? BolixoColors.goldLight : BolixoColors.textTertiary,
+              color: isActive ? BolixoColors.accentBlueLight : BolixoColors.textTertiary,
               size: 24,
             ),
             const SizedBox(height: 4),
@@ -280,7 +280,7 @@ class HomeState extends State<Home> {
               style: GoogleFonts.inter(
                 fontSize: 10,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                color: isActive ? BolixoColors.goldLight : BolixoColors.textTertiary,
+                color: isActive ? BolixoColors.accentBlueLight : BolixoColors.textTertiary,
               ),
             ),
             const SizedBox(height: 4),
@@ -290,7 +290,7 @@ class HomeState extends State<Home> {
               height: 3,
               width: isActive ? 20 : 0,
               decoration: BoxDecoration(
-                color: BolixoColors.gold,
+                color: BolixoColors.accentBlue,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
