@@ -28,9 +28,10 @@ class BetItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isAdmin = AuthService().repository.getRole() == UserRole.ADMIN;
+    final showSaveButton = isAdmin && bet.model.match != null && onResultSaved != null;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: showSaveButton ? 12 : 16),
       decoration: BoxDecoration(
         color: BolixoColors.surfaceCard,
         borderRadius: BorderRadius.circular(20),
@@ -48,8 +49,7 @@ class BetItemView extends StatelessWidget {
                 // Home team
                 teamColumn(bet.homeTeam),
 
-                betStepper(bet.homeTeam, homeGoalsChanged, true),
-                matchScoreAndBet(bet.homeTeam),
+                scoreArea(bet.homeTeam, homeGoalsChanged, true),
 
                 // Middle
                 Column(
@@ -60,15 +60,14 @@ class BetItemView extends StatelessWidget {
                   ],
                 ),
 
-                betStepper(bet.awayTeam, awayGoalsChanged, false),
-                matchScoreAndBet(bet.awayTeam),
+                scoreArea(bet.awayTeam, awayGoalsChanged, false),
 
                 // Away team
                 teamColumn(bet.awayTeam),
               ],
             ),
           ),
-          if (isAdmin && bet.model.match != null)
+          if (showSaveButton)
             TextButton.icon(
               onPressed: () {
                 if (onResultSaved != null) {
@@ -90,79 +89,49 @@ class BetItemView extends StatelessWidget {
     );
   }
 
-  Widget betStepper(
-    TeamViewContent team,
-    Function callback,
-    bool isHomeTeam,
-  ) {
+  Widget scoreArea(TeamViewContent team, Function callback, bool isHomeTeam) {
     final initialValue = int.tryParse(team.scoreBet) ?? 0;
-    return Visibility(
-      visible: bet.isBetEnabled,
-      child: Padding(
-        padding: EdgeInsets.only(
-          left: isHomeTeam ? 16 : 24,
-          right: !isHomeTeam ? 16 : 24,
-        ),
-        child: ScoreStepper(
-          value: initialValue,
-          onChanged: (v) => callback(v.toString()),
-          enabled: bet.isBetEnabled,
-        ),
+    return Padding(
+      padding: EdgeInsets.only(
+        left: isHomeTeam ? 16 : 24,
+        right: !isHomeTeam ? 16 : 24,
       ),
-    );
-  }
-
-  Widget matchScoreAndBet(TeamViewContent team) {
-    return Visibility(
-      visible: !bet.isBetEnabled,
-      child: Column(
-        children: [
-          betText(team.scoreBet),
-          actualScoreText(team.actualScore),
-        ],
-      ),
-    );
-  }
-
-  Widget betText(String text) {
-    return Visibility(
-      visible: !bet.isBetEnabled && text.isNotEmpty,
-      child: Tooltip(
-        message: bet.savedBetTooltip,
-        padding: const EdgeInsets.only(left: 4, right: 4),
-        child: SizedBox(
-          width: 50,
-          child: Center(
-            child: Text(
-              text,
-              style: BolixoTypography.bodyLarge.copyWith(
-                color: BolixoColors.textPrimary,
+      child: bet.isBetEnabled
+          ? ScoreStepper(
+              value: initialValue,
+              onChanged: (v) => callback(v.toString()),
+              enabled: bet.isBetEnabled,
+            )
+          : SizedBox(
+              width: 48,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (team.scoreBet.isNotEmpty)
+                    Tooltip(
+                      message: bet.savedBetTooltip,
+                      child: Text(
+                        team.scoreBet,
+                        style: GoogleFonts.poppins(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: BolixoColors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  if (team.actualScore.isNotEmpty)
+                    Tooltip(
+                      message: bet.scoreTooltip,
+                      child: Text(
+                        team.actualScore,
+                        style: BolixoTypography.bodySmall.copyWith(
+                          color: BolixoColors.textTertiary,
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget actualScoreText(String text) {
-    return Visibility(
-      visible: !bet.isBetEnabled && text.isNotEmpty,
-      child: Tooltip(
-        message: bet.scoreTooltip,
-        padding: const EdgeInsets.only(left: 4, right: 4),
-        child: SizedBox(
-          width: 50,
-          child: Center(
-            child: Text(
-              text,
-              style: BolixoTypography.bodyMedium.copyWith(
-                color: BolixoColors.textTertiary,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 

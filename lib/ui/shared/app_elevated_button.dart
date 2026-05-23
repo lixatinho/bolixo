@@ -17,7 +17,7 @@ class AppElevatedButton extends StatelessWidget {
     return Container(
       height: 52,
       decoration: BoxDecoration(
-        color: BolixoColors.surfaceElevated,
+        color: BolixoColors.gold,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Material(
@@ -31,7 +31,7 @@ class AppElevatedButton extends StatelessWidget {
               style: GoogleFonts.inter(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Colors.white,
+                color: BolixoColors.backgroundPrimary,
               ),
             ),
           ),
