@@ -98,10 +98,10 @@ class BetsWidgetState extends State<BetsWidget> {
                       crossAxisCount: columns,
                       crossAxisSpacing: spacing,
                       mainAxisSpacing: spacing,
-                      childAspectRatio: 1.6,
+                      childAspectRatio: 2.0,
                     ),
                     itemCount: bets.length,
-                    itemBuilder: (context, index) => _buildBetCard(index),
+                    itemBuilder: (context, index) => Center(child: _buildBetCard(index)),
                   );
                 },
               ),
