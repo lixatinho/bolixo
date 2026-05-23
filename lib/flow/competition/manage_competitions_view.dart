@@ -3,6 +3,7 @@ import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/flow/competition/edit_competition_view.dart';
 import 'package:bolixo/flow/competition/edit_matches_view.dart';
 import 'package:bolixo/ui/shared/app_drawer.dart';
+import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -102,16 +103,16 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
       key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Competições", style: TextStyle(color: Colors.white)),
+        title: const Text("Competições", style: TextStyle(color: BolixoColors.textPrimary)),
         backgroundColor: BolixoColors.deepPlum,
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
+          icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
         ),
       ),
       drawer: const AppDrawer(),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
+          ? const SkeletonLoading()
           : ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: _competitions.length,
@@ -121,8 +122,8 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
               },
             ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: BolixoColors.accentGreen,
-        child: const Icon(Icons.add, color: Colors.white),
+        backgroundColor: BolixoColors.accentBlue,
+        child: const Icon(Icons.add, color: BolixoColors.textPrimary),
         onPressed: () async {
           final result = await Navigator.push(
             context,
@@ -161,7 +162,7 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
             ),
             Text(
               "Partidas cadastradas: $matchCount",
-              style: BolixoTypography.bodySmall.copyWith(color: Colors.white70),
+              style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textSecondary),
             ),
             const SizedBox(height: 16),
             Wrap(
@@ -177,8 +178,8 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
                     );
                     if (result == true) _fetchCompetitions();
                   },
-                  icon: const Icon(Icons.edit, color: BolixoColors.accentGreen),
-                  label: const Text("Editar", style: TextStyle(color: BolixoColors.accentGreen)),
+                  icon: const Icon(Icons.edit, color: BolixoColors.accentBlue),
+                  label: const Text("Editar", style: TextStyle(color: BolixoColors.accentBlue)),
                 ),
                 TextButton.icon(
                   onPressed: () {
@@ -187,8 +188,8 @@ class _ManageCompetitionsViewState extends State<ManageCompetitionsView> {
                       MaterialPageRoute(builder: (context) => EditMatchesView(competition: comp)),
                     );
                   },
-                  icon: const Icon(Icons.sports_soccer, color: BolixoColors.accentGreen),
-                  label: const Text("Partidas", style: TextStyle(color: BolixoColors.accentGreen)),
+                  icon: const Icon(Icons.sports_soccer, color: BolixoColors.accentBlue),
+                  label: const Text("Partidas", style: TextStyle(color: BolixoColors.accentBlue)),
                 ),
                 if (canDelete && comp.id != null)
                   TextButton.icon(

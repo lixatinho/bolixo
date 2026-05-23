@@ -4,13 +4,67 @@ import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AppBottomNav extends StatelessWidget {
-  final int selectedIndex;
+/// Main shell that wraps Palpites and Bolões tabs with lazy IndexedStack.
+/// Only builds a tab when first visited; keeps it alive after that.
+class MainShell extends StatefulWidget {
+  final int initialIndex;
 
-  const AppBottomNav({Key? key, required this.selectedIndex}) : super(key: key);
+  const MainShell({super.key, this.initialIndex = 0});
+
+  @override
+  State<MainShell> createState() => MainShellState();
+
+  static void navigate(BuildContext context, {int tab = 0}) {
+    Navigator.of(context).pushAndRemoveUntil(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => MainShell(initialIndex: tab),
+        transitionDuration: Duration.zero,
+        settings: const RouteSettings(name: '/main'),
+      ),
+      (route) => false,
+    );
+  }
+}
+
+class MainShellState extends State<MainShell> {
+  late int _currentIndex;
+  final Set<int> _loaded = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialIndex;
+    _loaded.add(_currentIndex);
+  }
+
+  void switchTab(int index) {
+    if (index != _currentIndex) {
+      _loaded.add(index);
+      setState(() => _currentIndex = index);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          if (_loaded.contains(0))
+            const CompetitionsBetsView()
+          else
+            const SizedBox.shrink(),
+          if (_loaded.contains(1))
+            const BoloesView()
+          else
+            const SizedBox.shrink(),
+        ],
+      ),
+      bottomNavigationBar: _buildBottomNav(),
+    );
+  }
+
+  Widget _buildBottomNav() {
     return Container(
       decoration: const BoxDecoration(
         color: BolixoColors.backgroundPrimary,
@@ -24,8 +78,8 @@ class AppBottomNav extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(context, 0, Icons.sports_soccer, 'Palpites', '/competitions_bets'),
-              _buildNavItem(context, 1, Icons.groups, 'Bolões', '/boloes'),
+              _buildNavItem(0, Icons.sports_soccer, 'Palpites'),
+              _buildNavItem(1, Icons.groups, 'Bolões'),
             ],
           ),
         ),
@@ -33,30 +87,10 @@ class AppBottomNav extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(BuildContext context, int index, IconData icon, String label, String routeName) {
-    final isActive = selectedIndex == index;
+  Widget _buildNavItem(int index, IconData icon, String label) {
+    final isActive = _currentIndex == index;
     return GestureDetector(
-      onTap: () {
-        if (!isActive) {
-          if (routeName == '/competitions_bets') {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CompetitionsBetsView(),
-                settings: const RouteSettings(name: '/competitions_bets'),
-              ),
-            );
-          } else if (routeName == '/boloes') {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const BoloesView(),
-                settings: const RouteSettings(name: '/boloes'),
-              ),
-            );
-          }
-        }
-      },
+      onTap: () => switchTab(index),
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
         width: 100,
@@ -78,7 +112,6 @@ class AppBottomNav extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            // Active indicator dot
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               height: 3,

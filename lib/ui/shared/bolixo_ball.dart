@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/bolixo_colors.dart';
 
 /// Copa 2026 inspired soccer ball.
-/// Modern triangular panel design with vibrant accent colors
-/// that match the app's purple/green/cyan palette.
+/// Modern triangular panel design with navy/gold/green palette.
 class BolixoBall extends StatelessWidget {
   final double size;
 
@@ -30,7 +29,7 @@ class _Copa2026BallPainter extends CustomPainter {
 
     // Soft glow behind ball
     final glowPaint = Paint()
-      ..color = BolixoColors.accentGreenLight.withValues(alpha: 0.12)
+      ..color = BolixoColors.goldLight.withValues(alpha: 0.12)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 16);
     canvas.drawCircle(center, r, glowPaint);
 
@@ -50,12 +49,12 @@ class _Copa2026BallPainter extends CustomPainter {
     // Triangular panel design (Copa 2026 style)
     // 6 triangular panels radiating from center with alternating colors
     final colors = [
-      BolixoColors.royalPurple,        // purple
-      BolixoColors.accentGreen,         // green
-      BolixoColors.accentCyan,          // cyan
-      BolixoColors.royalPurple,        // purple
-      BolixoColors.accentGreen,         // green
-      BolixoColors.accentCyan,          // cyan
+      BolixoColors.surfaceElevated,    // navy
+      BolixoColors.gold,                // gold
+      BolixoColors.goldDark,            // dark gold
+      BolixoColors.surfaceElevated,    // navy
+      BolixoColors.gold,                // gold
+      BolixoColors.goldDark,            // dark gold
     ];
 
     for (int i = 0; i < 6; i++) {

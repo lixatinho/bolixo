@@ -1,3 +1,4 @@
+import 'package:bolixo/ui/shared/team_flag.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_decorations.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -159,18 +160,7 @@ class BetViewItemView extends StatelessWidget {
   Widget teamFlag(String flagUrl) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: BolixoColors.white10, width: 1.5),
-        ),
-        child: CircleAvatar(
-          backgroundImage: AssetImage(flagUrl),
-          backgroundColor: BolixoColors.surfaceCard,
-        ),
-      ),
+      child: TeamFlag(flagUrl: flagUrl, radius: 20),
     );
   }
 
@@ -211,7 +201,7 @@ class BetViewItemView extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: vPadding, horizontal: hPadding),
           decoration: BoxDecoration(
-            color: bet.score.color.withOpacity(0.15),
+            color: bet.score.color.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(

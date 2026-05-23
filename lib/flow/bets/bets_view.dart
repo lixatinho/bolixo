@@ -2,6 +2,7 @@ import 'package:bolixo/flow/bets/bet_item_view.dart';
 import 'package:bolixo/flow/bets/bet_view_content.dart';
 import 'package:bolixo/flow/bets/bets_viewcontroller.dart';
 import 'package:bolixo/ui/shared/loading_widget.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class BetsWidgetState extends State<BetsWidget> {
   List<BetsByBolaoAndMatchViewContent> betsByBolaoAndMatch = [];
   int dateIndex = 0;
   bool isLoading = true;
+  bool isSaving = false;
   BetsViewController viewController = BetsViewController();
 
   @override
@@ -44,16 +46,16 @@ class BetsWidgetState extends State<BetsWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.sentiment_dissatisfied, size: 64, color: Colors.white70),
+              const Icon(Icons.sentiment_dissatisfied, size: 64, color: BolixoColors.textSecondary),
               const SizedBox(height: 16),
               Text(
                 "Nenhum jogo disponível.",
-                style: BolixoTypography.titleMedium.copyWith(color: Colors.white),
+                style: BolixoTypography.titleMedium.copyWith(color: BolixoColors.textPrimary),
               ),
               const SizedBox(height: 8),
               Text(
                 "Aguarde o administrador cadastrar as partidas.",
-                style: BolixoTypography.bodyMedium.copyWith(color: Colors.white70),
+                style: BolixoTypography.bodyMedium.copyWith(color: BolixoColors.textSecondary),
               ),
             ],
           ),
@@ -61,17 +63,13 @@ class BetsWidgetState extends State<BetsWidget> {
       );
     }
 
-    return Container(
-      color: BolixoColors.backgroundPrimary,
-      child: Column(children: [
+    final content = Column(children: [
         // Date selector
-        SizedBox(
-          height: 160,
-          child: SelectDateWidget(
-            viewContent: DateSelectionViewContent.from(
-                betsByDay.map((e) => e.date).toList(), dateIndex),
-            onTapCallback: (int index) => viewController.onDateChanged(index),
-          ),
+        SelectDateWidget(
+          viewContent: DateSelectionViewContent.from(
+              betsByDay.map((e) => e.date).toList(), dateIndex),
+          onTapCallback: (int index) => viewController.onDateChanged(index),
+          isLoading: isSaving,
         ),
         // Score overview bar
         scoreOverview(),
@@ -79,64 +77,59 @@ class BetsWidgetState extends State<BetsWidget> {
         Expanded(
           child: Stack(
             children: [
-              ListView.separated(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
-                itemCount: betsByDay[dateIndex].betList.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (betsByDay[dateIndex]
-                              .betList[index]
-                              .model
-                              .match
-                              ?.matchDate
-                              .isBefore(DateTime.now().toUtc()) ==
-                          true) {
-                        viewController.getBetsByBolaoAndMatch(
-                            betsByDay[dateIndex].betList[index].model.match?.id);
-                      }
-                    },
-                    child: BetItemView(
-                      bet: betsByDay[dateIndex].betList[index],
-                      homeGoalsChanged: (goals) =>
-                          viewController.onGoalsTeam1Changed(index, goals),
-                      awayGoalsChanged: (goals) =>
-                          viewController.onGoalsTeam2Changed(index, goals),
-                      onResultSaved: () => viewController.onInit(this, competitionId: widget.competitionId),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final bets = betsByDay[dateIndex].betList;
+                  const double minCardWidth = 340;
+                  const double spacing = 12;
+                  final columns = (constraints.maxWidth / (minCardWidth + spacing)).floor().clamp(1, 4);
+
+                  if (columns <= 1) {
+                    return ListView.separated(
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
+                      itemCount: bets.length,
+                      itemBuilder: (context, index) => _wrapShimmer(_buildBetCard(index)),
+                      separatorBuilder: (_, __) => const SizedBox(height: spacing),
+                    );
+                  }
+
+                  return GridView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: columns,
+                      crossAxisSpacing: spacing,
+                      mainAxisSpacing: spacing,
+                      childAspectRatio: 1.85,
                     ),
+                    itemCount: bets.length,
+                    itemBuilder: (context, index) => Center(child: _wrapShimmer(_buildBetCard(index))),
                   );
                 },
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 12),
               ),
-              // Save button - solid green at bottom
-              Positioned(
-                left: 16,
-                right: 16,
-                bottom: 16,
-                child: Container(
-                  height: 52,
-                  decoration: BoxDecoration(
-                    color: BolixoColors.accentGreen,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+              if (!isSaving)
+                Positioned(
+                  right: 16,
+                  bottom: 16,
                   child: Material(
-                    color: Colors.transparent,
+                    color: BolixoColors.gold,
+                    borderRadius: BorderRadius.circular(14),
+                    elevation: 4,
                     child: InkWell(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(14),
                       onTap: () => viewController.saveBets(),
-                      child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.save, color: BolixoColors.textOnAccent, size: 20),
+                            const Icon(Icons.save, color: BolixoColors.backgroundPrimary, size: 18),
                             const SizedBox(width: 8),
                             Text(
                               'Salvar Palpites',
                               style: GoogleFonts.inter(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600,
-                                color: BolixoColors.textOnAccent,
+                                color: BolixoColors.backgroundPrimary,
                               ),
                             ),
                           ],
@@ -145,11 +138,49 @@ class BetsWidgetState extends State<BetsWidget> {
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
-      ]),
+      ]);
+
+    return Container(
+      color: BolixoColors.backgroundPrimary,
+      child: isSaving ? IgnorePointer(child: content) : content,
+    );
+  }
+
+
+  Widget _wrapShimmer(Widget child) {
+    if (!isSaving) return child;
+    return Shimmer.fromColors(
+      baseColor: BolixoColors.surfaceCard,
+      highlightColor: BolixoColors.surfaceElevated,
+      child: child,
+    );
+  }
+
+  Widget _buildBetCard(int index) {
+    return GestureDetector(
+      onTap: () {
+        if (betsByDay[dateIndex]
+                .betList[index]
+                .model
+                .match
+                ?.matchDate
+                .isBefore(DateTime.now().toUtc()) ==
+            true) {
+          viewController.getBetsByBolaoAndMatch(
+              betsByDay[dateIndex].betList[index].model.match?.id);
+        }
+      },
+      child: BetItemView(
+        bet: betsByDay[dateIndex].betList[index],
+        homeGoalsChanged: (goals) =>
+            viewController.onGoalsTeam1Changed(index, goals),
+        awayGoalsChanged: (goals) =>
+            viewController.onGoalsTeam2Changed(index, goals),
+        onResultSaved: () => viewController.onInit(this, competitionId: widget.competitionId),
+      ),
     );
   }
 
@@ -219,7 +250,7 @@ class BetsWidgetState extends State<BetsWidget> {
                   child: LinearProgressIndicator(
                     value: currentDay.accuracy,
                     backgroundColor: BolixoColors.white8,
-                    valueColor: const AlwaysStoppedAnimation<Color>(BolixoColors.accentCyan),
+                    valueColor: const AlwaysStoppedAnimation<Color>(BolixoColors.accentBlue),
                     minHeight: 6,
                   ),
                 ),
@@ -243,9 +274,28 @@ class BetsWidgetState extends State<BetsWidget> {
     });
   }
 
+  void updateIsSaving(bool value) {
+    setState(() {
+      isSaving = value;
+    });
+  }
+
   void showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
+      content: Text(
+        message,
+        style: const TextStyle(color: BolixoColors.gold, fontWeight: FontWeight.w600),
+        textAlign: TextAlign.center,
+      ),
+      backgroundColor: BolixoColors.backgroundPrimary,
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(
+        bottom: MediaQuery.of(context).size.height * 0.4,
+        left: 40,
+        right: 40,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      duration: const Duration(seconds: 2),
     ));
   }
 

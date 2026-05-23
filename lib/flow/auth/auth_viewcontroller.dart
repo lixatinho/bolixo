@@ -21,7 +21,7 @@ class AuthViewController {
     authService.initialize().then((value) {
       if (authService.isLoggedIn()) {
         selectFirstBolao(() {
-          navigateToHome(view!.context, redirectBoloes: true);
+          navigateToHome(view!.context);
         });
       } else {
         _authFormType = authFormType;
@@ -71,7 +71,7 @@ class AuthViewController {
     authService.login(user).then((response) {
       if (response) {
         selectFirstBolao(() {
-          navigateToHome(view!.context, redirectBoloes: true);
+          navigateToHome(view!.context);
         });
       } else {
         view!.updateIsLoading(false);

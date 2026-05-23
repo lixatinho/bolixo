@@ -8,13 +8,13 @@ class BolixoTheme {
   static ThemeData get dark => ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: BolixoColors.backgroundPrimary,
-    primaryColor: BolixoColors.electricViolet,
+    primaryColor: BolixoColors.accentBlue,
     colorScheme: const ColorScheme.dark(
-      primary: BolixoColors.electricViolet,
-      secondary: BolixoColors.accentGreen,
+      primary: BolixoColors.accentBlue,
+      secondary: BolixoColors.accentBlue,
       surface: BolixoColors.surfaceCard,
       error: BolixoColors.error,
-      onPrimary: BolixoColors.textPrimary,
+      onPrimary: BolixoColors.backgroundPrimary,
       onSecondary: BolixoColors.textOnAccent,
       onSurface: BolixoColors.textPrimary,
       onError: BolixoColors.textPrimary,
@@ -63,6 +63,17 @@ class BolixoTheme {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
     ),
+    tooltipTheme: TooltipThemeData(
+      decoration: BoxDecoration(
+        color: BolixoColors.surfaceElevated,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: BolixoColors.white10, width: 1),
+      ),
+      textStyle: const TextStyle(
+        color: BolixoColors.textPrimary,
+        fontSize: 12,
+      ),
+    ),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: BolixoColors.surfaceElevated,
       contentTextStyle: const TextStyle(color: BolixoColors.textPrimary),
@@ -72,7 +83,7 @@ class BolixoTheme {
       behavior: SnackBarBehavior.floating,
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: BolixoColors.electricViolet,
+      color: BolixoColors.accentBlue,
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -87,7 +98,7 @@ class BolixoTheme {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: BolixoColors.electricViolet, width: 1.5),
+        borderSide: const BorderSide(color: BolixoColors.accentBlue, width: 1.5),
       ),
     ),
   );

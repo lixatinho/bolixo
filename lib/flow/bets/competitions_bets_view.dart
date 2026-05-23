@@ -1,8 +1,9 @@
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
-import 'package:bolixo/ui/shared/app_bottom_nav.dart';
 import 'package:bolixo/ui/shared/app_drawer.dart';
+import 'package:bolixo/ui/shared/gold_title.dart';
+import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/shared/rules_dialog.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -21,7 +22,8 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CompetitionModel> _competitions = [];
   bool _isLoading = true;
-  bool _isRedirecting = false;
+  int? _singleCompetitionId;
+  String? _singleCompetitionName;
 
   @override
   void initState() {
@@ -38,26 +40,11 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
         setState(() {
           _competitions = list;
           _isLoading = false;
+          if (_competitions.length == 1) {
+            _singleCompetitionId = _competitions[0].id;
+            _singleCompetitionName = _competitions[0].name ?? "Palpites";
+          }
         });
-
-        if (_competitions.length == 1 && !_isRedirecting) {
-          _isRedirecting = true;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CompetitionBetsDetailView(
-                    competitionId: _competitions[0].id!,
-                    competitionName: _competitions[0].name ?? "Palpites",
-                    showDrawer: true,
-                  ),
-                  settings: const RouteSettings(name: '/competition_detail'),
-                ),
-              );
-            }
-          });
-        }
       }
     } catch (e) {
       if (mounted) {
@@ -71,10 +58,31 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isRedirecting) {
-      return const Scaffold(
+    // Single competition: render bets inline (no navigation needed)
+    if (_singleCompetitionId != null) {
+      return Scaffold(
+        key: _scaffoldKey,
         backgroundColor: BolixoColors.backgroundPrimary,
-        body: Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen)),
+        appBar: AppBar(
+          title: GoldTitle(_singleCompetitionName!),
+          backgroundColor: BolixoColors.deepPlum,
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(1),
+            child: Divider(height: 1, thickness: 1, color: Color(0x40B08A30)),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () => showRulesDialog(context),
+              icon: const Icon(Icons.rule_outlined, color: BolixoColors.textPrimary),
+            ),
+          ],
+        ),
+        drawer: const AppDrawer(),
+        body: BetsWidget(competitionId: _singleCompetitionId!),
       );
     }
 
@@ -82,22 +90,26 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
       key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Palpites", style: TextStyle(color: Colors.white)),
+        title: const GoldTitle("Palpites"),
         backgroundColor: BolixoColors.deepPlum,
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: Divider(height: 1, thickness: 1, color: Color(0x40B08A30)),
+        ),
         leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
+          icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
         ),
         actions: [
           IconButton(
             onPressed: () => showRulesDialog(context),
-            icon: const Icon(Icons.rule_outlined, color: Colors.white),
+            icon: const Icon(Icons.rule_outlined, color: BolixoColors.textPrimary),
           ),
         ],
       ),
       drawer: const AppDrawer(),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
+          ? const SkeletonLoading()
           : RefreshIndicator(
               onRefresh: _fetchCompetitions,
               child: _competitions.isEmpty
@@ -110,7 +122,6 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
                       },
                     ),
             ),
-      bottomNavigationBar: const AppBottomNav(selectedIndex: 0),
     );
   }
 
@@ -119,11 +130,11 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.event_busy, size: 64, color: Colors.white38),
+          const Icon(Icons.event_busy, size: 64, color: BolixoColors.textTertiary),
           const SizedBox(height: 16),
           Text(
             "Nenhuma competição ativa no momento.",
-            style: BolixoTypography.bodyLarge.copyWith(color: Colors.white70),
+            style: BolixoTypography.bodyLarge.copyWith(color: BolixoColors.textSecondary),
           ),
         ],
       ),
@@ -162,12 +173,12 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
                     const SizedBox(height: 8),
                     Text(
                       "Período: ${comp.startDate != null ? df.format(comp.startDate!) : '-'} até ${comp.endDate != null ? df.format(comp.endDate!) : '-'}",
-                      style: BolixoTypography.bodySmall.copyWith(color: Colors.white70),
+                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textSecondary),
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: BolixoColors.accentGreen),
+              const Icon(Icons.chevron_right, color: BolixoColors.accentBlue),
             ],
           ),
         ),
@@ -196,25 +207,24 @@ class CompetitionBetsDetailView extends StatelessWidget {
       key: scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: Text(competitionName, style: const TextStyle(color: Colors.white)),
+        title: GoldTitle(competitionName),
         backgroundColor: BolixoColors.deepPlum,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
         leading: showDrawer
           ? IconButton(
-              icon: const Icon(Icons.menu, color: Colors.white),
+              icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
               onPressed: () => scaffoldKey.currentState?.openDrawer(),
             )
           : null,
         actions: [
           IconButton(
             onPressed: () => showRulesDialog(context),
-            icon: const Icon(Icons.rule_outlined, color: Colors.white),
+            icon: const Icon(Icons.rule_outlined, color: BolixoColors.textPrimary),
           ),
         ],
       ),
       drawer: showDrawer ? const AppDrawer() : null,
       body: BetsWidget(competitionId: competitionId),
-      bottomNavigationBar: const AppBottomNav(selectedIndex: 0),
     );
   }
 }

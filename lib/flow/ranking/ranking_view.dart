@@ -48,7 +48,7 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
         appBar: AppBar(
           title: Text(widget.bolaoName!, style: BolixoTypography.titleLarge),
           backgroundColor: BolixoColors.deepPlum,
-          iconTheme: const IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
         ),
         body: SafeArea(child: content),
       );
@@ -61,7 +61,7 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
     if (isShitted) {
       return Container(
         alignment: Alignment.center,
-        color: Colors.black,
+        color: BolixoColors.backgroundPrimary,
         child: Image.asset('assets/images/spiderman.gif'),
       );
     } else if (viewContent.isLoading) {
@@ -164,17 +164,18 @@ class RankingWidgetState extends State<RankingWidget> implements RankingViewCont
         child: Container(
           height: 36,
           width: 36,
-          alignment: Alignment.center,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: borderColor,
-              width: 2.0,
-            ),
+            borderRadius: BorderRadius.circular(10),
+            color: BolixoColors.surfaceCard,
+            border: Border.all(color: borderColor, width: 2.0),
           ),
-          child: CircleAvatar(
-            backgroundImage: AssetImage(url),
-            backgroundColor: BolixoColors.surfaceCard,
+          clipBehavior: Clip.antiAlias,
+          child: Image.asset(
+            url,
+            width: 36,
+            height: 36,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => const Icon(Icons.person, color: BolixoColors.textTertiary, size: 18),
           ),
         ),
       ),

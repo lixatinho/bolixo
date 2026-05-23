@@ -1,11 +1,10 @@
-import 'package:bolixo/flow/bets/competitions_bets_view.dart';
 import 'package:flutter/material.dart';
 import 'package:bolixo/flow/auth/auth_service.dart';
 import 'package:bolixo/flow/auth/auth_view.dart';
 import 'package:bolixo/flow/auth/auth_view_content.dart';
 import 'package:bolixo/flow/auth/change_password_view.dart';
-import 'package:bolixo/flow/boloes/boloes_view.dart';
 import 'package:bolixo/flow/competition/manage_competitions_view.dart';
+import 'package:bolixo/ui/main_shell.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:bolixo/api/model/user_model.dart';
@@ -45,7 +44,7 @@ class AppDrawer extends StatelessWidget {
                     ),
                     Text(
                       role.toString().split('.').last,
-                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentGreenLight),
+                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentBlueLight),
                     ),
                   ],
                 ),
@@ -54,22 +53,12 @@ class AppDrawer extends StatelessWidget {
 
             _buildDrawerAction(context, Icons.sports_soccer, 'Palpites', () {
               Navigator.pop(context);
-              if (ModalRoute.of(context)?.settings.name != '/competitions_bets') {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const CompetitionsBetsView(), settings: const RouteSettings(name: '/competitions_bets')),
-                );
-              }
+              _switchToTab(context, 0);
             }),
 
             _buildDrawerAction(context, Icons.groups, 'Bolões', () {
               Navigator.pop(context);
-              if (ModalRoute.of(context)?.settings.name != '/boloes') {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const BoloesView(), settings: const RouteSettings(name: '/boloes')),
-                );
-              }
+              _switchToTab(context, 1);
             }),
 
             if (role == UserRole.ADMIN)
@@ -107,8 +96,8 @@ class AppDrawer extends StatelessWidget {
   Widget _buildDrawerItem(BuildContext context, IconData icon, String label, int index) {
     bool isSelected = selectedIndex == index;
     return ListTile(
-      leading: Icon(icon, color: isSelected ? BolixoColors.accentGreen : BolixoColors.textPrimary),
-      title: Text(label, style: BolixoTypography.bodyLarge.copyWith(color: isSelected ? BolixoColors.accentGreen : null)),
+      leading: Icon(icon, color: isSelected ? BolixoColors.accentBlue : BolixoColors.textPrimary),
+      title: Text(label, style: BolixoTypography.bodyLarge.copyWith(color: isSelected ? BolixoColors.accentBlue : null)),
       onTap: () {
         Navigator.pop(context);
         if (onItemSelected != null) {
@@ -124,10 +113,19 @@ class AppDrawer extends StatelessWidget {
 
   Widget _buildDrawerAction(BuildContext context, IconData icon, String label, VoidCallback onTap) {
     return ListTile(
-      leading: Icon(icon, color: BolixoColors.textPrimary),
+      leading: Icon(icon, color: BolixoColors.gold),
       title: Text(label, style: BolixoTypography.bodyLarge),
       onTap: onTap,
     );
+  }
+
+  void _switchToTab(BuildContext context, int tab) {
+    final shell = context.findAncestorStateOfType<MainShellState>();
+    if (shell != null) {
+      shell.switchTab(tab);
+    } else {
+      MainShell.navigate(context, tab: tab);
+    }
   }
 
   Widget _build_logout_action(BuildContext context) {

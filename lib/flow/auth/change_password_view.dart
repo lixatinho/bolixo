@@ -1,4 +1,5 @@
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
+import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_decorations.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -59,9 +60,9 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
     return Scaffold(
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Trocar Senha", style: TextStyle(color: Colors.white)),
+        title: const Text("Trocar Senha", style: TextStyle(color: BolixoColors.textPrimary)),
         backgroundColor: BolixoColors.deepPlum,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
@@ -107,7 +108,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
               ),
               const SizedBox(height: 40),
               _isLoading
-                ? const CircularProgressIndicator(color: BolixoColors.accentGreen)
+                ? const SkeletonLoading(type: SkeletonType.buttonInline)
                 : SizedBox(
                     width: double.infinity,
                     child: AppElevatedButton(

@@ -3,6 +3,7 @@ import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
 import 'package:bolixo/flow/boloes/boloes_view.dart';
 import 'package:bolixo/flow/boloes/boloes_widget.dart';
+import 'package:bolixo/ui/shared/loading_widget.dart';
 import 'package:bolixo/ui/shared/rules_dialog.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -85,9 +86,7 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     if (!_isAuthInitialized) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen)),
-      );
+      return const LoadingWidget();
     }
 
     return Scaffold(
@@ -158,7 +157,7 @@ class HomeState extends State<Home> {
                     ),
                     Text(
                       role.toString().split('.').last,
-                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentGreenLight),
+                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentBlueLight),
                     ),
                   ],
                 ),
@@ -272,7 +271,7 @@ class HomeState extends State<Home> {
           children: [
             Icon(
               icon,
-              color: isActive ? BolixoColors.accentGreenLight : BolixoColors.textTertiary,
+              color: isActive ? BolixoColors.accentBlueLight : BolixoColors.textTertiary,
               size: 24,
             ),
             const SizedBox(height: 4),
@@ -281,7 +280,7 @@ class HomeState extends State<Home> {
               style: GoogleFonts.inter(
                 fontSize: 10,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                color: isActive ? BolixoColors.accentGreenLight : BolixoColors.textTertiary,
+                color: isActive ? BolixoColors.accentBlueLight : BolixoColors.textTertiary,
               ),
             ),
             const SizedBox(height: 4),
@@ -291,7 +290,7 @@ class HomeState extends State<Home> {
               height: 3,
               width: isActive ? 20 : 0,
               decoration: BoxDecoration(
-                color: BolixoColors.accentGreen,
+                color: BolixoColors.accentBlue,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),

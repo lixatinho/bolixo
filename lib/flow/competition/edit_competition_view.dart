@@ -2,6 +2,8 @@ import 'package:bolixo/api/competition/competition_api_interface.dart';
 import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/api/model/team_model.dart';
 import 'package:bolixo/ui/shared/app_elevated_button.dart';
+import 'package:bolixo/ui/shared/skeleton_loading.dart';
+import 'package:bolixo/ui/shared/team_flag.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_decorations.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -169,12 +171,12 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
         title: Text(widget.competition == null ? "Criar Competição" : "Editar Competição",
-            style: const TextStyle(color: Colors.white)),
+            style: const TextStyle(color: BolixoColors.textPrimary)),
         backgroundColor: BolixoColors.deepPlum,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
       ),
       body: _isFetchingTeams
-          ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
+          ? const SkeletonLoading()
           : SafeArea(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24.0),
@@ -212,7 +214,7 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
                     _buildQuickCreateTeam(),
                     const SizedBox(height: 48),
                     _isLoading
-                        ? const Center(child: CircularProgressIndicator(color: BolixoColors.accentGreen))
+                        ? const SkeletonLoading(type: SkeletonType.buttonInline)
                         : SizedBox(
                             width: double.infinity,
                             child: AppElevatedButton(onPressedCallback: _save, text: "Salvar Competição"),
@@ -245,7 +247,7 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Gerenciar Times", style: BolixoTypography.titleLarge.copyWith(color: BolixoColors.accentGreen)),
+        Text("Gerenciar Times", style: BolixoTypography.titleLarge.copyWith(color: BolixoColors.accentBlue)),
         const SizedBox(height: 16),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,14 +267,14 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
       decoration: BoxDecoration(
         color: BolixoColors.surfaceElevated,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: BolixoColors.accentGreen.withOpacity(0.3)),
+        border: Border.all(color: BolixoColors.accentBlue.withValues(alpha:0.3)),
       ),
       child: Form(
         key: _teamFormKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Cadastrar Novo Time", style: BolixoTypography.bodyLarge.copyWith(color: BolixoColors.accentGreen)),
+            Text("Cadastrar Novo Time", style: BolixoTypography.bodyLarge.copyWith(color: BolixoColors.accentBlue)),
             const SizedBox(height: 16),
             Row(
               children: [
@@ -280,7 +282,7 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
                   flex: 2,
                   child: TextFormField(
                     controller: _teamNameController,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: BolixoTypography.bodyMedium.copyWith(color: BolixoColors.textPrimary),
                     decoration: BolixoDecorations.inputDecoration(hint: "Nome do Time").copyWith(contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8)),
                     validator: (v) => v!.isEmpty ? "Obrigatório" : null,
                   ),
@@ -289,7 +291,7 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
                 Expanded(
                   child: TextFormField(
                     controller: _teamAbbrController,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: BolixoTypography.bodyMedium.copyWith(color: BolixoColors.textPrimary),
                     maxLength: 3,
                     decoration: BolixoDecorations.inputDecoration(hint: "Sigla").copyWith(
                       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -300,9 +302,9 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
                 ),
                 const SizedBox(width: 12),
                 _isCreatingTeam
-                  ? const SizedBox(width: 40, height: 40, child: CircularProgressIndicator(strokeWidth: 2))
+                  ? const SizedBox(width: 40, height: 40, child: SkeletonLoading(type: SkeletonType.buttonInline))
                   : IconButton(
-                      icon: const Icon(Icons.check_circle, color: BolixoColors.accentGreen, size: 32),
+                      icon: const Icon(Icons.check_circle, color: BolixoColors.accentBlue, size: 32),
                       onPressed: _addNewTeam,
                     ),
               ],
@@ -324,7 +326,7 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
           decoration: BoxDecoration(
             color: BolixoColors.surfaceElevated,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: isSelected ? BolixoColors.accentGreen.withOpacity(0.5) : BolixoColors.white6),
+            border: Border.all(color: isSelected ? BolixoColors.accentBlue.withValues(alpha:0.5) : BolixoColors.white6),
           ),
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -335,9 +337,9 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
                 dense: true,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                 leading: _buildTeamFlag(team),
-                title: Text(team.abbreviation ?? "", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white)),
-                subtitle: Text(team.name ?? "", style: const TextStyle(fontSize: 10, color: Colors.grey), overflow: TextOverflow.ellipsis),
-                trailing: Icon(icon, size: 18, color: isSelected ? Colors.redAccent : BolixoColors.accentGreen),
+                title: Text(team.abbreviation ?? "", style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textPrimary, fontWeight: FontWeight.bold)),
+                subtitle: Text(team.name ?? "", style: const TextStyle(fontSize: 10, color: BolixoColors.textTertiary), overflow: TextOverflow.ellipsis),
+                trailing: Icon(icon, size: 18, color: isSelected ? Colors.redAccent : BolixoColors.accentBlue),
                 onTap: () => onTap(team),
               );
             },
@@ -348,17 +350,7 @@ class _EditCompetitionViewState extends State<EditCompetitionView> {
   }
 
   Widget _buildTeamFlag(TeamModel team) {
-    String assetPath = "assets/images/teams/${team.abbreviation}.png";
-    return CircleAvatar(
-      radius: 14,
-      backgroundColor: BolixoColors.backgroundPrimary,
-      child: ClipOval(
-        child: Image.asset(
-          assetPath,
-          errorBuilder: (context, error, stackTrace) => const Icon(Icons.sports_soccer, size: 16, color: Colors.grey),
-        ),
-      ),
-    );
+    return TeamFlag(abbreviation: team.abbreviation, radius: 14);
   }
 
   @override

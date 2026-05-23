@@ -28,7 +28,7 @@ void showRulesDialog(BuildContext context) {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Fechar', style: TextStyle(color: BolixoColors.accentGreen)),
+            child: const Text('Fechar', style: TextStyle(color: BolixoColors.accentBlue)),
           ),
         ],
       );
