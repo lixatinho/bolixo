@@ -179,16 +179,18 @@ String _defineType(phase) {
     case 0:
       return 'Grupos';
     case 1:
-      return 'Oitavas de Final';
+      return 'Pré-Oitavas de Final';
     case 2:
-      return 'Quartas de Final';
+      return 'Oitavas de Final';
     case 3:
-      return 'Semi-Final';
+      return 'Quartas de Final';
     case 4:
-      return 'Disputa 3° Lugar';
+      return 'Semi-Final';
     case 5:
+      return 'Disputa 3° Lugar';
+    case 6:
       return 'Final';
-    default:
+    default: '';
   }
   return 'Goku Win';
 }

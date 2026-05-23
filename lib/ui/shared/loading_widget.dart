@@ -1,8 +1,16 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/bolixo_colors.dart';
 import '../theme/bolixo_gradients.dart';
 import '../theme/bolixo_typography.dart';
+
+const _loadingMessages = [
+  'Cortando a grama...',
+  'Levantando o Neymar...',
+  'Abrindo o estádio...',
+  'Calculando mitadas...',
+];
 
 /// Full-screen loading overlay with gradient background and bouncing ball.
 class LoadingWidget extends StatelessWidget {
@@ -56,7 +64,7 @@ class BolixoLoadingBall extends StatelessWidget {
         if (showLabel) ...[
           const SizedBox(height: 20),
           Text(
-            'Carregando...',
+            _loadingMessages[Random().nextInt(_loadingMessages.length)],
             style: BolixoTypography.bodyMedium.copyWith(
               color: BolixoColors.textSecondary,
             ),
