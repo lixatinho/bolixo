@@ -1,8 +1,8 @@
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/api/model/competition_model.dart';
 import 'package:bolixo/flow/bets/bets_view.dart';
-import 'package:bolixo/ui/shared/app_bottom_nav.dart';
 import 'package:bolixo/ui/shared/app_drawer.dart';
+import 'package:bolixo/ui/shared/gold_title.dart';
 import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/shared/rules_dialog.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
@@ -64,7 +64,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
         key: _scaffoldKey,
         backgroundColor: BolixoColors.backgroundPrimary,
         appBar: AppBar(
-          title: Text(_singleCompetitionName!, style: const TextStyle(color: BolixoColors.textPrimary)),
+          title: GoldTitle(_singleCompetitionName!),
           backgroundColor: BolixoColors.deepPlum,
           leading: IconButton(
             icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
@@ -86,7 +86,7 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
       key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Palpites", style: TextStyle(color: BolixoColors.textPrimary)),
+        title: const GoldTitle("Palpites"),
         backgroundColor: BolixoColors.deepPlum,
         leading: IconButton(
           icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
@@ -199,7 +199,7 @@ class CompetitionBetsDetailView extends StatelessWidget {
       key: scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: Text(competitionName, style: const TextStyle(color: BolixoColors.textPrimary)),
+        title: GoldTitle(competitionName),
         backgroundColor: BolixoColors.deepPlum,
         iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
         leading: showDrawer

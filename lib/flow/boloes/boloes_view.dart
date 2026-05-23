@@ -6,8 +6,8 @@ import 'package:bolixo/flow/auth/auth_repository.dart';
 import 'package:bolixo/flow/boloes/admin_boloes_view.dart';
 import 'package:bolixo/flow/boloes/create_bolao_view.dart';
 import 'package:bolixo/flow/ranking/ranking_view.dart';
-import 'package:bolixo/ui/shared/app_bottom_nav.dart';
 import 'package:bolixo/ui/shared/app_drawer.dart';
+import 'package:bolixo/ui/shared/gold_title.dart';
 import 'package:bolixo/ui/shared/skeleton_loading.dart';
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
@@ -191,7 +191,7 @@ class _BoloesViewState extends State<BoloesView> {
       key: _scaffoldKey,
       backgroundColor: BolixoColors.backgroundPrimary,
       appBar: AppBar(
-        title: const Text("Meus Bolões", style: TextStyle(color: BolixoColors.textPrimary)),
+        title: const GoldTitle("Meus Bolões"),
         backgroundColor: BolixoColors.deepPlum,
         leading: IconButton(
           icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),

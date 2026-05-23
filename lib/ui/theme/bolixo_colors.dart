@@ -28,6 +28,11 @@ class BolixoColors {
   static const textOnAccent = Color(0xFFFFFFFF);
   static const textLink = Color(0xFFA78BFA);
 
+  // Gold (titles, trophies, premium accents)
+  static const gold = Color(0xFFD4A843);
+  static const goldLight = Color(0xFFF0D68A);
+  static const goldDark = Color(0xFFB8860B);
+
   // Semantic
   static const success = Color(0xFF34D399);
   static const error = Color(0xFFF87171);
