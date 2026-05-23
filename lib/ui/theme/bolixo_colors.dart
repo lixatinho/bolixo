@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class BolixoColors {
   BolixoColors._();
 
-  // ── Deep green backgrounds (almost black with green undertone) ──
-  static const deepPlum = Color(0xFF070E0B);          // deepest bg (app bar, loading)
-  static const royalPurple = Color(0xFF0A1310);        // secondary
-  static const backgroundPrimary = Color(0xFF060C09);  // main scaffold bg
-  static const backgroundSecondary = Color(0xFF0B1510); // alternating rows
-  static const surfaceCard = Color(0xFF101E17);         // card surfaces
-  static const surfaceElevated = Color(0xFF162A20);     // dialogs, sheets, elevated
+  // ── Deep emerald backgrounds (almost black, cool green undertone) ──
+  static const deepPlum = Color(0xFF050D0A);          // deepest bg (app bar, loading)
+  static const royalPurple = Color(0xFF08120E);        // secondary
+  static const backgroundPrimary = Color(0xFF040B08);  // main scaffold bg
+  static const backgroundSecondary = Color(0xFF091410); // alternating rows
+  static const surfaceCard = Color(0xFF0D1D16);         // card surfaces
+  static const surfaceElevated = Color(0xFF132B21);     // dialogs, sheets, elevated
 
   // ── Gold accent (titles, highlights, premium) ──
   static const gold = Color(0xFFD4A843);
@@ -28,8 +28,8 @@ class BolixoColors {
 
   // ── Text ──
   static const textPrimary = Color(0xFFFFFFFF);
-  static const textSecondary = Color(0xFF8BAA98);      // muted green-grey
-  static const textTertiary = Color(0xFF5E8172);       // darker green-grey
+  static const textSecondary = Color(0xFF88A99C);      // cool green-grey
+  static const textTertiary = Color(0xFF587E6E);       // darker cool green-grey
   static const textOnAccent = Color(0xFFFFFFFF);
   static const textLink = Color(0xFFD4A843);           // gold links
 
