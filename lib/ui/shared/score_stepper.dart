@@ -124,15 +124,18 @@ class _ScoreStepperState extends State<ScoreStepper> {
       onLongPressStart: enabled ? (_) => onLongStart() : null,
       onLongPressEnd: enabled ? (_) => _stopRepeat() : null,
       onLongPressCancel: enabled ? _stopRepeat : null,
-      child: SizedBox(
-        width: 48,
-        height: 28,
-        child: Icon(
-          icon,
-          size: 22,
-          color: enabled
-              ? BolixoColors.accentGreen
-              : BolixoColors.textTertiary.withValues(alpha: 0.3),
+      child: Tooltip(
+        message: icon == Icons.keyboard_arrow_up_rounded ? '+1' : '-1',
+        child: SizedBox(
+          width: 48,
+          height: 28,
+          child: Icon(
+            icon,
+            size: 22,
+            color: enabled
+                ? BolixoColors.accentGreen
+                : BolixoColors.textTertiary.withValues(alpha: 0.3),
+          ),
         ),
       ),
     );

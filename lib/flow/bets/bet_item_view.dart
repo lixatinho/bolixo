@@ -102,18 +102,15 @@ class BetItemView extends StatelessWidget {
     final initialValue = int.tryParse(team.scoreBet) ?? 0;
     return Visibility(
       visible: bet.isBetEnabled,
-      child: Tooltip(
-        message: bet.betFieldTooltip,
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: isHomeTeam ? 16 : 24,
-            right: !isHomeTeam ? 16 : 24,
-          ),
-          child: ScoreStepper(
-            value: initialValue,
-            onChanged: (v) => callback(v.toString()),
-            enabled: bet.isBetEnabled,
-          ),
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: isHomeTeam ? 16 : 24,
+          right: !isHomeTeam ? 16 : 24,
+        ),
+        child: ScoreStepper(
+          value: initialValue,
+          onChanged: (v) => callback(v.toString()),
+          enabled: bet.isBetEnabled,
         ),
       ),
     );
