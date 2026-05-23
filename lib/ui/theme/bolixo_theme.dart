@@ -8,13 +8,13 @@ class BolixoTheme {
   static ThemeData get dark => ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: BolixoColors.backgroundPrimary,
-    primaryColor: BolixoColors.electricViolet,
+    primaryColor: BolixoColors.gold,
     colorScheme: const ColorScheme.dark(
-      primary: BolixoColors.electricViolet,
+      primary: BolixoColors.gold,
       secondary: BolixoColors.accentGreen,
       surface: BolixoColors.surfaceCard,
       error: BolixoColors.error,
-      onPrimary: BolixoColors.textPrimary,
+      onPrimary: BolixoColors.backgroundPrimary,
       onSecondary: BolixoColors.textOnAccent,
       onSurface: BolixoColors.textPrimary,
       onError: BolixoColors.textPrimary,
@@ -63,14 +63,6 @@ class BolixoTheme {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
     ),
-    snackBarTheme: SnackBarThemeData(
-      backgroundColor: BolixoColors.surfaceElevated,
-      contentTextStyle: const TextStyle(color: BolixoColors.textPrimary),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      behavior: SnackBarBehavior.floating,
-    ),
     tooltipTheme: TooltipThemeData(
       decoration: BoxDecoration(
         color: BolixoColors.surfaceElevated,
@@ -82,8 +74,16 @@ class BolixoTheme {
         fontSize: 12,
       ),
     ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: BolixoColors.surfaceElevated,
+      contentTextStyle: const TextStyle(color: BolixoColors.textPrimary),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      behavior: SnackBarBehavior.floating,
+    ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: BolixoColors.electricViolet,
+      color: BolixoColors.gold,
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -98,7 +98,7 @@ class BolixoTheme {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: BolixoColors.electricViolet, width: 1.5),
+        borderSide: const BorderSide(color: BolixoColors.gold, width: 1.5),
       ),
     ),
   );

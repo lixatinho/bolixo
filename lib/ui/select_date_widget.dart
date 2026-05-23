@@ -27,7 +27,9 @@ class SelectDateWidget extends StatelessWidget {
         children: [
           Text(
             viewContent.selectedDate().fullDate,
-            style: BolixoTypography.headlineMedium,
+            style: BolixoTypography.headlineMedium.copyWith(
+              color: BolixoColors.goldLight,
+            ),
           ),
           const SizedBox(height: 14),
           SingleChildScrollView(

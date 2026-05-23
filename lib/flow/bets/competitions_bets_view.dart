@@ -66,6 +66,10 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
         appBar: AppBar(
           title: GoldTitle(_singleCompetitionName!),
           backgroundColor: BolixoColors.deepPlum,
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(1),
+            child: Divider(height: 1, thickness: 1, color: BolixoColors.goldDark),
+          ),
           leading: IconButton(
             icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
@@ -88,6 +92,10 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
       appBar: AppBar(
         title: const GoldTitle("Palpites"),
         backgroundColor: BolixoColors.deepPlum,
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: Divider(height: 1, thickness: 1, color: BolixoColors.goldDark),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),

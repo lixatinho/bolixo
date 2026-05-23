@@ -191,7 +191,7 @@ class BetItemView extends StatelessWidget {
       child: Text(
         'X',
         style: GoogleFonts.inter(
-          color: BolixoColors.textTertiary,
+          color: BolixoColors.goldDark,
           fontSize: 14,
           fontWeight: FontWeight.w600,
         ),

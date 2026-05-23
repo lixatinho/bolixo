@@ -193,6 +193,10 @@ class _BoloesViewState extends State<BoloesView> {
       appBar: AppBar(
         title: const GoldTitle("Meus Bolões"),
         backgroundColor: BolixoColors.deepPlum,
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: Divider(height: 1, thickness: 1, color: BolixoColors.goldDark),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
           onPressed: () => _scaffoldKey.currentState?.openDrawer(),
