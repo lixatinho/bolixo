@@ -1,6 +1,7 @@
 import 'package:bolixo/ui/theme/bolixo_colors.dart';
 import 'package:bolixo/ui/theme/bolixo_typography.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void showRulesDialog(BuildContext context) {
   showDialog<void>(
@@ -11,27 +12,92 @@ void showRulesDialog(BuildContext context) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        title: Text('Regras da pontuação', style: BolixoTypography.headlineMedium),
+        titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+        contentPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+        actionsPadding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+        title: Text('Regras da Pontuação', style: BolixoTypography.headlineMedium.copyWith(color: BolixoColors.gold)),
         content: SingleChildScrollView(
-          child: Text(
-            "Mitada: acertou na mosca, 10 pontos.\n\n"
-            "Acertar resultado: 5 pontos.\n\n"
-            "Acertar quantidade de gols de um time: 1 ponto.\n\n"
-            "Cada fase possui um peso, que pode multiplicar os valores anteriores.\n"
-            "Fase de grupos, peso 1. Próxima fase, peso 2, e assim por diante.\n\n"
-            "Exemplo 1: resultado do jogo 1x0. Palpite 2x0. Pontuação = 6, acertou resultado e o número de gols de um time.\n\n"
-            "Exemplo 2: resultado do jogo 0x0. Palpite 1x1. Pontuação = 5, acertou resultado.\n\n"
-            "Exemplo 3: resultado do jogo 3 x 3, oitavas-de-final. Palpite 3x3. Pontuação = 20, 10 x 2 (peso das oitavas, considerando que ela seria a próxima fase)",
-            style: BolixoTypography.bodyMedium,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _ruleItem('🎯', 'Mitada', 'Acertou o placar na mosca', '10 pts'),
+              _ruleItem('✅', 'Resultado', 'Acertou quem venceu ou empate', '5 pts'),
+              _ruleItem('⚽', 'Gols', 'Acertou gols de um time', '1 pt'),
+              const SizedBox(height: 16),
+              const Divider(color: BolixoColors.white10, height: 1),
+              const SizedBox(height: 16),
+              Text('Multiplicador por fase', style: BolixoTypography.titleMedium),
+              const SizedBox(height: 8),
+              Text(
+                'Cada fase multiplica a pontuação:\n'
+                'Grupos ×1 · Pré-Oitavas ×2 · Oitavas ×3\n'
+                'Quartas ×4 · Semi ×5 · 3° Lugar ×6 · Final ×7',
+                style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textSecondary, height: 1.6),
+              ),
+              const SizedBox(height: 8),
+            ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Fechar', style: TextStyle(color: BolixoColors.accentBlue)),
+            child: Text('Fechar', style: GoogleFonts.inter(color: BolixoColors.textPrimary, fontWeight: FontWeight.w600)),
           ),
         ],
       );
     },
+  );
+}
+
+Widget _ruleItem(String emoji, String title, String desc, String pts) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(emoji, style: const TextStyle(fontSize: 18)),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(title, style: BolixoTypography.titleMedium),
+                  Text(pts, style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.gold, fontWeight: FontWeight.w700)),
+                ],
+              ),
+              const SizedBox(height: 2),
+              Text(desc, style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textTertiary)),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _exampleItem(String scenario, String pts, String reason) {
+  return Container(
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: BolixoColors.white6,
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(scenario, style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.textPrimary, fontWeight: FontWeight.w600)),
+            Text(pts, style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.gold, fontWeight: FontWeight.w700)),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(reason, style: BolixoTypography.labelSmall.copyWith(color: BolixoColors.textTertiary)),
+      ],
+    ),
   );
 }

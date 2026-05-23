@@ -74,18 +74,6 @@ class AppDrawer extends StatelessWidget {
 
             const Divider(color: BolixoColors.white6),
 
-//             _buildDrawerItem(context, Icons.edit, 'Palpites por Bolão (old)', 0),
-//             _buildDrawerItem(context, Icons.leaderboard, 'Ranking (old)', 1),
-
-            const Divider(color: BolixoColors.white6),
-
-            _buildDrawerAction(context, Icons.vpn_key, 'Trocar Senha', () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ChangePasswordView()),
-              );
-            }),
             _build_logout_action(context),
           ],
         ),
