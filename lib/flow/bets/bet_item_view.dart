@@ -90,7 +90,7 @@ class BetItemView extends StatelessWidget {
   }
 
   Widget scoreArea(TeamViewContent team, Function callback, bool isHomeTeam) {
-    final initialValue = int.tryParse(team.scoreBet) ?? 0;
+    final initialValue = int.tryParse(team.scoreBet);
     return Padding(
       padding: EdgeInsets.only(
         left: isHomeTeam ? 16 : 24,

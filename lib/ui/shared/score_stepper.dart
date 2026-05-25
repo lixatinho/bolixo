@@ -7,14 +7,14 @@ import '../theme/bolixo_colors.dart';
 /// A compact +/- score stepper optimized for mobile and web.
 /// Supports tap and long-press for fast increment/decrement.
 class ScoreStepper extends StatefulWidget {
-  final int value;
+  final int? value;
   final ValueChanged<int> onChanged;
   final bool enabled;
   final int maxValue;
 
   const ScoreStepper({
     super.key,
-    required this.value,
+    this.value,
     required this.onChanged,
     this.enabled = true,
     this.maxValue = 99,
@@ -25,7 +25,7 @@ class ScoreStepper extends StatefulWidget {
 }
 
 class _ScoreStepperState extends State<ScoreStepper> {
-  late int _value;
+  int? _value;
   Timer? _timer;
 
   @override
@@ -49,17 +49,17 @@ class _ScoreStepperState extends State<ScoreStepper> {
   }
 
   void _increment() {
-    if (!widget.enabled || _value >= widget.maxValue) return;
+    if (!widget.enabled || (_value != null && _value! >= widget.maxValue)) return;
     HapticFeedback.lightImpact();
-    setState(() => _value++);
-    widget.onChanged(_value);
+    setState(() => _value = (_value ?? -1) + 1);
+    widget.onChanged(_value!);
   }
 
   void _decrement() {
-    if (!widget.enabled || _value <= 0) return;
+    if (!widget.enabled || (_value == null || _value! <= 0)) return;
     HapticFeedback.lightImpact();
-    setState(() => _value--);
-    widget.onChanged(_value);
+    setState(() => _value = _value! - 1);
+    widget.onChanged(_value!);
   }
 
   void _startRepeat(VoidCallback action) {
@@ -84,7 +84,7 @@ class _ScoreStepperState extends State<ScoreStepper> {
             icon: Icons.keyboard_arrow_up_rounded,
             onTap: _increment,
             onLongStart: () => _startRepeat(_increment),
-            enabled: widget.enabled && _value < widget.maxValue,
+            enabled: widget.enabled && (_value == null || _value! < widget.maxValue),
           ),
           const SizedBox(height: 2),
           SizedBox(
@@ -92,7 +92,7 @@ class _ScoreStepperState extends State<ScoreStepper> {
             height: 44,
             child: Center(
               child: Text(
-                '$_value',
+                _value?.toString() ?? '',
                 style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -106,7 +106,7 @@ class _ScoreStepperState extends State<ScoreStepper> {
             icon: Icons.keyboard_arrow_down_rounded,
             onTap: _decrement,
             onLongStart: () => _startRepeat(_decrement),
-            enabled: widget.enabled && _value > 0,
+            enabled: widget.enabled && (_value != null && _value! > 0),
           ),
         ],
       ),
