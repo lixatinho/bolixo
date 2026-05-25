@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:bolixo/api/bolao/bolao_api_interface.dart';
 import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:dio/dio.dart';
@@ -127,8 +128,21 @@ class AuthViewController {
   void selectFirstBolao(Function callback) {
     api.initialize().then((value) {
       api.getBoloes().then((boloes) {
-        if(boloes.isNotEmpty) {
-          BolaoCache().updateBolao(boloes[0].bolaoId!, boloes[0].name!);
+        if (boloes.isNotEmpty) {
+          final now = DateTime.now();
+
+          // Lógica de prioridade: Copa do Mundo Ativa -> Qualquer Ativa -> Fallback Primeiro da Lista
+          var selectedBolao = boloes.firstWhere(
+            (b) =>
+                (b.competition?.name?.toLowerCase().contains("Copa do Mundo") ?? false) &&
+                (b.competition?.endDate == null || b.competition!.endDate!.isAfter(now)),
+            orElse: () => boloes.firstWhere(
+              (b) => (b.competition?.endDate == null || b.competition!.endDate!.isAfter(now)),
+              orElse: () => boloes.first,
+            ),
+          );
+
+          BolaoCache().updateBolao(selectedBolao.bolaoId!, selectedBolao.name!);
           callback();
         } else {
           view!.updateIsLoading(false);
