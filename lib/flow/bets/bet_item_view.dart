@@ -174,12 +174,13 @@ class BetItemView extends StatelessWidget {
 
   Widget dateText(DateViewContent? dateViewContent) {
     return Container(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 2, bottom: 4),
       child: Text(
         dateViewContent?.value ?? "",
         style: GoogleFonts.inter(
-          color: BolixoColors.textTertiary,
-          fontSize: 11,
+          color: BolixoColors.textPrimary,
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
