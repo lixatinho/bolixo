@@ -34,6 +34,17 @@ class BetsWidgetState extends State<BetsWidget> {
   }
 
   @override
+  void didUpdateWidget(covariant BetsWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.competitionId != widget.competitionId) {
+      setState(() {
+        isLoading = true;
+      });
+      viewController.onInit(this, competitionId: widget.competitionId);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (isLoading) {
       return const LoadingWidget();
@@ -191,11 +202,12 @@ class BetsWidgetState extends State<BetsWidget> {
 
   @override
   void dispose() {
-    super.dispose();
     viewController.onDispose();
+    super.dispose();
   }
 
   void update(List<BetsInDayViewContent> newBets) {
+    if (!mounted) return;
     setState(() {
       betsByDay = newBets;
       isLoading = false;
@@ -203,6 +215,7 @@ class BetsWidgetState extends State<BetsWidget> {
   }
 
   void updateViewBets(List<BetsByBolaoAndMatchViewContent> newBets) {
+    if (!mounted) return;
     setState(() {
       betsByBolaoAndMatch = newBets;
       isLoading = false;
@@ -268,24 +281,28 @@ class BetsWidgetState extends State<BetsWidget> {
   }
 
   void updateDate(int newDateIndex) {
+    if (!mounted) return;
     setState(() {
       dateIndex = newDateIndex;
     });
   }
 
   void updateIsLoading(bool newIsLoadingValue) {
+    if (!mounted) return;
     setState(() {
       isLoading = newIsLoadingValue;
     });
   }
 
   void updateIsSaving(bool value) {
+    if (!mounted) return;
     setState(() {
       isSaving = value;
     });
   }
 
   void showMessage(String message) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         message,
@@ -305,6 +322,7 @@ class BetsWidgetState extends State<BetsWidget> {
   }
 
   void showBetsByMatch() {
+    if (!mounted) return;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
