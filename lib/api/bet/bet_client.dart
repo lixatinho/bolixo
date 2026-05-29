@@ -67,9 +67,13 @@ class BetClient implements BetApi {
   }
 
   @override
-  Future saveUserBets(List<BetModel> betList) async {
+  Future saveUserBets(List<BetModel> betList, {int? competitionId}) async {
     try {
-      final url = "$baseUrl/$saveBet/$bolaoId";
+      String url = "$baseUrl/$saveBet/$bolaoId";
+      if (bolaoId == 0 && competitionId != null) {
+        url = "$baseUrl/$saveBet/competition/$competitionId";
+      }
+
       var response = await dio.put(url, data: jsonEncode(betList));
       if (response.statusCode == 200) {
         return Future.value();

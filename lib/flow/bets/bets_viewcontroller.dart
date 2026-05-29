@@ -8,9 +8,11 @@ import 'bets_view.dart';
 class BetsViewController {
   BetApi api = BetApi.getInstance();
   late BetsWidgetState? view;
+  int? _competitionId;
 
   void onInit(state, {int? competitionId}) async {
     view = state;
+    _competitionId = competitionId;
     await _prepareApi();
     _fillBets(competitionId: competitionId);
   }
@@ -80,7 +82,7 @@ class BetsViewController {
         .toList()
         .cast();
     view!.updateIsSaving(true);
-    api.saveUserBets(betList).then((empty) {
+    api.saveUserBets(betList, competitionId: _competitionId).then((empty) {
       view!.updateIsSaving(false);
       view!.showMessage("Palpite salvo com sucesso!");
     }, onError: (error) {

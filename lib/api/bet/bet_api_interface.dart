@@ -11,7 +11,7 @@ abstract class BetApi {
   Future<List<BetsInDayModel>> getUserBets({int? competitionId});
   Future<List<BetsInDayModel>> getBetsByUser(int userId);
   Future<List<BetModel>> getBetsByBolaoAndMatch(int? matchId);
-  Future saveUserBets(List<BetModel> betList);
+  Future saveUserBets(List<BetModel> betList, {int? competitionId});
 
   /// Injection turnaround
   static BetApi? betApi;

@@ -80,7 +80,7 @@ class MockBetApi implements BetApi {
   }
 
   @override
-  Future saveUserBets(List<BetModel> betList) {
+  Future saveUserBets(List<BetModel> betList, {int? competitionId}) {
     return Future.value();
   }
 

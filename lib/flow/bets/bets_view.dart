@@ -84,9 +84,11 @@ class BetsWidgetState extends State<BetsWidget> {
                   const double spacing = 12;
                   final columns = (constraints.maxWidth / (minCardWidth + spacing)).floor().clamp(1, 4);
 
+                  final bottomPadding = 90 + MediaQuery.of(context).padding.bottom;
+
                   if (columns <= 1) {
                     return ListView.separated(
-                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
+                      padding: EdgeInsets.fromLTRB(16, 12, 16, bottomPadding),
                       itemCount: bets.length,
                       itemBuilder: (context, index) => _wrapShimmer(_buildBetCard(index)),
                       separatorBuilder: (_, __) => const SizedBox(height: spacing),
@@ -94,7 +96,7 @@ class BetsWidgetState extends State<BetsWidget> {
                   }
 
                   return GridView.builder(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
+                    padding: EdgeInsets.fromLTRB(16, 12, 16, bottomPadding),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: columns,
                       crossAxisSpacing: spacing,
@@ -108,31 +110,34 @@ class BetsWidgetState extends State<BetsWidget> {
               ),
               if (!isSaving)
                 Positioned(
-                  right: 16,
-                  bottom: 16,
-                  child: Material(
-                    color: BolixoColors.gold,
-                    borderRadius: BorderRadius.circular(14),
-                    elevation: 4,
-                    child: InkWell(
+                  left: 0,
+                  right: 0,
+                  bottom: 20 + MediaQuery.of(context).padding.bottom,
+                  child: Center(
+                    child: Material(
+                      color: BolixoColors.gold,
                       borderRadius: BorderRadius.circular(14),
-                      onTap: () => viewController.saveBets(),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.save, color: BolixoColors.backgroundPrimary, size: 18),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Salvar Palpites',
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: BolixoColors.backgroundPrimary,
+                      elevation: 4,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(14),
+                        onTap: () => viewController.saveBets(),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.save, color: BolixoColors.backgroundPrimary, size: 20),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Salvar Palpites',
+                                style: GoogleFonts.inter(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: BolixoColors.backgroundPrimary,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
