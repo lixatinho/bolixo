@@ -19,7 +19,7 @@ class MockBetApi implements BetApi {
   }
 
   @override
-  Future<List<BetsInDayModel>> getBetsByUser(int userId) {
+  Future<List<BetsInDayModel>> getBetsByUser(int userId, {int? competitionId}) {
     return _generateMockBets();
   }
 

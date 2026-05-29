@@ -49,9 +49,14 @@ class BetClient implements BetApi {
   }
 
   @override
-  Future<List<BetsInDayModel>> getBetsByUser(int userId) async {
+  Future<List<BetsInDayModel>> getBetsByUser(int userId, {int? competitionId}) async {
     try {
       String url = "$baseUrl/$getBets/$bolaoId/user/$userId";
+      print("bolao $bolaoId");
+      print("competition $competitionId");
+      if (bolaoId == 0 && competitionId != null) {
+        url = "$baseUrl/$getBets/competition/$competitionId/user/$userId";
+      }
       var response = await dio.get(url);
 
       if (response.statusCode == 200) {

@@ -9,7 +9,7 @@ abstract class BetApi {
   /// Exposed methods
   Future initialize();
   Future<List<BetsInDayModel>> getUserBets({int? competitionId});
-  Future<List<BetsInDayModel>> getBetsByUser(int userId);
+  Future<List<BetsInDayModel>> getBetsByUser(int userId, {int? competitionId});
   Future<List<BetModel>> getBetsByBolaoAndMatch(int? matchId);
   Future saveUserBets(List<BetModel> betList, {int? competitionId});
 

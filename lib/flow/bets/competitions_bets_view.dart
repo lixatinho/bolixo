@@ -22,8 +22,8 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CompetitionModel> _competitions = [];
   bool _isLoading = true;
-  int? _singleCompetitionId;
-  String? _singleCompetitionName;
+  int? _selectedCompetitionId;
+  String? _selectedCompetitionName;
 
   @override
   void initState() {
@@ -40,9 +40,10 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
         setState(() {
           _competitions = list;
           _isLoading = false;
+          // Auto-select if only one
           if (_competitions.length == 1) {
-            _singleCompetitionId = _competitions[0].id;
-            _singleCompetitionName = _competitions[0].name ?? "Palpites";
+            _selectedCompetitionId = _competitions[0].id;
+            _selectedCompetitionName = _competitions[0].name ?? "Palpites";
           }
         });
       }
@@ -58,31 +59,51 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
 
   @override
   Widget build(BuildContext context) {
-    // Single competition: render bets inline (no navigation needed)
-    if (_singleCompetitionId != null) {
-      return Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: BolixoColors.backgroundPrimary,
-        appBar: AppBar(
-          title: GoldTitle(_singleCompetitionName!),
-          backgroundColor: BolixoColors.deepPlum,
-          bottom: const PreferredSize(
-            preferredSize: Size.fromHeight(1),
-            child: Divider(height: 1, thickness: 1, color: Color(0x40B08A30)),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
-            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () => showRulesDialog(context),
-              icon: const Icon(Icons.rule_outlined, color: BolixoColors.textPrimary),
+    if (_selectedCompetitionId != null) {
+      final bool canGoBack = _competitions.length > 1;
+
+      return PopScope(
+        canPop: !canGoBack,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) return;
+          setState(() {
+            _selectedCompetitionId = null;
+            _selectedCompetitionName = null;
+          });
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: BolixoColors.backgroundPrimary,
+          appBar: AppBar(
+            title: GoldTitle(_selectedCompetitionName!),
+            backgroundColor: BolixoColors.deepPlum,
+            bottom: const PreferredSize(
+              preferredSize: Size.fromHeight(1),
+              child: Divider(height: 1, thickness: 1, color: Color(0x40B08A30)),
             ),
-          ],
+            iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
+            leading: canGoBack
+                ? IconButton(
+                    icon: const Icon(Icons.arrow_back, color: BolixoColors.textPrimary),
+                    onPressed: () => setState(() {
+                      _selectedCompetitionId = null;
+                      _selectedCompetitionName = null;
+                    }),
+                  )
+                : IconButton(
+                    icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
+                    onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                  ),
+            actions: [
+              IconButton(
+                onPressed: () => showRulesDialog(context),
+                icon: const Icon(Icons.rule_outlined, color: BolixoColors.textPrimary),
+              ),
+            ],
+          ),
+          drawer: canGoBack ? null : const AppDrawer(),
+          body: BetsWidget(competitionId: _selectedCompetitionId!),
         ),
-        drawer: const AppDrawer(),
-        body: BetsWidget(competitionId: _singleCompetitionId!),
       );
     }
 
@@ -150,16 +171,10 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CompetitionBetsDetailView(
-                competitionId: comp.id!,
-                competitionName: comp.name ?? "Palpites",
-              ),
-              settings: const RouteSettings(name: '/competition_detail'),
-            ),
-          );
+          setState(() {
+            _selectedCompetitionId = comp.id;
+            _selectedCompetitionName = comp.name ?? "Palpites";
+          });
         },
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -183,48 +198,6 @@ class _CompetitionsBetsViewState extends State<CompetitionsBetsView> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class CompetitionBetsDetailView extends StatelessWidget {
-  final int competitionId;
-  final String competitionName;
-  final bool showDrawer;
-
-  const CompetitionBetsDetailView({
-    Key? key,
-    required this.competitionId,
-    required this.competitionName,
-    this.showDrawer = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: BolixoColors.backgroundPrimary,
-      appBar: AppBar(
-        title: GoldTitle(competitionName),
-        backgroundColor: BolixoColors.deepPlum,
-        iconTheme: const IconThemeData(color: BolixoColors.textPrimary),
-        leading: showDrawer
-          ? IconButton(
-              icon: const Icon(Icons.menu, color: BolixoColors.textPrimary),
-              onPressed: () => scaffoldKey.currentState?.openDrawer(),
-            )
-          : null,
-        actions: [
-          IconButton(
-            onPressed: () => showRulesDialog(context),
-            icon: const Icon(Icons.rule_outlined, color: BolixoColors.textPrimary),
-          ),
-        ],
-      ),
-      drawer: showDrawer ? const AppDrawer() : null,
-      body: BetsWidget(competitionId: competitionId),
     );
   }
 }
