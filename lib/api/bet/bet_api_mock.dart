@@ -14,12 +14,13 @@ class MockBetApi implements BetApi {
   }
 
   @override
-  Future<List<BetsInDayModel>> getUserBets({int? competitionId}) {
+  Future<List<BetsInDayModel>> getUserBets({required int competitionId}) {
     return _generateMockBets();
   }
 
   @override
-  Future<List<BetsInDayModel>> getBetsByUser(int userId, {int? competitionId}) {
+  Future<List<BetsInDayModel>> getBetsByUser(int userId,
+      {required int competitionId}) {
     return _generateMockBets();
   }
 
@@ -80,12 +81,12 @@ class MockBetApi implements BetApi {
   }
 
   @override
-  Future saveUserBets(List<BetModel> betList, {int? competitionId}) {
+  Future saveUserBets(List<BetModel> betList, {required int competitionId}) {
     return Future.value();
   }
 
   @override
-  Future<List<BetModel>> getBetsByBolaoAndMatch(int? matchId) {
+  Future<List<BetModel>> getBetsByMatch(int matchId) {
     return Future.value([]);
   }
 }

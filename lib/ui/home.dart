@@ -133,67 +133,65 @@ class HomeState extends State<Home> {
     final role = AuthService().repository.getRole();
 
     return Drawer(
-      child: Container(
-        color: BolixoColors.backgroundPrimary,
-        child: Column(
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [BolixoColors.deepPlum, BolixoColors.backgroundPrimary],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/world_cup_trophy.png', height: 60),
-                    const SizedBox(height: 10),
-                    Text(
-                      AuthService().repository.getUsername(),
-                      style: BolixoTypography.titleLarge,
-                    ),
-                    Text(
-                      role.toString().split('.').last,
-                      style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentBlueLight),
-                    ),
-                  ],
-                ),
+      backgroundColor: BolixoColors.backgroundPrimary,
+      child: Column(
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [BolixoColors.deepPlum, BolixoColors.backgroundPrimary],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
             ),
-            _buildDrawerItem(Icons.edit, 'Palpites', 0),
-            _buildDrawerItem(Icons.leaderboard, 'Ranking', 1),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/world_cup_trophy.png', height: 60),
+                  const SizedBox(height: 10),
+                  Text(
+                    AuthService().repository.getUsername(),
+                    style: BolixoTypography.titleLarge,
+                  ),
+                  Text(
+                    role.toString().split('.').last,
+                    style: BolixoTypography.bodySmall.copyWith(color: BolixoColors.accentBlueLight),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          _buildDrawerItem(Icons.edit, 'Palpites', 0),
+          _buildDrawerItem(Icons.leaderboard, 'Ranking', 1),
 
-            _buildDrawerAction(Icons.groups, 'Bolões', () {
+          _buildDrawerAction(Icons.groups, 'Bolões', () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BoloesView()),
+            );
+          }),
+
+          if (role == UserRole.ADMIN)
+            _buildDrawerAction(Icons.settings, 'Competições', () {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const BoloesView()),
+                MaterialPageRoute(builder: (context) => const ManageCompetitionsView()),
               );
             }),
 
-            if (role == UserRole.ADMIN)
-              _buildDrawerAction(Icons.settings, 'Competições', () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ManageCompetitionsView()),
-                );
-              }),
-
-            const Divider(color: BolixoColors.white6),
-            _buildDrawerAction(Icons.vpn_key, 'Trocar Senha', () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ChangePasswordView()),
-              );
-            }),
-            _build_logout_action(),
-          ],
-        ),
+          const Divider(color: BolixoColors.white6),
+          _buildDrawerAction(Icons.vpn_key, 'Trocar Senha', () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ChangePasswordView()),
+            );
+          }),
+          _build_logout_action(),
+        ],
       ),
     );
   }

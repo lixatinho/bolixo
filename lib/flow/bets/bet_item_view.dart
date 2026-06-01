@@ -28,7 +28,7 @@ class BetItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isAdmin = AuthService().repository.getRole() == UserRole.ADMIN;
-    final showSaveButton = isAdmin && bet.model.match != null && onResultSaved != null;
+    final showSaveButton = isAdmin && !bet.isBetEnabled && onResultSaved != null;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: showSaveButton ? 12 : 16),

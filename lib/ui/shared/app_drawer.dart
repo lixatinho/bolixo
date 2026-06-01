@@ -20,11 +20,10 @@ class AppDrawer extends StatelessWidget {
     final role = AuthService().repository.getRole();
 
     return Drawer(
-      child: Container(
-        color: BolixoColors.backgroundPrimary,
-        child: Column(
-          children: [
-            DrawerHeader(
+      backgroundColor: BolixoColors.backgroundPrimary,
+      child: Column(
+        children: [
+          DrawerHeader(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [BolixoColors.deepPlum, BolixoColors.backgroundPrimary],
@@ -77,7 +76,6 @@ class AppDrawer extends StatelessWidget {
             _build_logout_action(context),
           ],
         ),
-      ),
     );
   }
 
