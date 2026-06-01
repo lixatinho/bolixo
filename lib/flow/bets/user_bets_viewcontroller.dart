@@ -19,8 +19,7 @@ class UserBetsViewController {
   Future<void> _loadUserBets() async {
     try {
       _state.updateIsLoading(true);
-      final betsInDayApi = await _betApi.getBetsByUser(userId,
-          competitionId: BolaoCache().bolaoId);
+      final betsInDayApi = await _betApi.getBetsByUser(userId, BolaoCache().bolaoId);
       log("Retorno da API (getBetsByUser): $betsInDayApi");
 
       final viewContentList = betsInDayApi

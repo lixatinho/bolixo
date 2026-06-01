@@ -9,15 +9,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'bet_view_content.dart';
 
 class BetViewItemView extends StatelessWidget {
-  BetsByBolaoAndMatchViewContent bet;
+  final BetsByBolaoAndMatchViewContent bet;
 
-  BetViewItemView({Key? key, required this.bet});
+  BetViewItemView({Key? key, required this.bet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
         color: BolixoColors.surfaceCard,
         borderRadius: BorderRadius.circular(20),
@@ -27,34 +27,41 @@ class BetViewItemView extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
             children: [
               // Home team
-              Column(children: [
-                teamFlag(bet.homeTeam.flagUrl),
-                teamName(bet.homeTeam.name, bet.homeTeam.tooltip),
-              ]),
+              Expanded(
+                child: Column(children: [
+                  teamFlag(bet.homeTeam.flagUrl),
+                  teamName(bet.homeTeam.name, bet.homeTeam.tooltip),
+                ]),
+              ),
 
               betField(true),
               matchScoreAndBet(bet.homeTeam),
 
-              // Middle
-              Column(
-                children: [
-                  textCell(bet.model.user?.username),
-                  versusText(),
-                  betScoredPoints(),
-                ],
+              // Middle - Fixed width to align columns
+              SizedBox(
+                width: 100,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    textCell(bet.model.user?.username),
+                    versusText(),
+                    betScoredPoints(),
+                  ],
+                ),
               ),
 
               betField(false),
               matchScoreAndBet(bet.awayTeam),
 
               // Away team
-              Column(children: [
-                teamFlag(bet.awayTeam.flagUrl),
-                teamName(bet.awayTeam.name, bet.awayTeam.tooltip),
-              ]),
+              Expanded(
+                child: Column(children: [
+                  teamFlag(bet.awayTeam.flagUrl),
+                  teamName(bet.awayTeam.name, bet.awayTeam.tooltip),
+                ]),
+              ),
             ],
           ),
         ],
@@ -64,42 +71,39 @@ class BetViewItemView extends StatelessWidget {
 
   Widget textCell(String? text) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       alignment: Alignment.center,
       child: Text(
         text ?? "Username",
+        textAlign: TextAlign.center,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: BolixoTypography.bodyMedium.copyWith(
           color: BolixoColors.textPrimary,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
   }
 
   Widget betField(bool isHomeTeam) {
-    double spaceBetweenTeams = 24;
-    double space = 16;
-    double marginLeft = isHomeTeam ? space : spaceBetweenTeams;
-    double marginRight = !isHomeTeam ? space : spaceBetweenTeams;
     return Visibility(
       visible: bet.isBetEnabled,
-      child: Tooltip(
-        message: bet.betFieldTooltip,
-        padding: EdgeInsets.only(left: marginLeft, right: marginRight),
-        child: SizedBox(
-          width: 48,
-          height: 48,
-          child: TextField(
-            keyboardType: TextInputType.number,
-            decoration: BolixoDecorations.betInputDecoration,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            maxLength: 3,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: BolixoColors.textPrimary,
-            ),
+      child: SizedBox(
+        width: 50,
+        height: 48,
+        child: TextField(
+          keyboardType: TextInputType.number,
+          decoration: BolixoDecorations.betInputDecoration,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          maxLength: 3,
+          textAlign: TextAlign.center,
+          style: GoogleFonts.inter(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: BolixoColors.textPrimary,
           ),
         ),
       ),
@@ -110,26 +114,24 @@ class BetViewItemView extends StatelessWidget {
     return Visibility(
       visible: !bet.isBetEnabled,
       child: Column(
-        children: [betText(team.scoreBet), actualScoreText(team.actualScore)],
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          betText(team.scoreBet),
+          actualScoreText(team.actualScore),
+        ],
       ),
     );
   }
 
   Widget betText(String text) {
-    return Visibility(
-      visible: !bet.isBetEnabled && text.isNotEmpty,
-      child: Tooltip(
-        message: bet.savedBetTooltip,
-        padding: const EdgeInsets.only(left: 4, right: 4),
-        child: SizedBox(
-          width: 50,
-          child: Center(
-            child: Text(
-              text,
-              style: BolixoTypography.bodyLarge.copyWith(
-                color: BolixoColors.textPrimary,
-              ),
-            ),
+    return SizedBox(
+      width: 50,
+      child: Center(
+        child: Text(
+          text.isEmpty ? "-" : text,
+          style: BolixoTypography.bodyLarge.copyWith(
+            color: BolixoColors.textPrimary,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -137,20 +139,13 @@ class BetViewItemView extends StatelessWidget {
   }
 
   Widget actualScoreText(String text) {
-    return Visibility(
-      visible: !bet.isBetEnabled && text.isNotEmpty,
-      child: Tooltip(
-        message: bet.scoreTooltip,
-        padding: const EdgeInsets.only(left: 4, right: 4),
-        child: SizedBox(
-          width: 50,
-          child: Center(
-            child: Text(
-              text,
-              style: BolixoTypography.bodyMedium.copyWith(
-                color: BolixoColors.textTertiary,
-              ),
-            ),
+    return SizedBox(
+      width: 50,
+      child: Center(
+        child: Text(
+          text.isEmpty ? "-" : text,
+          style: BolixoTypography.bodyMedium.copyWith(
+            color: BolixoColors.textTertiary,
           ),
         ),
       ),
@@ -166,12 +161,17 @@ class BetViewItemView extends StatelessWidget {
 
   Widget teamName(String name, String tooltip) {
     return Tooltip(
-      padding: const EdgeInsets.only(top: 6),
       message: tooltip,
-      child: Text(
-        name,
-        style: BolixoTypography.bodySmall.copyWith(
-          color: BolixoColors.textSecondary,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
+        child: Text(
+          name,
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: BolixoTypography.bodySmall.copyWith(
+            color: BolixoColors.textSecondary,
+          ),
         ),
       ),
     );
@@ -179,7 +179,7 @@ class BetViewItemView extends StatelessWidget {
 
   Widget versusText() {
     return Container(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: Text(
         'X',
         style: GoogleFonts.inter(
@@ -192,25 +192,21 @@ class BetViewItemView extends StatelessWidget {
   }
 
   Widget betScoredPoints() {
-    const double vPadding = 4;
-    const double hPadding = 10;
     return Visibility(
       visible: bet.score.value.isNotEmpty,
-      child: Tooltip(
-        message: bet.earnedPointsTooltip,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: vPadding, horizontal: hPadding),
-          decoration: BoxDecoration(
-            color: bet.score.color.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            bet.score.value,
-            style: GoogleFonts.inter(
-              color: bet.score.color,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
+      child: Container(
+        margin: const EdgeInsets.only(top: 4),
+        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+        decoration: BoxDecoration(
+          color: bet.score.color.withValues(alpha: 0.15),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(
+          bet.score.value,
+          style: GoogleFonts.inter(
+            color: bet.score.color,
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

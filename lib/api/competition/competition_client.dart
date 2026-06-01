@@ -228,4 +228,24 @@ class CompetitionClient implements CompetitionApi {
       return Future.error(e);
     }
   }
+
+  @override
+  Future resetMatchResult(int matchId) async {
+    try {
+      if (kDebugMode) {
+        print("REQUEST PUT (RESET RESULT): $baseUrl/$matchPath/reset/$matchId");
+      }
+
+      var response = await dio.put("$baseUrl/$matchPath/reset/$matchId", data: {});
+
+      return (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300)
+          ? Future.value()
+          : Future.error(response.statusCode ?? 500);
+    } on DioException catch (e) {
+      return Future.error(e.response?.data?['msg'] ?? e.message ?? "Erro ao resetar resultado");
+    } catch (e) {
+      log(e.toString());
+      return Future.error(e);
+    }
+  }
 }

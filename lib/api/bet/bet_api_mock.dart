@@ -19,8 +19,7 @@ class MockBetApi implements BetApi {
   }
 
   @override
-  Future<List<BetsInDayModel>> getBetsByUser(int userId,
-      {required int competitionId}) {
+  Future<List<BetsInDayModel>> getBetsByUser(int userId, int bolaoId) {
     return _generateMockBets();
   }
 
@@ -29,7 +28,7 @@ class MockBetApi implements BetApi {
     var today = DateTime.now().toUtc();
     int numberOfDays = 20;
     int betsInDay = 10;
-    int middle = (numberOfDays / 2) as int;
+    int middle = (numberOfDays / 2).toInt();
 
     return Future.value(List.generate(
         numberOfDays,

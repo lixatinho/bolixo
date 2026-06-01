@@ -15,19 +15,24 @@ abstract class CompetitionApi {
   Future<List<MatchModel>> getMatchesByCompetition(int competitionId);
   Future saveMatches(int competitionId, List<MatchModel> matches);
   Future updateMatchResult(MatchModel match);
+  Future resetMatchResult(int matchId);
 
   static CompetitionApi? competitionApi;
   static CompetitionApi getInstance() {
     if (competitionApi == null) {
       switch (MyApp.flavor) {
         case Flavor.mock:
-          return CompetitionClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          competitionApi = CompetitionClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          break;
         case Flavor.staging:
-          return CompetitionClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          competitionApi = CompetitionClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          break;
         case Flavor.production:
-          return CompetitionClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          competitionApi = CompetitionClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          break;
         case Flavor.local:
-          return CompetitionClient(baseUrl: 'http://localhost:8080');
+          competitionApi = CompetitionClient(baseUrl: 'http://localhost:8080');
+          break;
       }
     }
     return competitionApi!;
