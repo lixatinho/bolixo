@@ -185,7 +185,7 @@ class BetsWidgetState extends State<BetsWidget> {
                 ?.matchDate
                 .isBefore(DateTime.now().toUtc()) ==
             true) {
-          viewController.getBetsByBolaoAndMatch(
+          viewController.getBetsByMatch(
               betsByDay[dateIndex].betList[index].model.match?.id);
         }
       },

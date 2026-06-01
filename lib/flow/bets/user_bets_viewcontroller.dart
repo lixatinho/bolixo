@@ -1,4 +1,5 @@
 import 'package:bolixo/api/bet/bet_api_interface.dart';
+import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:bolixo/flow/bets/bet_view_content.dart';
 import 'package:bolixo/flow/bets/user_bets_view.dart';
 import 'dart:developer';
@@ -18,7 +19,8 @@ class UserBetsViewController {
   Future<void> _loadUserBets() async {
     try {
       _state.updateIsLoading(true);
-      final betsInDayApi = await _betApi.getBetsByUser(userId);
+      final betsInDayApi = await _betApi.getBetsByUser(userId,
+          competitionId: BolaoCache().bolaoId);
       log("Retorno da API (getBetsByUser): $betsInDayApi");
 
       final viewContentList = betsInDayApi

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bolixo/api/model/bet_model.dart';
-import 'package:bolixo/cache/bolao_cache.dart';
 import 'package:dio/dio.dart';
 
 import '../../flow/auth/auth_repository.dart';
@@ -13,7 +12,6 @@ class BetClient implements BetApi {
   String baseUrl;
   String getBets = "bet";
   String saveBet = "bet";
-  int get bolaoId => BolaoCache().bolaoId;
   Dio dio = Dio();
   late AuthRepository repository;
 
@@ -27,12 +25,9 @@ class BetClient implements BetApi {
   }
 
   @override
-  Future<List<BetsInDayModel>> getUserBets({int? competitionId}) async {
+  Future<List<BetsInDayModel>> getUserBets({required int competitionId}) async {
     try {
-      String url = "$baseUrl/$getBets/$bolaoId";
-      if (competitionId != null) {
-        url = "$baseUrl/$getBets/competition/$competitionId";
-      }
+      String url = "$baseUrl/$getBets/competition/$competitionId";
       print('getUserBets chamando URL: $url');
       var response = await dio.get(url);
 
@@ -49,14 +44,11 @@ class BetClient implements BetApi {
   }
 
   @override
-  Future<List<BetsInDayModel>> getBetsByUser(int userId, {int? competitionId}) async {
+  Future<List<BetsInDayModel>> getBetsByUser(int userId,
+      {required int competitionId}) async {
     try {
-      String url = "$baseUrl/$getBets/$bolaoId/user/$userId";
-      print("bolao $bolaoId");
+      String url = "$baseUrl/$getBets/competition/$competitionId/user/$userId";
       print("competition $competitionId");
-      if (bolaoId == 0 && competitionId != null) {
-        url = "$baseUrl/$getBets/competition/$competitionId/user/$userId";
-      }
       var response = await dio.get(url);
 
       if (response.statusCode == 200) {
@@ -72,12 +64,10 @@ class BetClient implements BetApi {
   }
 
   @override
-  Future saveUserBets(List<BetModel> betList, {int? competitionId}) async {
+  Future saveUserBets(List<BetModel> betList,
+      {required int competitionId}) async {
     try {
-      String url = "$baseUrl/$saveBet/$bolaoId";
-      if (bolaoId == 0 && competitionId != null) {
-        url = "$baseUrl/$saveBet/competition/$competitionId";
-      }
+      String url = "$baseUrl/$saveBet/competition/$competitionId";
 
       var response = await dio.put(url, data: jsonEncode(betList));
       if (response.statusCode == 200) {
@@ -91,9 +81,9 @@ class BetClient implements BetApi {
   }
 
   @override
-  Future<List<BetModel>> getBetsByBolaoAndMatch(int? matchId) async {
+  Future<List<BetModel>> getBetsByMatch(int matchId) async {
     try {
-      final url = "$baseUrl/$getBets/$bolaoId/$matchId";
+      final url = "$baseUrl/$getBets/match/$matchId";
       var response = await dio.get(url);
       if (response.statusCode == 200) {
         var betList = List<BetModel>.from(

@@ -34,6 +34,7 @@ class BetsViewController {
   }
 
   void _fillBets({int? competitionId}) {
+    if (competitionId == null) return;
     api.getUserBets(competitionId: competitionId).then((betsInDayList) {
       List<BetsInDayViewContent> betsInDayViewContentList = betsInDayList
           .map((betsInDayApiModel) =>
@@ -77,12 +78,13 @@ class BetsViewController {
   }
 
   void saveBets() {
+    if (_competitionId == null) return;
     List<BetModel> betList = view!.betsByDay
         .expand((betsByDay) => betsByDay.betList.map((bet) => bet.toApiModel()))
         .toList()
         .cast();
     view!.updateIsSaving(true);
-    api.saveUserBets(betList, competitionId: _competitionId).then((empty) {
+    api.saveUserBets(betList, competitionId: _competitionId!).then((empty) {
       view!.updateIsSaving(false);
       view!.showMessage("Palpite salvo com sucesso!");
     }, onError: (error) {
@@ -94,8 +96,9 @@ class BetsViewController {
     });
   }
 
-  void getBetsByBolaoAndMatch(int? matchId) {
-    api.getBetsByBolaoAndMatch(matchId).then((betsByBolaoAndMatch) {
+  void getBetsByMatch(int? matchId) {
+    if (matchId == null) return;
+    api.getBetsByMatch(matchId).then((betsByBolaoAndMatch) {
       List<BetsByBolaoAndMatchViewContent> betsViewContentList = betsByBolaoAndMatch
           .map((betsByBolaoAndMatchApiModel) =>
           BetsByBolaoAndMatchViewContent.fromApiModel(betsByBolaoAndMatchApiModel))

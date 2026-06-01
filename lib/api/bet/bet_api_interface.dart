@@ -8,10 +8,10 @@ import 'bet_api_mock.dart';
 abstract class BetApi {
   /// Exposed methods
   Future initialize();
-  Future<List<BetsInDayModel>> getUserBets({int? competitionId});
-  Future<List<BetsInDayModel>> getBetsByUser(int userId, {int? competitionId});
-  Future<List<BetModel>> getBetsByBolaoAndMatch(int? matchId);
-  Future saveUserBets(List<BetModel> betList, {int? competitionId});
+  Future<List<BetsInDayModel>> getUserBets({required int competitionId});
+  Future<List<BetsInDayModel>> getBetsByUser(int userId, {required int competitionId});
+  Future<List<BetModel>> getBetsByMatch(int matchId);
+  Future saveUserBets(List<BetModel> betList, {required int competitionId});
 
   /// Injection turnaround
   static BetApi? betApi;
