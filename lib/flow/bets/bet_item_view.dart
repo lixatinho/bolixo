@@ -98,6 +98,7 @@ class BetItemView extends StatelessWidget {
       ),
       child: bet.isBetEnabled
           ? ScoreStepper(
+              key: ValueKey('bet_${bet.model.match?.id}_${isHomeTeam ? 'home' : 'away'}'),
               value: initialValue,
               onChanged: (v) => callback(v.toString()),
               enabled: bet.isBetEnabled,
