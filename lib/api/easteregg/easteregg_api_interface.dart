@@ -23,7 +23,7 @@ abstract class EasterEggApi {
         case Flavor.mock:
           return EasterEggMockClient();
         case Flavor.staging:
-          return EasterEggClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          return EasterEggClient(baseUrl: 'https://lixolao2.onrender.com');
         case Flavor.production:
           return EasterEggMockClient();
         case Flavor.local:

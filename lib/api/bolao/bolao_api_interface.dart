@@ -24,7 +24,7 @@ abstract class BolaoApi {
         case Flavor.mock:
           return BolaoMockApi();
         case Flavor.staging:
-          return BolaoClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          return BolaoClient(baseUrl: 'https://lixolao2.onrender.com');
         case Flavor.production:
           return BolaoMockApi();
         case Flavor.local:

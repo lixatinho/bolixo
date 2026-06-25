@@ -21,7 +21,7 @@ abstract class BetApi {
         case Flavor.mock:
           return MockBetApi();
         case Flavor.staging:
-          return BetClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          return BetClient(baseUrl: 'https://lixolao2.onrender.com');
         case Flavor.production:
           return MockBetApi();
         case Flavor.local:

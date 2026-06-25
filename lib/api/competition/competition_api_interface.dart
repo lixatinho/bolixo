@@ -22,13 +22,13 @@ abstract class CompetitionApi {
     if (competitionApi == null) {
       switch (MyApp.flavor) {
         case Flavor.mock:
-          competitionApi = CompetitionClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          competitionApi = CompetitionClient(baseUrl: 'https://lixolao2.onrender.com');
           break;
         case Flavor.staging:
-          competitionApi = CompetitionClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          competitionApi = CompetitionClient(baseUrl: 'https://lixolao2.onrender.com');
           break;
         case Flavor.production:
-          competitionApi = CompetitionClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          competitionApi = CompetitionClient(baseUrl: 'https://lixolao2.onrender.com');
           break;
         case Flavor.local:
           competitionApi = CompetitionClient(baseUrl: 'http://localhost:8080');

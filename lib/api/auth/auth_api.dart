@@ -21,9 +21,9 @@ abstract class AuthApi {
         case Flavor.local:
           return AuthClient(baseUrl: "http://localhost:8080");
         case Flavor.staging:
-          return AuthClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          return AuthClient(baseUrl: 'https://lixolao2.onrender.com');
         case Flavor.production:
-          return AuthClient(baseUrl: 'https://lixolao-backend.onrender.com');
+          return AuthClient(baseUrl: 'https://lixolao2.onrender.com');
       }
     }
     return betApi!;
