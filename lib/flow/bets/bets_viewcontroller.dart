@@ -10,11 +10,11 @@ class BetsViewController {
   late BetsWidgetState? view;
   int? _competitionId;
 
-  void onInit(state, {int? competitionId}) async {
+  Future<void> onInit(state, {int? competitionId}) async {
     view = state;
     _competitionId = competitionId;
     await _prepareApi();
-    _fillBets(competitionId: competitionId);
+    return _fillBets(competitionId: competitionId);
   }
 
   void onDateChanged(int index) {
@@ -33,9 +33,9 @@ class BetsViewController {
     await api.initialize();
   }
 
-  void _fillBets({int? competitionId}) {
-    if (competitionId == null) return;
-    api.getUserBets(competitionId: competitionId).then((betsInDayList) {
+  Future<void> _fillBets({int? competitionId}) {
+    if (competitionId == null) return Future.value();
+    return api.getUserBets(competitionId: competitionId).then((betsInDayList) {
       List<BetsInDayViewContent> betsInDayViewContentList = betsInDayList
           .map((betsInDayApiModel) =>
               BetsInDayViewContent.fromApiModel(betsInDayApiModel))

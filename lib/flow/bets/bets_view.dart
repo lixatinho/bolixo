@@ -51,25 +51,32 @@ class BetsWidgetState extends State<BetsWidget> {
     }
 
     if (betsByDay.isEmpty) {
-      return Container(
-        color: BolixoColors.backgroundPrimary,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.sentiment_dissatisfied, size: 64, color: BolixoColors.textSecondary),
-              const SizedBox(height: 16),
-              Text(
-                "Nenhum jogo disponível.",
-                style: BolixoTypography.titleMedium.copyWith(color: BolixoColors.textPrimary),
+      return RefreshIndicator(
+        onRefresh: () => viewController.onInit(this, competitionId: widget.competitionId),
+        color: BolixoColors.accentBlue,
+        backgroundColor: BolixoColors.surfaceElevated,
+        child: ListView(
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.sentiment_dissatisfied, size: 64, color: BolixoColors.textSecondary),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Nenhum jogo disponível.",
+                    style: BolixoTypography.titleMedium.copyWith(color: BolixoColors.textPrimary),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Aguarde o administrador cadastrar as partidas.",
+                    style: BolixoTypography.bodyMedium.copyWith(color: BolixoColors.textSecondary),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                "Aguarde o administrador cadastrar as partidas.",
-                style: BolixoTypography.bodyMedium.copyWith(color: BolixoColors.textSecondary),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -88,36 +95,43 @@ class BetsWidgetState extends State<BetsWidget> {
         Expanded(
           child: Stack(
             children: [
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final bets = betsByDay[dateIndex].betList;
-                  const double minCardWidth = 340;
-                  const double spacing = 12;
-                  final columns = (constraints.maxWidth / (minCardWidth + spacing)).floor().clamp(1, 4);
+              RefreshIndicator(
+                onRefresh: () => viewController.onInit(this, competitionId: widget.competitionId),
+                color: BolixoColors.accentBlue,
+                backgroundColor: BolixoColors.surfaceElevated,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final bets = betsByDay[dateIndex].betList;
+                    const double minCardWidth = 340;
+                    const double spacing = 12;
+                    final columns = (constraints.maxWidth / (minCardWidth + spacing)).floor().clamp(1, 4);
 
-                  final bottomPadding = 90 + MediaQuery.of(context).padding.bottom;
+                    final bottomPadding = 90 + MediaQuery.of(context).padding.bottom;
 
-                  if (columns <= 1) {
-                    return ListView.separated(
+                    if (columns <= 1) {
+                      return ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.fromLTRB(16, 12, 16, bottomPadding),
+                        itemCount: bets.length,
+                        itemBuilder: (context, index) => _wrapShimmer(_buildBetCard(index)),
+                        separatorBuilder: (_, __) => const SizedBox(height: spacing),
+                      );
+                    }
+
+                    return GridView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
                       padding: EdgeInsets.fromLTRB(16, 12, 16, bottomPadding),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: columns,
+                        crossAxisSpacing: spacing,
+                        mainAxisSpacing: spacing,
+                        childAspectRatio: 1.85,
+                      ),
                       itemCount: bets.length,
-                      itemBuilder: (context, index) => _wrapShimmer(_buildBetCard(index)),
-                      separatorBuilder: (_, __) => const SizedBox(height: spacing),
+                      itemBuilder: (context, index) => Center(child: _wrapShimmer(_buildBetCard(index))),
                     );
-                  }
-
-                  return GridView.builder(
-                    padding: EdgeInsets.fromLTRB(16, 12, 16, bottomPadding),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: columns,
-                      crossAxisSpacing: spacing,
-                      mainAxisSpacing: spacing,
-                      childAspectRatio: 1.85,
-                    ),
-                    itemCount: bets.length,
-                    itemBuilder: (context, index) => Center(child: _wrapShimmer(_buildBetCard(index))),
-                  );
-                },
+                  },
+                ),
               ),
               if (!isSaving)
                 Positioned(
